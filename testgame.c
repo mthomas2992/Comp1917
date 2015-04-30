@@ -1,3 +1,23 @@
+//In your team of four:
+
+//Pretend all the functions in Game.c have already been written.  
+//Plan and write testGame.c - which #includes Game.h and which contains a main function which creates a Game (or several Games) and uses them to extensively test the Game ADT interface functions. 
+//Do this exactly like the other unit tests we have written in class.  E.g. test using asserts.
+//At the end, if you have passed all the tests, printf "All tests passed, you are Awesome!".
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+#include "Game.h"
+
+int main (int argc, char *argv[]) {
+	//add your tests for your section in here, 
+}
+
+
+/*
 Game newGame (int discipline[], int dice[]); //Matt
 
 void disposeGame (Game g); //Bryan
@@ -40,3 +60,4 @@ int getStudents (Game g, int player, int discipline); //Matt
 
 int getExchangeRate (Game g, int player,
                      int disciplineFrom, int disciplineTo); //Matt
+*/
