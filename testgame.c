@@ -83,6 +83,13 @@ void makeActiontests(void);
 void getDisciplinetests(void);
 void newGametests(void);
 
+void testGetKPIpoints (void); 
+void testGetARCs (void); 
+void testGetGO8s (void); 
+void testGetCampuses (void); 
+void testGetIPs (void); 
+
+
 int main (int argc, char *argv[]) {
 	//add your tests for your section in here, 
 	bryanstests();
@@ -94,6 +101,12 @@ int main (int argc, char *argv[]) {
    getDisciplinetests();
    getStudentstest();
    isLegalActiontests();
+
+   testGetKPIpoints();
+   testGetARCs();
+   testGetGO8s();
+   testGetCampuses();
+   testGetIPs();
    
 	return EXIT_SUCCESS;
 	
@@ -614,6 +627,36 @@ void isLegalActiontests(void){
    //therefore this function needs to check if this works after a retrain center is used? But how to know if a retrain center is connected
 
 //}
+
+//Inputs: Game g, int player
+void testGetKPIpoints (void){
+   // return the number of ARC grants the specified player currently has
+   Game g = newGame (DEFAULT_DISCIPLINES, DEFAULT_DICE);
+
+   assert (testGetKPIpoints (g, UNI_A) == 20);
+   assert (testGetKPIpoints (g, UNI_B) == 20);
+   assert (testGetKPIpoints (g, UNI_C) == 20);
+
+
+
+}
+//Inputs: Game g, int player
+void testGetARCs (void){
+
+} 
+//Inputs: Game g, int player
+void testGetGO8s (void){
+
+}
+//Inputs: Game g, int player
+void testGetCampuses (void){
+
+}
+//Inputs: Game g, int player
+void testGetIPs (void){
+
+}
+
 
 /*
 Game newGame (int discipline[], int dice[]); //Matt
