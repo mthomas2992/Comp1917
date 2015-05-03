@@ -366,7 +366,7 @@ void newGametests(void){
    int playerx=UNI_A;
    int diciplinecheck=STUDENT_THD;
    while (playerx<=UNI_C){
-      assert(getKPIpoints(gnt,playerx)==0);
+      assert(getKPIpoints(gnt,playerx)==20);
       assert(getARCs(gnt,playerx)==0);
       assert(getGO8s(gnt,playerx)==0);
       assert(getCampuses(gnt,playerx)==2);
