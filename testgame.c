@@ -147,17 +147,51 @@ void Joerickstests(void){
 	/*****************************************************/
 	// Test for throwDice
 	printf("Testing throwDice\n");
-	int throwdicecount = 0;
 	Game test;
 	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
 	
 	assert(getTurnNumber(test) == -1);
-	while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
-		throwDice(test,DEFAULT_DICE[counter]);
-		assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
-		assert(getTurnNumber(test) == throwdicecount);
-		throwdicecount++;
-	}
+	
+	throwDice(test,DEFAULT_DICE[0]);
+	assert(DEFAULT_DICE[0] >= MIN_DICE_VALUE);
+	assert(DEFAULT_DICE[0] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 0);
+
+	throwDice(test,DEFAULT_DICE[1]);
+	assert(DEFAULT_DICE[1] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[1] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 1);
+
+`	throwDice(test,DEFAULT_DICE[2]);
+	assert(DEFAULT_DICE[2] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[2] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 2);
+
+	throwDice(test,DEFAULT_DICE[3]);
+	assert(DEFAULT_DICE[3] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[3] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 3);
+
+	throwDice(test,DEFAULT_DICE[4]);
+	assert(DEFAULT_DICE[4] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[4] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 4);
+
+	throwDice(test,DEFAULT_DICE[5]);
+	assert(DEFAULT_DICE[5] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[5] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 5);
+
+	throwDice(test,DEFAULT_DICE[6]);
+	assert(DEFAULT_DICE[6] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[6] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 6);
+
+	throwDice(test,DEFAULT_DICE[7]);
+	assert(DEFAULT_DICE[7] >= MIN_DICE_VALUE);
+ 	assert(DEFAULT_DICE[7] <= MAX_DICE_VALUE);
+	assert(getTurnNumber(test) == 7);
+	
 	disposeGame(test);
 	printf("throwDice Tests passed\n");
 	// End of throwDice tests
