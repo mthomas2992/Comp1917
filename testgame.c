@@ -78,7 +78,7 @@ void Joerickstests(){
 // Joerick's tests
 	/*****************************************************/
 	// Test for throwDice
-	printf("Testing throwDice");
+	printf("Testing throwDice\n");
 	int throwdicecount = 0;
 	Game test;
 	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
@@ -97,7 +97,7 @@ void Joerickstests(){
 	
 	/*****************************************************/
 	// test for getCampus
-	printf("Testing getCampus");
+	printf("Testing getCampus\n");
 	Game test;
 	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
 	
@@ -141,7 +141,7 @@ void Joerickstests(){
 	
 	/*****************************************************/
 	// test for getARC
-	printf("Testing getARC\n);
+	printf("Testing getARC\n");
 	
 	Game test;
 	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
