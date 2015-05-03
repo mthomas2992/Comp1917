@@ -400,7 +400,7 @@ void makeActiontests(void){
    totalarcs=playerthreecheck+playertwocheck+playeronecheck;
    
    assert(totalarcs==0); //check no one has started with more arcs, double checked in newGametests
-   throwDice(gat,1); //advance the game once
+   throwDice(gat,2); //advance the game once
    
    action attest1; // create an action to obtain an arc
    attest1.actionCode=OBTAIN_ARC;
@@ -521,7 +521,7 @@ void isLegalActiontests(void){
    int disciplinesla[] = DEFAULT_DISCIPLINES;
    int dicela[] = DEFAULT_DICE;
    Game gla =newGame (disciplinesla, dicela);
-   throwDice(gla,1);
+   throwDice(gla,2);
    
    //test arc legals
    action testa;
