@@ -155,8 +155,8 @@ void Joerickstests(void){
 	while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
 		throwDice(test,DEFAULT_DICE[counter]);
 		assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
-		assert(getTurnNumber(test) == throwdicecounter);
-		throwdicecounter++;
+		assert(getTurnNumber(test) == throwdicecount);
+		throwdicecount++;
 	}
 	disposeGame(test);
 	printf("throwDice Tests passed\n");
