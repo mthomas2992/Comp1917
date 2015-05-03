@@ -76,95 +76,176 @@ void bryanstests(){
 
 void Joerickstests(){
 // Joerick's tests
-   /*****************************************************/
-   // Test for throwDice
-   printf("Testing throwDice");
-   int throwdicecount = 0;
-   Game test;
-   test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
-   
-   assert(getTurnNumber(test) == -1);
-   
-   while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
-      throwDice(test,DEFAULT_DICE[counter]);
-      assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
-      assert(getTurnNumber(test) == throwdicecounter);
-   }
-   disposegame(test);
-   printf("throwDice Tests passed\n");
-   // End of throwDice tests
-   /*****************************************************/
-   
-   /*****************************************************/
-   // test for getWhoseTurn
-   Game g = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
-   
-   assert(getWhoseTurn(g) == NO_ONE);
-
-   throwDice(g,DICE_VALUE[0]);
-   assert(getWhoseTurn(g) == UNI_A);
-   
-   throwDice(g,DICE_VALUE[1]);
-   assert(getWhoseTurn(g) == UNI_B);
-
-   throwDice(g,DICE_VALUE[2]);
-   assert(getWhoseTurn(g) == UNI_C);
-
-   throwDice(g,DICE_VALUE[3]);
-   assert(getWhoseTurn(g) == UNI_A);
-   
-   throwDice(g,DICE_VALUE[4]);
-   assert(getWhoseTurn(g) == UNI_B);
-   disposeGame(g);
-   printf("getWhoseTurn Tests passed\n");
-   // End of getWhoseTurn test
-   /*****************************************************/
-   
-   /*****************************************************/
-   // testing getPublications
-   printf("Testing getPublications\n");
-   Game test;
-   test = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
-   action obtain_publication;
-   obtain_pubcliaation.actionCode = OBTAIN_PUBLICATION;
-   
-   assert(getPublications(test,UNI_A) == 0);
-   assert(getPublications(test,UNI_B) == 0);
-   assert(getPublications(test,UNI_C) == 0);
-   
-   throwDice(test,DEFAULT_DICE[0]);
-   makeAction(test,obtain_publication);
-   assert(getPublications(test,UNI_A) == 1);
-   assert(getPublications(test,UNI_B) == 0);
-   assert(getPublications(test,UNI_C) == 0);
-   
-   throwDice(test,DEFAULT_DICE[1]);
-   makeAction(test,obtain_publication);
-   assert(getPublications(test,UNI_A) == 1);
-   assert(getPublications(test,UNI_B) == 1);
-   assert(getPublications(test,UNI_C) == 0);
-   
-   throwDice(test,DEFAULT_DICE[2]);
-   makeAction(test,obtain_publication);
-   assert(getPublications(test,UNI_A) == 1);
-   assert(getPublications(test,UNI_B) == 1);
-   assert(getPublications(test,UNI_C) == 1);
-   
-   throwDice(test,DEFAULT_DICE[3]);
-   makeAction(test,obtain_publication);
-   assert(getPublications(test,UNI_A) == 2);
-   assert(getPublications(test,UNI_B) == 1);
-   assert(getPublications(test,UNI_C) == 1);
-   
-   throwDice(test,DEFAULT_DICE[4]);
-   makeAction(test,obtain_publication);
-   assert(getPublications(test,UNI_A) == 2);
-   assert(getPublications(test,UNI_B) == 2);
-   assert(getPublications(test,UNI_C) == 1);
-   disposeGame(test);
-   printf("getPublications Test passed\n");
-   // End of getPublications test
-   /*****************************************************/
+	/*****************************************************/
+	// Test for throwDice
+	printf("Testing throwDice");
+	int throwdicecount = 0;
+	Game test;
+	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
+	
+	assert(getTurnNumber(test) == -1);
+	while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
+		throwDice(test,DEFAULT_DICE[counter]);
+		assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
+		assert(getTurnNumber(test) == throwdicecounter);
+		throwdicecounter++;
+	}
+	disposeGame(test);
+	printf("throwDice Tests passed\n");
+	// End of throwDice tests
+	/*****************************************************/
+	
+	/*****************************************************/
+	// test for getCampus
+	printf("Testing getCampus");
+	Game test;
+	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
+	
+	action obtain_campus;
+	obtain_campus.actionCode = BUILD_CAMPUS;
+	assert(sizeof(pathtoVertex) <= PATH_LIMIT);
+	
+	obtain_campus.destination = "RLLLLLL";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_A);
+	
+	obtain_campus.destination = "L";
+	assert(getARC(test,obtain_arc.destination) == VACANT_VERTEX);
+	
+	obtain_campus.destination = "R";
+	assert(getARC(test,obtain_arc.destination) == VACANT_VERTEX);
+	
+	obtain_campus.destination = "LRLRL";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_C);
+	
+	obtain_campus.destination = "RRLRL";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_B);
+	
+	obtain_campus.destination = "RLRLRLRRLR";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_C);
+	
+	obtain_campus.destination = "RLRLRLRLLRR";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_A);
+	
+	obtain_campus.destination = "LRRLRLRLLLRR";
+	assert(getARC(test,obtain_arc.destination) == CAMPUS_B);
+	
+	obtain_campus.destination = "RLRLRL";
+	assert(getARC(test,obtain_arc.destination) == VACANT_VERTEX);
+	
+	obtain_campus.destination = "RLRLRLLLRR";
+	assert(getARC(test,obtain_arc.destination) == VACANT_VERTEX);
+	disposeGame(test);
+	printf("getCampus Tests passed\n");
+	// End of getCampus test
+	/*****************************************************/
+	
+	/*****************************************************/
+	// test for getARC
+	printf("Testing getARC\n);
+	
+	Game test;
+	test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
+	
+	action obtain_arc;
+	obtain_arc.actionCode = OBTAIN_ARC;
+	assert(sizeof(pathtoEdge) <= PATH_LIMIT);
+	
+	obtain_arc.destination = "L"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "R"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "RL"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "LR"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "LRRRL"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "RRLLL"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	
+	obtain_arc.destination = "RLR"
+	assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+	disposeGame(test);
+	printf("getArc Tests passed\n");
+	// End of getARC test
+	/*****************************************************/
+	
+	/*****************************************************/
+	// test for getWhoseTurn
+	Game test;
+	test = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+	
+	assert(getWhoseTurn(test) == NO_ONE);
+	
+	throwDice(test,DICE_VALUE[0]);
+	assert(getWhoseTurn(test) == UNI_A);
+	
+	throwDice(test,DICE_VALUE[1]);
+	assert(getWhoseTurn(test) == UNI_B);
+	
+	throwDice(test,DICE_VALUE[2]);
+	assert(getWhoseTurn(test) == UNI_C);
+	
+	throwDice(test,DICE_VALUE[3]);
+	assert(getWhoseTurn(test) == UNI_A);
+	
+	throwDice(test,DICE_VALUE[4]);
+	assert(getWhoseTurn(test) == UNI_B);
+	disposeGame(test);
+	printf("getWhoseTurn Tests passed\n");
+	// End of getWhoseTurn test
+	/*****************************************************/
+	
+	/*****************************************************/
+	// testing getPublications
+	printf("Testing getPublications\n");
+	Game test;
+	test = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+	action obtain_publication;
+	obtain_publication.actionCode = OBTAIN_PUBLICATION;
+	
+	assert(getPublications(test,UNI_A) == 0);
+	assert(getPublications(test,UNI_B) == 0);
+	assert(getPublications(test,UNI_C) == 0);
+	
+	throwDice(test,DEFAULT_DICE[0]);
+	makeAction(test,obtain_publication);
+	assert(getPublications(test,UNI_A) == 1);
+	assert(getPublications(test,UNI_B) == 0);
+	assert(getPublications(test,UNI_C) == 0);t
+	
+	throwDice(test,DEFAULT_DICE[1]);
+	makeAction(test,obtain_publication);
+	assert(getPublications(test,UNI_A) == 1);
+	assert(getPublications(test,UNI_B) == 1);
+	assert(getPublications(test,UNI_C) == 0);
+	
+	throwDice(test,DEFAULT_DICE[2]);
+	makeAction(test,obtain_publication);
+	assert(getPublications(test,UNI_A) == 1);
+	assert(getPublications(test,UNI_B) == 1);
+	assert(getPublications(test,UNI_C) == 1);
+	
+	throwDice(test,DEFAULT_DICE[3]);
+	makeAction(test,obtain_publication);
+	assert(getPublications(test,UNI_A) == 2);
+	assert(getPublications(test,UNI_B) == 1);
+	assert(getPublications(test,UNI_C) == 1);
+	
+	throwDice(test,DEFAULT_DICE[4]);
+	makeAction(test,obtain_publication);
+	assert(getPublications(test,UNI_A) == 2);
+	assert(getPublications(test,UNI_B) == 2);
+	assert(getPublications(test,UNI_C) == 1);
+	disposeGame(test);
+	printf("getPublications Test passed\n");
+	// End of getPublications test
+	/*****************************************************/
 }
 
 
