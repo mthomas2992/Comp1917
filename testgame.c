@@ -11,13 +11,12 @@
 #include <string.h>
 
 #include "Game.h"
-
 // Joerick's #defines
 #define MIN_DICE_VALUE 2
 #define MAX_DICE_VALUE 12
 
 //Standard defines
-
+/*
 #define NUM_UNIS 3
 
 // player ID of each university
@@ -64,6 +63,7 @@
 
 #define TRUE 1
 #define FALSE 0
+*/
 
 //New game test defaults
 #define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ,
@@ -99,20 +99,17 @@ int main (int argc, char *argv[]) {
 	
 }
 
-void bryanstests(void){
+/*void bryanstests(void){
    //BRYAN'S TESTS!
-   
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game g =newGame(disciplines, dice);
    //disposeGame
-   printf("Testing disposeGame");
-   
-   //Not too sure what this does...
-   
-   printf("disposeGame passed!");
-   
+
    printf("Testing getDiceValue");
    assert( getDiceValue (g, regionID) >= 2);
    assert( getDiceValue (g, regionID) <= 12);
-   printf("getDiceValue passed!")
+   printf("getDiceValue passed!");
    
    printf("Testing getMostArcs");
    //Arcs array will hold arcs per player
@@ -122,7 +119,7 @@ void bryanstests(void){
       assert(getMostPublications(g) >= arcs[arcCount]);
       arcCount++;
    }
-   printf("getMostArcs passed!")
+   printf("getMostArcs passed!");
    
    printf("Testing getMostPublications");
    //Publications array will hold publications per player
@@ -132,7 +129,7 @@ void bryanstests(void){
       assert(getMostPublications(g) >= publications[pubCount]);
       pubCount++;
    }
-   printf("getMostPublications passed!")
+   printf("getMostPublications passed!");
    
    printf("Testing getTurnNumber");
    newGame (int discipline[], int dice[]);
@@ -140,7 +137,7 @@ void bryanstests(void){
    throwDice (g, diceScore);
    assert(getTurnNumber(g) == 0);
    printf("getTurnNumber passed!");
-}
+}*/
 
 void Joerickstests(void){
 // Joerick's tests
@@ -153,10 +150,10 @@ void Joerickstests(void){
 	
 	assert(getTurnNumber(test) == -1);
 	while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
-		throwDice(test,DEFAULT_DICE[counter]);
+		throwDice(test,DEFAULT_DICE[throwdicecount]);
 		assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
-		assert(getTurnNumber(test) == throwdicecounter);
-		throwdicecounter++;
+		assert(getTurnNumber(test) == throwdicecount);
+		throwdicecount++;
 	}
 	disposeGame(test);
 	printf("throwDice Tests passed\n");
@@ -526,15 +523,15 @@ void isLegalActiontests(void){
    //test arc legals
    action testa;
    testa.actionCode=OBTAIN_ARC;
-   testa.destination='BLRRL';
+   testa.destination="BLRRL";
 
    action testb;
    testb.actionCode=OBTAIN_ARC;
-   testb.destination='LLLLLLLLLLLLLLLLRRRRLRLRLL';
+   testb.destination="LLLLLLLLLLLLLLLLRRRRLRLRLL";
 
    action testc; //possible error here
    testc.actionCode=OBTAIN_ARC;
-   testc.destination='L';
+   testc.destination="L";
 
    assert(isLegalAction(gla,testa)==FALSE);
    assert(isLegalAction(gla,testb)==FALSE);
@@ -564,11 +561,11 @@ void isLegalActiontests(void){
 
    action testg;
    testg.actionCode=BUILD_CAMPUS;
-   testg.destination='LRRL';
+   testg.destination="LRRL";
 
    action testh;
    testh.actionCode=BUILD_CAMPUS;
-   testh.destination='BLR';
+   testh.destination="BLR";
 
    assert(isLegalAction(gla,testg)==FALSE);
    assert(isLegalAction(gla,testh)==FALSE);
