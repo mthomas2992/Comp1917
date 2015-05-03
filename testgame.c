@@ -76,6 +76,8 @@
 void bryanstests(void);
 void Joerickstests(void);
 
+void getExchangeRatetests(void);
+void isLegalActiontests(void);
 void getStudentstest(void);
 void makeActiontests(void);
 void getDisciplinetests(void);
@@ -298,25 +300,60 @@ void newGametests(void){
 } //Needs checking once functional
 
 void makeActiontests(void){
-
-   printf("testing makeAction\n");
-   Game g =newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+   int disciplinesdt[] = DEFAULT_DISCIPLINES;
+   int dicedt[] = DEFAULT_DICE;
    
-   //test arc actions
+   //test arc actions - currently not player specific
+   Game gat =newGame (disciplines, dice);
 
    int playeronecheck=0;
    int playertwocheck=0;
    int playerthreecheck=0;
    int totalarcs=0;
+   int totalarcsafter=0;
 
-   playeronecheck=getARCs(g,UNI_A);
-   playertwocheck=getARCs(g,UNI_B);
-   playerthreecheck=getARCs(g,UNI_C);
+   playeronecheck=getARCs(gat,UNI_A);
+   playertwocheck=getARCs(gat,UNI_B);
+   playerthreecheck=getARCs(gat,UNI_C);
    totalarcs=playerthreecheck+playertwocheck+playeronecheck;
+   
+   assert(totalarcs==0);
+   throwDice(gat,1);
+   makeAction(gat,OBTAIN_ARC);
+  
+   playeronecheck=getARCs(gat,UNI_A);
+   playertwocheck=getARCs(gat,UNI_B);
+   playerthreecheck=getARCs(gat,UNI_C);
+   totalarcsafter=playerthreecheck+playertwocheck+playeronecheck;
+   assert((totalarcs+1)==totalarcsafter);
 
-   makeAction(g,OBTAIN_ARC);
+   disposeGame(gat);
 
-}
+   //test campus build actions
+   Game gat2 = newGame(disciplines, dice); //start new game just to be sure
+
+   int player1checkC=0;
+   int player2checkC=0;
+   int player3checkC=0;
+   int totalcampus=0;
+   int totalcampusafter=0;
+
+   player1checkC=getCampuses(gat2,UNI_A);
+   player2checkC=getCampuses(gat2,UNI_B);
+   player3checkC=getCampuses(gat2,UNI_C);
+   totalcampus=player1checkC+player2checkC+player3checkC;
+
+   assert(totalcampus==0);
+   throwDice(gat2,1);
+   makeAction(gat,BUILD_CAMPUS);
+
+   player1checkC=getCampuses(gat2,UNI_A);
+   player2checkC=getCampuses(gat2,UNI_B);
+   player3checkC=getCampuses(gat2,UNI_C);
+   totalcampusafter=player1checkC+player2checkC+player3checkC;
+
+   assert((totalcampus+1)==totalcampusafter);  
+} //currently not player specific tests
 
 void getDisciplinetests(void){
    int disciplinesdt[] = DEFAULT_DISCIPLINES;
@@ -351,6 +388,13 @@ void getStudentstest(void){
    disposeGame(gst);
 } //only tests for zeros at the moment
 
+void isLegalActiontests(void){
+
+}
+
+void getExchangeRatetests(void){
+
+}
 /*
 Game newGame (int discipline[], int dice[]); //Matt
 
