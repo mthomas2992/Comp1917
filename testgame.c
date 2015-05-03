@@ -73,11 +73,13 @@
                 STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
-void bryanstests();
-void Joerickstests();
-void makeActiontests();
-void getDisciplinetests();
-void newGametests();
+void bryanstests(void);
+void Joerickstests(void);
+
+void getStudentstest(void);
+void makeActiontests(void);
+void getDisciplinetests(void);
+void newGametests(void);
 
 int main (int argc, char *argv[]) {
 	//add your tests for your section in here, 
@@ -95,7 +97,7 @@ int main (int argc, char *argv[]) {
 	
 }
 
-void bryanstests(){
+void bryanstests(void){
    //BRYAN'S TESTS!
    
    //disposeGame
@@ -138,7 +140,7 @@ void bryanstests(){
    printf("getTurnNumber passed!");
 }
 
-void Joerickstests(){
+void Joerickstests(void){
 // Joerick's tests
    /*****************************************************/
    // Test for throwDice
@@ -231,34 +233,34 @@ void Joerickstests(){
    /*****************************************************/
 }
 
-void newGametests(){
+void newGametests(void){
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
-   Game g =newGame (disciplines, dice);
+   Game gnt =newGame (disciplines, dice);
    
    //ensure starting values are completley empty
-   assert(getMostARCs(g)==0);
-   assert(getMostPublications(g)==0);
-   assert(getTurnNumber(g)==-1); // first turn is identified as -1
-   assert(getWhoseTurn(g)==NO_ONE);
+   assert(getMostARCs(gnt)==0);
+   assert(getMostPublications(gnt)==0);
+   assert(getTurnNumber(gnt)==-1); // first turn is identified as -1
+   assert(getWhoseTurn(gnt)==NO_ONE);
 
    //check that each player is at the initial for all their values
    int playerx=UNI_A;
    int diciplinecheck=STUDENT_THD;
    while (playerx<=UNI_C){
-      assert(getKPIpoints(g,playerx)==0);
-      assert(getARCs(g,playerx)==0);
-      assert(getGO8s(g,playerx)==0);
-      assert(getCampuses(g,playerx)==0);
-      assert(getIPs(g,playerx)==0):
-      assert(getPublications(g,playerx)==0);
+      assert(getKPIpoints(gnt,playerx)==0);
+      assert(getARCs(gnt,playerx)==0);
+      assert(getGO8s(gnt,playerx)==0);
+      assert(getCampuses(gnt,playerx)==0);
+      assert(getIPs(gnt,playerx)==0):
+      assert(getPublications(gnt,playerx)==0);
       while(diciplinecheck<=STUDENT_MMONEY){
          if ((diciplinecheck==STUDENT_BPS) || (diciplinecheck==STUDENT_BQN)){
-            assert(getStudents(g,playerx,diciplinecheck)==3);
+            assert(getStudents(gnt,playerx,diciplinecheck)==3);
          } else if (diciplinecheck==STUDENT_THD) {
-            assert(getStudents(g,playerx,diciplinecheck)==0);
+            assert(getStudents(gnt,playerx,diciplinecheck)==0);
          } else{
-            assert(getStudents(g,playerx,diciplinecheck)==1);
+            assert(getStudents(gnt,playerx,diciplinecheck)==1);
          }
          diciplinecheck++
       }
@@ -271,7 +273,7 @@ void newGametests(){
    path pathtest;  //unsure about syntax
    while (pathcount<PATH_LIMIT){
       pathtest[pathcount]='L';
-      assert(getCampus(g,pathtest)==VACANT_VERTEX);
+      assert(getCampus(gnt,pathtest)==VACANT_VERTEX);
       pathcount++
    }
 
@@ -282,20 +284,20 @@ void newGametests(){
    while (playerx<=UNI_C){
       while(diciplinecheck2<=STUDENT_MMONEY){
          while(diciplinecheck3<=STUDENT_MMONEY){
-            assert(getExchangeRate(g,playerx,diciplinecheck2,diciplinecheck3)==3);
+            assert(getExchangeRate(gnt,playerx,diciplinecheck2,diciplinecheck3)==3);
             diciplinecheck3++;
          }
          diciplinecheck2++;
          diciplinecheck3=1;
       }
-   playerx++;
-   diciplinecheck2=1;
-   diciplinecheck3=1;
+      playerx++;
+      diciplinecheck2=1;
+      diciplinecheck3=1;
    }
+   disposeGame(gnt);
+} //Needs checking once functional
 
-}
-
-void makeActiontests(){
+void makeActiontests(void){
 
    printf("testing makeAction\n");
    Game g =newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
@@ -316,9 +318,38 @@ void makeActiontests(){
 
 }
 
-void getDisciplinetests(){
+void getDisciplinetests(void){
+   int disciplinesdt[] = DEFAULT_DISCIPLINES;
+   int dicedt[] = DEFAULT_DICE;
+   Game gdt =newGame (disciplines, dice);
 
-}
+   //check that it can read the given arrays
+   int dt=0;
+   while (dt<=NUM_REGIONS){
+      assert(getDiscipline(gdt,diciplinesdt[dt])==diciplinesdt[dt]);
+      dt++;
+   }
+} //can be elaborated on for more thorough testing
+
+void getStudentstest(void){
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game gst =newGame (disciplines, dice);
+
+   //check if the function gets students at all
+   int playery=UNI_A;
+   int diciplinecheckstu=STUDENT_THD;
+   while (playery<=UNI_C){
+      while(diciplinecheckstu<=STUDENT_MMONEY){
+         assert(getStudents(gst,playery,diciplinecheckstu)>=0);
+         diciplinecheckstu++;
+      }
+      playery++;
+   }
+
+   //find way to generate data to test this on
+   disposeGame(gst);
+} //only tests for zeros at the moment
 
 /*
 Game newGame (int discipline[], int dice[]); //Matt
