@@ -84,10 +84,10 @@ void getDisciplinetests(void);
 void newGametests(void);
 
 void testGetKPIpoints (void); 
-void testGetARCs (void); 
-void testGetGO8s (void); 
-void testGetCampuses (void); 
-void testGetIPs (void); 
+//void testGetARCs (void); 
+//void testGetGO8s (void); 
+//void testGetCampuses (void); 
+//void testGetIPs (void); 
 
 
 int main (int argc, char *argv[]) {
@@ -103,10 +103,10 @@ int main (int argc, char *argv[]) {
    isLegalActiontests();
 
    testGetKPIpoints();
-   testGetARCs();
-   testGetGO8s();
-   testGetCampuses();
-   testGetIPs();
+   //testGetARCs();
+   //testGetGO8s();
+   //testGetCampuses();
+   //testGetIPs();
    
 	return EXIT_SUCCESS;
 	
@@ -633,15 +633,14 @@ void testGetKPIpoints (void){
    // return the number of ARC grants the specified player currently has
    Game g = newGame (DEFAULT_DISCIPLINES, DEFAULT_DICE);
 
-   assert (testGetKPIpoints (g, UNI_A) == 20);
-   assert (testGetKPIpoints (g, UNI_B) == 20);
-   assert (testGetKPIpoints (g, UNI_C) == 20);
+   assert (getKPIpoints (g, UNI_A) == 20);
+   assert (getKPIpoints (g, UNI_B) == 20);
+   assert (getKPIpoints (g, UNI_C) == 20);
 
-
-
+   disposeGame(g);
 }
 //Inputs: Game g, int player
-void testGetARCs (void){
+/*void testGetARCs (void){
 
 } 
 //Inputs: Game g, int player
@@ -656,7 +655,7 @@ void testGetCampuses (void){
 void testGetIPs (void){
 
 }
-
+*/
 
 /*
 Game newGame (int discipline[], int dice[]); //Matt
