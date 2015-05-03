@@ -12,6 +12,10 @@
 
 #include "Game.h"
 
+// Joerick's #defines
+#define MIN_DICE_VALUE 2
+#define MAX_DICE_VALUE 12
+
 int main (int argc, char *argv[]) {
 	//add your tests for your section in here, 
 	
@@ -57,9 +61,99 @@ int main (int argc, char *argv[]) {
 	assert(getTurnNumber(g) == 0);
 	printf("getTurnNumber passed!")
 	
+	//end Bryans Tests
+
+	// Joerick's tests
+		/*****************************************************/
+		// Test for throwDice
+		printf("Testing throwDice");
+		int throwdicecount = 0;
+		Game test;
+		test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
+		
+		assert(getTurnNumber(test) == -1);
+		
+		while (throwdicecount <= (sizeof(DEFAULT_DICE) / sizeof(int))){
+			throwDice(test,DEFAULT_DICE[counter]);
+			assert(DEFAULT_DICE[throwdicecount] >= MIN_DICE_VALUE && DEFAULT_DICE[throwdicecount] <= MAX_DICE_VALUE);
+			assert(getTurnNumber(test) == throwdicecounter);
+		}
+		disposegame(test);
+		printf("throwDice Tests passed\n");
+		// End of throwDice tests
+		/*****************************************************/
+		
+		/*****************************************************/
+		// test for getWhoseTurn
+		Game g = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+		
+		assert(getWhoseTurn(g) == NO_ONE);
 	
-	//Don't forget to...
-	
+		throwDice(g,DICE_VALUE[0]);
+		assert(getWhoseTurn(g) == UNI_A);
+		
+		throwDice(g,DICE_VALUE[1]);
+		assert(getWhoseTurn(g) == UNI_B);
+
+		throwDice(g,DICE_VALUE[2]);
+		assert(getWhoseTurn(g) == UNI_C);
+
+		throwDice(g,DICE_VALUE[3]);
+		assert(getWhoseTurn(g) == UNI_A);
+		
+		throwDice(g,DICE_VALUE[4]);
+		assert(getWhoseTurn(g) == UNI_B);
+		disposeGame(g);
+		printf("getWhoseTurn Tests passed\n");
+		// End of getWhoseTurn test
+		/*****************************************************/
+		
+		/*****************************************************/
+		// testing getPublications
+		printf("Testing getPublications\n");
+		Game test;
+		test = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+		action obtain_publication;
+		obtain_pubcliaation.actionCode = OBTAIN_PUBLICATION;
+		
+		assert(getPublications(test,UNI_A) == 0);
+		assert(getPublications(test,UNI_B) == 0);
+		assert(getPublications(test,UNI_C) == 0);
+		
+		throwDice(test,DEFAULT_DICE[0]);
+		makeAction(test,obtain_publication);
+		assert(getPublications(test,UNI_A) == 1);
+		assert(getPublications(test,UNI_B) == 0);
+		assert(getPublications(test,UNI_C) == 0);
+		
+		throwDice(test,DEFAULT_DICE[1]);
+		makeAction(test,obtain_publication);
+		assert(getPublications(test,UNI_A) == 1);
+		assert(getPublications(test,UNI_B) == 1);
+		assert(getPublications(test,UNI_C) == 0);
+		
+		throwDice(test,DEFAULT_DICE[2]);
+		makeAction(test,obtain_publication);
+		assert(getPublications(test,UNI_A) == 1);
+		assert(getPublications(test,UNI_B) == 1);
+		assert(getPublications(test,UNI_C) == 1);
+		
+		throwDice(test,DEFAULT_DICE[3]);
+		makeAction(test,obtain_publication);
+		assert(getPublications(test,UNI_A) == 2);
+		assert(getPublications(test,UNI_B) == 1);
+		assert(getPublications(test,UNI_C) == 1);
+		
+		throwDice(test,DEFAULT_DICE[4]);
+		makeAction(test,obtain_publication);
+		assert(getPublications(test,UNI_A) == 2);
+		assert(getPublications(test,UNI_B) == 2);
+		assert(getPublications(test,UNI_C) == 1);
+		disposeGame(test);
+		printf("getPublications Test passed\n");
+		// End of getPublications test
+		/*****************************************************/
+		
 	return EXIT_SUCCESS;
 	
 }
