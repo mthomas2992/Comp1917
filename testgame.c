@@ -15,7 +15,7 @@
 // Joerick's #defines
 #define MIN_DICE_VALUE 2
 #define MAX_DICE_VALUE 12
-
+/*
 //Standard defines
 
 #define NUM_UNIS 3
@@ -64,7 +64,7 @@
 
 #define TRUE 1
 #define FALSE 0
-
+*/
 //New game test defaults
 #define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ,
                 STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV,
@@ -73,7 +73,7 @@
                 STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
-void bryanstests(void);
+//void bryanstests(void);
 void Joerickstests(void);
 
 //void getExchangeRatetests(void);
@@ -85,7 +85,7 @@ void newGametests(void);
 
 int main (int argc, char *argv[]) {
 	//add your tests for your section in here, 
-	bryanstests();
+	//bryanstests();
 
    Joerickstests();
 
@@ -99,7 +99,7 @@ int main (int argc, char *argv[]) {
 	
 }
 
-void bryanstests(void){
+/*void bryanstests(void){
    //BRYAN'S TESTS!
    
    //disposeGame
@@ -140,7 +140,7 @@ void bryanstests(void){
    throwDice (g, diceScore);
    assert(getTurnNumber(g) == 0);
    printf("getTurnNumber passed!");
-}
+}*/
 
 void Joerickstests(void){
 // Joerick's tests
@@ -162,7 +162,7 @@ void Joerickstests(void){
  	assert(DEFAULT_DICE[1] <= MAX_DICE_VALUE);
 	assert(getTurnNumber(test) == 1);
 
-`	throwDice(test,DEFAULT_DICE[2]);
+	throwDice(test,DEFAULT_DICE[2]);
 	assert(DEFAULT_DICE[2] >= MIN_DICE_VALUE);
  	assert(DEFAULT_DICE[2] <= MAX_DICE_VALUE);
 	assert(getTurnNumber(test) == 2);
@@ -560,11 +560,11 @@ void isLegalActiontests(void){
    //test arc legals
    action testa;
    testa.actionCode=OBTAIN_ARC;
-   testa.destination='BLRRL';
+   testa.destination="BLRRL";
 
    action testb;
    testb.actionCode=OBTAIN_ARC;
-   testb.destination='LLLLLLLLLLLLLLLLRRRRLRLRLL';
+   testb.destination="LLLLLLLLLLLLLLLLRRRRLRLRLL";
 
    action testc; //possible error here
    testc.actionCode=OBTAIN_ARC;
@@ -598,11 +598,11 @@ void isLegalActiontests(void){
 
    action testg;
    testg.actionCode=BUILD_CAMPUS;
-   testg.destination='LRRL';
+   testg.destination="LRRL";
 
    action testh;
    testh.actionCode=BUILD_CAMPUS;
-   testh.destination='BLR';
+   testh.destination="BLR";
 
    assert(isLegalAction(gla,testg)==FALSE);
    assert(isLegalAction(gla,testh)==FALSE);
