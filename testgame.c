@@ -76,7 +76,7 @@
 void bryanstests(void);
 void Joerickstests(void);
 
-void getExchangeRatetests(void);
+//void getExchangeRatetests(void);
 void isLegalActiontests(void);
 void getStudentstest(void);
 void makeActiontests(void);
@@ -234,7 +234,7 @@ void Joerickstests(void){
    // End of getPublications test
    /*****************************************************/
 }
-
+//Matts tests
 void newGametests(void){
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
@@ -319,7 +319,10 @@ void makeActiontests(void){
    
    assert(totalarcs==0);
    throwDice(gat,1);
-   makeAction(gat,OBTAIN_ARC);
+   action attest1;
+   attest1.actionCode=OBTAIN_ARC;
+   attest1.destination='L';
+   makeAction(gat,attest1);
   
    playeronecheck=getARCs(gat,UNI_A);
    playertwocheck=getARCs(gat,UNI_B);
@@ -345,7 +348,10 @@ void makeActiontests(void){
 
    assert(totalcampus==0);
    throwDice(gat2,1);
-   makeAction(gat,BUILD_CAMPUS);
+   action attest2;
+   attest2.actionCode=BUILD_CAMPUS;
+   attest2.destination='LR';
+   makeAction(gat,attest2);
 
    player1checkC=getCampuses(gat2,UNI_A);
    player2checkC=getCampuses(gat2,UNI_B);
@@ -373,28 +379,99 @@ void getStudentstest(void){
    int dice[] = DEFAULT_DICE;
    Game gst =newGame (disciplines, dice);
 
-   //check if the function gets students at all
-   int playery=UNI_A;
-   int diciplinecheckstu=STUDENT_THD;
-   while (playery<=UNI_C){
-      while(diciplinecheckstu<=STUDENT_MMONEY){
-         assert(getStudents(gst,playery,diciplinecheckstu)>=0);
-         diciplinecheckstu++;
+   //Already partially checked in newGameTests when its values are at the initial
+   //Check after conversion due to 7 rolled
+   throwDice(gst,7);
+   int playerz=UNI_A;
+   int disciplinecount;
+
+   while (playerz<=UNI_C){
+      while (disciplinecount<=STUDENT_MMONEY){
+         if ((disciplinecount==STUDENT_MMONEY)||(disciplinecount==STUDENT_MTV)){
+            assert(getStudents(gst,playerz,disciplinecount)==0);
+         } else if (disciplinecount==STUDENT_THD){
+            assert(getStudents(gst,playerz,disciplinecount)==2);
+         } else if ((disciplinecount==STUDENT_BPS)||(disciplinecount==STUDENT_BQN)){
+            assert(getStudents(gst,playerz,disciplinecount)==3);
+         } else {
+            assert(getStudents(gst,playerz,disciplinecount)==1);
+         }
+         disciplinecount++;
       }
-      playery++;
+      playerz++;
+      disciplinecount=0;
    }
+
 
    //find way to generate data to test this on
    disposeGame(gst);
-} //only tests for zeros at the moment
+} //limited in tests
 
 void isLegalActiontests(void){
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game gla =newGame (disciplines, dice);
+   throwDice(gla,1);
+   
+   //test arc legals
+   action testa;
+   testa.actionCode=OBTAIN_ARC;
+   testa.destination='BLRRL';
+
+   action testb;
+   testb.actionCode=OBTAIN_ARC;
+   testb.destination='LLLLLLLLLLLLLLLLRRRRLRLRLL';
+
+   action testc;
+   testc.actionCode=OBTAIN_ARC;
+   testc.destination='L';
+
+   assert(isLegalAction(gla,testa)==FALSE);
+   assert(isLegalAction(gla,testb)==FALSE);
+   assert(isLegalAction(gla,testc)==TRUE);
+
+   //test retrain legals
+   action testd;
+   testd.actionCode=RETRAIN_STUDENTS;
+   testd.disciplineFrom=STUDENT_THD;
+   testd.disciplineTo=STUDENT_MMONEY;
+
+   action teste;
+   teste.actionCode=RETRAIN_STUDENTS;
+   teste.disciplineFrom=STUDENT_BPS;
+   teste.disciplineTo=STUDENT_MMONEY;
+
+   action testf;
+   testf.actionCode=RETRAIN_STUDENTS;
+   testf.disciplineFrom=STUDENT_MTV;
+   testf.disciplineTo=STUDENT_MMONEY;
+
+   assert(isLegalAction(gla,testd)==FALSE);
+   assert(isLegalAction(gla,teste)==TRUE);
+   assert(isLegalAction(gla,testf)==FALSE);
+
+   //test campus building NEEDS TESTS WHERE IT RETURNS FALSE
+
+   action testg;
+   testg.actionCode=BUILD_CAMPUS;
+   testg.destination='LRRL';
+
+   action testh;
+   testh.actionCode=BUILD_CAMPUS;
+   testh.destination='BLR';
+
+   assert(isLegalAction(gla,testg)==FALSE);
+   assert(isLegalAction(gla,testh)==FALSE);
+   disposeGame(gla);
 
 }
 
-void getExchangeRatetests(void){
+//void getExchangeRatetests(void){
+   //intially already checked in newGametests function
+   //therefore this function needs to check if this works after a retrain center is used? But how to know if a retrain center is connected
 
-}
+//}
+
 /*
 Game newGame (int discipline[], int dice[]); //Matt
 
