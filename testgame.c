@@ -90,10 +90,10 @@ int main (int argc, char *argv[]) {
    Joerickstests();
 
    newGametests();
-
    makeActiontests();
-
    getDisciplinetests();
+   getStudentstest();
+   isLegalActiontests();
    
 	return EXIT_SUCCESS;
 	
@@ -234,11 +234,12 @@ void Joerickstests(void){
    // End of getPublications test
    /*****************************************************/
 }
+
 //Matts tests
 void newGametests(void){
-   int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = DEFAULT_DICE;
-   Game gnt =newGame (disciplines, dice);
+   int disciplinesgt[] = DEFAULT_DISCIPLINES;
+   int dicegt[] = DEFAULT_DICE;
+   Game gnt =newGame (disciplinesgt, dicegt);
    
    //ensure starting values are completley empty
    assert(getMostARCs(gnt)==0);
@@ -253,7 +254,7 @@ void newGametests(void){
       assert(getKPIpoints(gnt,playerx)==0);
       assert(getARCs(gnt,playerx)==0);
       assert(getGO8s(gnt,playerx)==0);
-      assert(getCampuses(gnt,playerx)==0);
+      assert(getCampuses(gnt,playerx)==2);
       assert(getIPs(gnt,playerx)==0):
       assert(getPublications(gnt,playerx)==0);
       while(diciplinecheck<=STUDENT_MMONEY){
@@ -270,14 +271,14 @@ void newGametests(void){
       diciplinecheck==STUDENT_THD;
    }
 
-   //Vertex generator/checker VERY VERY VERY DODGY ONLY CHECKS CONSTANT LEFTS
-   int pathcount=0;
+   //Vertex generator/checker VERY VERY VERY DODGY ONLY CHECKS CONSTANT LEFTS COMMENTED OUT DUE TO POSSIBLE EXTREME LOGIC ERRORS
+   /*int pathcount=0;
    path pathtest;  //unsure about syntax
    while (pathcount<PATH_LIMIT){
       pathtest[pathcount]='L';
       assert(getCampus(gnt,pathtest)==VACANT_VERTEX);
       pathcount++
-   }
+   }*/
 
    //check exchange rate for all players
    int diciplinecheck2=1;
@@ -286,7 +287,7 @@ void newGametests(void){
    while (playerx<=UNI_C){
       while(diciplinecheck2<=STUDENT_MMONEY){
          while(diciplinecheck3<=STUDENT_MMONEY){
-            assert(getExchangeRate(gnt,playerx,diciplinecheck2,diciplinecheck3)==3);
+            assert(getExchangeRate(gnt,playerx,diciplinecheck2,diciplinecheck3)==3); //assumes default exchange rate is 3
             diciplinecheck3++;
          }
          diciplinecheck2++;
@@ -297,14 +298,14 @@ void newGametests(void){
       diciplinecheck3=1;
    }
    disposeGame(gnt);
-} //Needs checking once functional
+} //Needs checking once functional add getwhose turn test CHECKED
 
 void makeActiontests(void){
-   int disciplinesdt[] = DEFAULT_DISCIPLINES;
-   int dicedt[] = DEFAULT_DICE;
+   int disciplinesat[] = DEFAULT_DISCIPLINES;
+   int diceat[] = DEFAULT_DICE;
    
    //test arc actions - currently not player specific
-   Game gat =newGame (disciplines, dice);
+   Game gat =newGame (disciplinesat, diceat);
 
    int playeronecheck=0;
    int playertwocheck=0;
@@ -317,23 +318,35 @@ void makeActiontests(void){
    playerthreecheck=getARCs(gat,UNI_C);
    totalarcs=playerthreecheck+playertwocheck+playeronecheck;
    
-   assert(totalarcs==0);
-   throwDice(gat,1);
-   action attest1;
+   assert(totalarcs==0); //check no one has started with more arcs, double checked in newGametests
+   throwDice(gat,1); //advance the game once
+   
+   action attest1; // create an action to obtain an arc
    attest1.actionCode=OBTAIN_ARC;
    attest1.destination='L';
-   makeAction(gat,attest1);
+   makeAction(gat,attest1); //makes action, assuming that this is for player one otherwise assert will fail, no idea to know if this is right
   
-   playeronecheck=getARCs(gat,UNI_A);
+   playeronecheck=getARCs(gat,UNI_A); //after action checks all players for obtained arcs, don't really need to recheck 2 and 3 at all in this function but do so anyway as error trap
    playertwocheck=getARCs(gat,UNI_B);
    playerthreecheck=getARCs(gat,UNI_C);
-   totalarcsafter=playerthreecheck+playertwocheck+playeronecheck;
-   assert((totalarcs+1)==totalarcsafter);
+   totalarcsafter=playerthreecheck+playertwocheck+playeronecheck; //determine total arcs, which should be one higher
+   assert((totalarcs+1)==totalarcsafter); //perform assert
 
-   disposeGame(gat);
+   //chuck on an extra pass test
+   int turn1 = getWhoseTurn(gat);
+   action attest3;
+   attest3.actionCode=PASS;
+   makeAction(gat,attest3);
+   int turn2= getWhoseTurn(gat);
+   if (turn1=UNI_C){
+      assert(turn2==UNI_A);
+   } else {
+      assert((turn1+1)==turn2);
+   }
 
-   //test campus build actions
-   Game gat2 = newGame(disciplines, dice); //start new game just to be sure
+
+   //test campus build actions CURRENTLY COMMENTED OUT AS CANNOT BUILD CAMPUS WITHOUT ARC ROAD
+   /*Game gat2 = newGame(disciplinesat, diceat); //start new game just to be sure
 
    int player1checkC=0;
    int player2checkC=0;
@@ -358,13 +371,13 @@ void makeActiontests(void){
    player3checkC=getCampuses(gat2,UNI_C);
    totalcampusafter=player1checkC+player2checkC+player3checkC;
 
-   assert((totalcampus+1)==totalcampusafter);  
-} //currently not player specific tests
+   assert((totalcampus+1)==totalcampusafter);  */
+} //currently not player specific tests, fairly broad but checked in other functions CHECKED
 
 void getDisciplinetests(void){
    int disciplinesdt[] = DEFAULT_DISCIPLINES;
    int dicedt[] = DEFAULT_DICE;
-   Game gdt =newGame (disciplines, dice);
+   Game gdt =newGame (disciplinesdt, dicedt);
 
    //check that it can read the given arrays
    int dt=0;
@@ -372,18 +385,34 @@ void getDisciplinetests(void){
       assert(getDiscipline(gdt,diciplinesdt[dt])==diciplinesdt[dt]);
       dt++;
    }
-} //can be elaborated on for more thorough testing
+   disposeGame(gdt);
+
+   //Test with different board
+   int disciplinesdt2[]={STUDENT_MMONEY, STUDENT_MJ, STUDENT_MTV,
+                STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV,
+                STUDENT_MTV, STUDENT_THD,STUDENT_BPS, STUDENT_BQN,
+                STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ,
+                STUDENT_BPS, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS};
+   
+   Game gdt2 =newGame (disciplinesdt2, dicedt);
+   dt=0;
+   while (dt<=NUM_REGIONS){
+      assert(getDiscipline(gdt2,diciplinesdt2[dt])==diciplinesdt2[dt]);
+      dt++;
+   }
+
+} //can be elaborated on for more thorough testing CHECKED
 
 void getStudentstest(void){
-   int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = DEFAULT_DICE;
-   Game gst =newGame (disciplines, dice);
+   int disciplinesst[] = DEFAULT_DISCIPLINES;
+   int dicest[] = DEFAULT_DICE;
+   Game gst =newGame (disciplinesst, dicest);
 
    //Already partially checked in newGameTests when its values are at the initial
    //Check after conversion due to 7 rolled
    throwDice(gst,7);
    int playerz=UNI_A;
-   int disciplinecount;
+   int disciplinecount=0;
 
    while (playerz<=UNI_C){
       while (disciplinecount<=STUDENT_MMONEY){
@@ -405,12 +434,12 @@ void getStudentstest(void){
 
    //find way to generate data to test this on
    disposeGame(gst);
-} //limited in tests
+} //limited in tests CHECKED
 
 void isLegalActiontests(void){
-   int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = DEFAULT_DICE;
-   Game gla =newGame (disciplines, dice);
+   int disciplinesla[] = DEFAULT_DISCIPLINES;
+   int dicela[] = DEFAULT_DICE;
+   Game gla =newGame (disciplinesla, dicela);
    throwDice(gla,1);
    
    //test arc legals
@@ -422,7 +451,7 @@ void isLegalActiontests(void){
    testb.actionCode=OBTAIN_ARC;
    testb.destination='LLLLLLLLLLLLLLLLRRRRLRLRLL';
 
-   action testc;
+   action testc; //possible error here
    testc.actionCode=OBTAIN_ARC;
    testc.destination='L';
 
@@ -463,8 +492,7 @@ void isLegalActiontests(void){
    assert(isLegalAction(gla,testg)==FALSE);
    assert(isLegalAction(gla,testh)==FALSE);
    disposeGame(gla);
-
-}
+} //CHECKED
 
 //void getExchangeRatetests(void){
    //intially already checked in newGametests function
