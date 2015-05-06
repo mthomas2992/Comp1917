@@ -709,12 +709,84 @@ void testGetKPIpoints (void){
    // return the number of ARC grants the specified player currently has
    Game g = newGame (DEFAULT_DISCIPLINES, DEFAULT_DICE);
 
+   //Checked for term 1
    assert (getKPIpoints (g, UNI_A) == 20);
    assert (getKPIpoints (g, UNI_B) == 20);
    assert (getKPIpoints (g, UNI_C) == 20);
 
-   disposeGame(g);
+   throwDice (g, 2);
+   action testA;
+   testA.actionCode = OBTAIN_ARC;
+   testA.destination = 'R';
+   makeAction (g, testA);
+   assert (getKPIpoints (g, UNI_A) == 32);
+   assert (getARCs (g, UNI_A) == 1);
+   assert (getMostARCs (g) == UNI_A);
+   assert (getArc (g, 'R') == ARC_A);
+
+   throwDice (g, 2);
+   throwDice (g, 2);
+   throwDice (g, 2); //Uni A turn again
+   testA.destination = 'RL';
+   makeAction (g, testA);
+
+   action testB;
+   testB.actionCode = BUILD_CAMPUS;
+   testB.destination = 'RL';
+   makeAction (g, testB);
+   assert (getKPIpoints (g, UNI_A) == 42);
+   assert (getARCs (g, UNI_A) == 2);
+   assert (getMostARCs (g) == UNI_A);
+   assert (getArc (g, 'RL') == ARC_A);
+   assert (getCampuses (g, UNI_A) == 3);
+   assert (getCampus (g, 'RL') == CAMPUS_A);
+
+   assert (getGO8s (g, UNI_A) == 0);
+
+   //To build G08 you need MMONEYS and 2 MJS
+   /*throwDice (g, 2);//UNI_B turn
+   throwDice (g, 2);//UNI_C turn
+
+   throwDice ();
+   */
+	//Gives UNI_A 3 MMoneys and 2 MJS and leaves it on UNI_A's turn  
+   
+   int diceAdvancer = 0;
+   while (diceAdvancer <= 6){
+   	if (diceAdvancer < 2){
+   		throwDice (g, 6);
+   	} else {
+   		throwDice (g, 12);
+   	}
+   	diceAdvancer++;
+   }
+
+   action testC;
+   testC.actionCode = BUILD_GO8;
+   testC.destination = 'RL';
+   makeAction (g, testC);
+   assert (getGO8s (g, UNI_A) == 1);
+
+   disposeGame (g);
+
 }
+
+//Inputs: Game g, int player
+void testGetIPs (void){
+
+	Game g = newGame (DEFAULT_DISCIPLINES, DEFAULT_DICE);
+
+	action testD;
+	testD.actionCode = OBTAIN_IP_PATENT;
+	int x=UNI_A;
+	while (x <= UNI_C){
+		throwDice (g, 2);
+		makeAction (g, testD);
+		assert (getIPs (g, x) == 1);
+		x++;
+	}
+}
+
 //Inputs: Game g, int player
 /*void testGetARCs (void){
 
@@ -722,13 +794,10 @@ void testGetKPIpoints (void){
 //Inputs: Game g, int player
 void testGetGO8s (void){
 
-}
-//Inputs: Game g, int player
-void testGetCampuses (void){
 
 }
 //Inputs: Game g, int player
-void testGetIPs (void){
+void testGetCampuses (void){
 
 }
 */
