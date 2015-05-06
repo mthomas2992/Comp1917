@@ -21,19 +21,22 @@ typedef struct _player{
 	int Campuses;
 	int IPs;
 	int Pubs;
-	char Campuseslocation[20];
-	char GO8slocation[20];
-	char arclocation[40];
+	path Campuseslocation[20]; //need to figure out way to store these locations and easily find the adjacent regions for student production
+	path GO8slocation[20];
+	path arclocation[40];
 	students students;
 } player
 
 typedef struct _game {
 	int turncount;
+	int whoseTurn;
 	player player1;
 	player player2;
 	player player3;
 	int mostpubs;
 	int mostarcs;
+	int regions[NUM_REGIONS];
+	int regionid[NUM_REGIONS];
 
 } game
 
