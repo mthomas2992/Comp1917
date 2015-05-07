@@ -440,7 +440,7 @@ void testgetPublications(void){
 }
 
 //Matts tests
-void newGametests(void){
+void newGametests(void){ //needs to check board is correct, also check prior that game is null
    int disciplinesgt[] = DEFAULT_DISCIPLINES;
    int dicegt[] = DEFAULT_DICE;
    Game gnt =newGame (disciplinesgt, dicegt);
