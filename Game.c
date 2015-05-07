@@ -42,6 +42,8 @@ typedef struct _game {
 
 
 int main (int argc, char *argv[]) {
-   
+
+    //I like commenting Get used to it.
+
 	return EXIT_SUCCESS;
 }
