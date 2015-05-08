@@ -135,56 +135,56 @@ typedef struct _action {
 //   int disciplines[] = DEFAULT_DISCIPLINES;
 //   int dice[] = DEFAULT_DICE;
 //   Game g = newGame (disciplines, dice);
-Game newGame (int discipline[], int dice[]);
+Game newGame (int discipline[], int dice[]); //Matt
 
 // free all the memory malloced for the game
-void disposeGame (Game g);
+void disposeGame (Game g); //Matt
 
 // make the specified action for the current player and update the 
 // game state accordingly.  
 // The function may assume that the action requested is legal.
 // START_SPINOFF is not a legal action here
-void makeAction (Game g, action a);
+void makeAction (Game g, action a);  //Joerick
 
 // advance the game to the next turn, 
 // assuming that the dice has just been rolled and produced diceScore
 // the game starts in turn -1 (we call this state "Terra Nullis") and 
 // moves to turn 0 as soon as the first dice is thrown. 
-void throwDice (Game g, int diceScore);
+void throwDice (Game g, int diceScore); //Bryan
 
 /* **** Functions which GET data about the game aka GETTERS **** */
 
 // what type of students are produced by the specified region?
 // regionID is the index of the region in the newGame arrays (above) 
 // see discipline codes above
-int getDiscipline (Game g, int regionID);
+int getDiscipline (Game g, int regionID); // Charly 
 
 // what dice value produces students in the specified region?
 // 2..12
-int getDiceValue (Game g, int regionID);
+int getDiceValue (Game g, int regionID); //CHarly
 
 // which university currently has the prestige award for the most ARCs?
 // this is NO_ONE until the first arc is purchased after the game 
 // has started.  
-int getMostARCs (Game g);
+int getMostARCs (Game g); //Charly
 
 // which university currently has the prestige award for the most pubs?
 // this is NO_ONE until the first publication is made.
-int getMostPublications (Game g);
+int getMostPublications (Game g); //Corey
 
 // return the current turn number of the game -1,0,1, ..
-int getTurnNumber (Game g);
+int getTurnNumber (Game g); //Charly 
 
 // return the player id of the player whose turn it is 
 // the result of this function is NO_ONE during Terra Nullis
-int getWhoseTurn (Game g);
+int getWhoseTurn (Game g); //Corey
 
 // return the contents of the given vertex (ie campus code or 
 // VACANT_VERTEX)
-int getCampus(Game g, path pathToVertex);
+int getCampus(Game g, path pathToVertex); //Corey
 
 // the contents of the given edge (ie ARC code or vacent ARC)
-int getARC(Game g, path pathToEdge);
+int getARC(Game g, path pathToEdge); //Bryan
 
 // returns TRUE if it is legal for the current
 // player to make the specified action, FALSE otherwise.
@@ -211,36 +211,36 @@ int getARC(Game g, path pathToEdge);
 // It is not legal for a player to make the moves OBTAIN_PUBLICATION 
 // or OBTAIN_IP_PATENT (they can make the move START_SPINOFF)
 // you can assume that any pths passed in are NULL terminated strings.
-int isLegalAction (Game g, action a);
+int isLegalAction (Game g, action a); //matt
 
 // --- get data about a specified player ---
 
 // return the number of KPI points the specified player currently has
-int getKPIpoints (Game g, int player);
+int getKPIpoints (Game g, int player); //Joerick
 
 // return the number of ARC grants the specified player currently has
-int getARCs (Game g, int player);
+int getARCs (Game g, int player); //Joerick
 
 // return the number of GO8 campuses the specified player currently has
-int getGO8s (Game g, int player);
+int getGO8s (Game g, int player); //Bryan
 
 // return the number of normal Campuses the specified player currently has
-int getCampuses (Game g, int player);
+int getCampuses (Game g, int player); //Joerick
 
 // return the number of IP Patents the specified player currently has
-int getIPs (Game g, int player);
+int getIPs (Game g, int player); //Joerick
 
 // return the number of Publications the specified player currently has
-int getPublications (Game g, int player);
+int getPublications (Game g, int player); //Joerick
 
 // return the number of students of the specified discipline type 
 // the specified player currently has
-int getStudents (Game g, int player, int discipline);
+int getStudents (Game g, int player, int discipline); //Matt
 
 // return how many students of discipline type disciplineFrom
 // the specified player would need to retrain in order to get one 
 // student of discipline type disciplineTo.  This will depend 
 // on what retraining centers, if any, they have a campus at.
-int getExchangeRate (Game g, int player, 
+int getExchangeRate (Game g, int player,  //Charly
                      int disciplineFrom, int disciplineTo);
 
