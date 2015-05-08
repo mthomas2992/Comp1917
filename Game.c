@@ -48,7 +48,7 @@ int main (int argc, char *argv[]) {
 
 	return EXIT_SUCCESS;
 }
-Game newGame (int discipline[], int dice[]){ //Matt
+Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
 	game g;
    g.mostarcs=NO_ONE;
    g.mostpubs=NO_ONE;
