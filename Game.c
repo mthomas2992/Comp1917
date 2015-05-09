@@ -37,7 +37,7 @@ typedef struct _game {
 	int mostarcs;
 	int regions[NUM_REGIONS];
 	int regionid[NUM_REGIONS];
-	
+
 } game
 
 
@@ -54,7 +54,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g.mostpubs=NO_ONE;
    g.turncount=-1; //terra nullius
    g.whoseTurn=NO_ONE; //terra nullius
-   
+
    int i=0;
    while(i<NUM_REGIONS){
       g.regions[i]=discipline[i];
@@ -102,6 +102,8 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g.player3.students.MJ=0;
    g.player3.students.MTV=0;
    g.player3.students.MMONEY=0;
-   
+
    return g;
 }
+
+//test
