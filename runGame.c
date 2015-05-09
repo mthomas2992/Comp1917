@@ -6,10 +6,10 @@
 #include <string.h>
 
 #define WINKPI 150
-#define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, 
-                STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV, 
-                STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, 
-                STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, 
+#define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ,
+                STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV,
+                STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN,
+                STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ,
                 STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
 	path destinationpath;
 
 	while(getkpipoints(g,player)<WINKPI){
-		
+
 		dicevalue=rollDice(); //function to return random number
 		throwdice(g,dicevalue);
 		player=getWhoseturn(g);
@@ -64,4 +64,24 @@ int rollDice(void){
 	int r = rand()%11; //generates random number between 0 and 10
 	r=r+2; //brings number into the range we want of 2 and 12 inclusive
 	return r;
+}
+
+void throwDice(Game g, int diceScore){
+
+
+   g.turnCount++;
+
+   if (g.whoseTurn < UNI_C){
+
+      g.whoseTurn++;
+
+   }
+
+   if (g.whoseTurn >= UNI_C){
+
+      g.whoseTurn = UNI_A;
+
+   }
+
+
 }
