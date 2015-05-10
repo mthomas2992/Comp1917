@@ -37,7 +37,11 @@ typedef struct _game {
 	int mostarcs;
 	int regions[NUM_REGIONS];
 	int regionid[NUM_REGIONS];
-
+   //going to need 2 2d int arrays to store both the arc and campus array
+   int arcarray [5][10];
+   int campusarray [5][10];
+   int xcoords;
+   int ycoords;
 } game
 
 
@@ -104,6 +108,53 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g.player3.students.MMONEY=0;
 
    return g;
+} //will need to write loop to initialise both arc and campus array
+
+void translatepath(path arc){
+
 }
 
-//test
+int isLegalAction (Game g, action a){
+   int legal =FALSE;
+   int x=0;
+   int y=0;
+   int w=0;
+
+   if (a.actioncode==OBTAIN_ARC){
+      //translate action a and return coords in terms of x and y
+      translatepath(a.destination);
+      x=g.xcoords;
+      y=g.ycoords;
+      //input translated coords into function that checks array, scans surrounding coords for other arc values, if any are a match then return legal
+      if (arcarray[x][y]==VACANT_VERTEX){ //SCANS SURROUNDINGS FOR OTHER MATCHING ARCS RETURNS TRUE IF ONE IS FOUND
+         //first check one below and one above, then the one to either the left or the right if its not on the edge
+         //have a function to check legal values, ensure no segment faults
+         if (y!=0){
+            w=y-1;
+            if (arcarray[x][w]==getWhoseTurn(g)){ //REMOVE NEED FOR VALID POINT FUNCTION BY INITIALISING ARRAY TO HAVE AN IMPOSSIBLE VALUE IN THE INVALID POINTS
+               legal=TRUE;
+            }
+         }
+         if (y!=10){
+            w=y+1;
+            if (arcarray[x][w]==getWhoseTurn(g)){
+               legal=TRUE;
+            }            
+         }
+         if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these 
+            w=x-1;
+            if (arcarray[w][y]==getWhoseTurn(g)){
+               legal=TRUE;
+            }
+         } else { // checks for even column, odd row
+            w=x+1;
+            if (arcarray[w][y]==getWhoseTurn(g)){
+               legal=TRUE;
+            }
+         }
+      }
+      //also needs to check if a vacant arc first
+
+   }
+
+}
