@@ -7,6 +7,11 @@
 
 #define INVALID 10
 
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+
 typedef struct _students{
 	int THD;
 	int BPS;
@@ -145,7 +150,102 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
 } //will need to write loop to initialise both arc and campus array
 
 void translatepath(path arc){
-   //no idea really, hoping to eventually solve
+   //different for the odds and evens
+   //different for approach
+   //first determine approach
+   //either up,down,left or right
+   int prevycoords=-1;
+   int prevxcoords=2;
+   int xcoords=2;
+   int ycoords=0;
+   int leftx=0;
+   int lefty=0;
+   int rightx=0;
+   int righty=0;
+   int backx=0;
+   int backy=0;
+   int tempx=0;
+   int tempy=0;
+   int approach=DOWN;
+   index=0; //need to determine the null value for end of string
+   while(arc[index]!=NULL){
+      //determine approach
+      if (prevycoords<ycoords){
+         approach=DOWN;
+      } else if (prevycoords>ycoords){
+         approach=UP;
+      } else if (prevxcoords<xcoords){
+         approach=RIGHT;
+      } else if (prevxcoords>xcoords){
+         approach=LEFT;
+      }
+      //Compressed code, uncompressed found in other file
+      if (((approach==DOWN)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){ //EVENS EVENS and ODDS ODDS
+         leftx=xcoords+1;
+         lefty=ycoords;
+         rightx=xcoords;
+         righty=ycoords+1;
+      } else if (((approach==UP)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==UP)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+         leftx=xcoords;
+         lefty=ycoords-1;
+         rightx=xcoords+1;
+         righty=ycoords;
+      } else if (((approach==RIGHT)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+         leftx=xcoords;
+         lefty=ycoords-1;
+         rightx=xcoords;
+         righty=ycoords+1;
+      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+         //avoiding combinging the invalid statements as they are so damn long
+         leftx=INVALID;
+         lefty=INVALID;
+         rightx=INVALID;
+         righty=INVALID;         
+      } else if (((approach==DOWN)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){ //EVENS ODDS
+         leftx=xcoords;
+         lefty=ycoords+1;
+         rightx=xcoords-1;
+         righty=ycoords;
+      } else if (((approach==UP)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==UP)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+         leftx=xcoords-1;
+         lefty=ycoords;
+         rightx=xcoords;
+         righty=ycoords-1;
+      } else if (((approach==RIGHT)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+         //not possible DOUBLE CHECK
+         leftx=INVALID;
+         lefty=INVALID;
+         rightx=INVALID;
+         righty=INVALID;
+      } else if (((approach==LEFT)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==LEFT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+         leftx=xcoords;
+         lefty=ycoords-1;
+         rightx=xcoords;
+         righty=ycoords+1;
+      }
+      //assuming new coords have been obtained
+      if (arc[index]=='L'){
+         prevxcoords=xcoords;
+         prevycoords=ycoords;
+         xcoords=leftx;
+         ycoords=lefty;
+      } else if (arc[index]=='R'){
+         prevxcoords=xcoords;
+         prevycoords=ycoords;
+         xcoords=rightx;
+         ycoords=righty;
+      } else if (arc[index]=='B'){
+         tempx=xcoords;
+         tempy=ycoords;
+         xcoords=prevxcoords;
+         ycoords=prevycoords;
+         prevxcoords=tempx;
+         prevycoords=tempy;
+      }
+      index++;
+   }
+   g.xcoords=xcoords;
+   g.ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
 }
 
 int isLegalAction (Game g, action a){
@@ -178,8 +278,18 @@ int isLegalAction (Game g, action a){
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
-            } else { // checks for even column, odd row
+            } else if (((x==3)||(x==1)||(x==5))&&(y%2!=0)) {
                w=x+1;
+               if (arcarray[w][y]==getWhoseTurn(g)){
+                  legal=TRUE;
+               }
+            } else if ((x==0)||(x==2)||(x==4))&&(y%2==0)){
+               w=x+1;
+               if (arcarray[w][y]==getWhoseTurn(g)){
+                  legal=TRUE;
+               }
+            } else if ((x==0)||(x==2)||(x==4))&&(y%2!=0)){
+               w=x-1;
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
