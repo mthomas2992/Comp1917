@@ -41,14 +41,14 @@
 #define GO8_C 6
 
 // action codes
-#define PASS 0
-#define BUILD_CAMPUS 1
-#define BUILD_GO8 2
-#define OBTAIN_ARC 3
-#define START_SPINOFF 4
-#define OBTAIN_PUBLICATION 5
-#define OBTAIN_IP_PATENT 6
-#define RETRAIN_STUDENTS 7
+#define PASS 0 //covered 
+#define BUILD_CAMPUS 1 //in process
+#define BUILD_GO8 2 //covered
+#define OBTAIN_ARC 3 //in process
+#define START_SPINOFF 4 //covered
+#define OBTAIN_PUBLICATION 5 //covered
+#define OBTAIN_IP_PATENT 6 //covered
+#define RETRAIN_STUDENTS 7 //covered
 
 // disciplines
 #define STUDENT_THD 0
