@@ -311,6 +311,11 @@ int isLegalAction (Game g, action a){
       if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)){ //gate
          //need to check that an arc leads to this vertex, clarify the arc vertex conversion
          // need to also check no campuses within surounding area using similar scanning technique to arcs
+         translatepath(a.destination); //translate given path into 2d array point
+         x=g.xcoords;
+         y=g.ycoords;
+         //need to consider scan function for introduction
+
       }
    } else if (a.actioncode==BUILD_GO8){
       if ((getStudents(g,player,STUDENT_MJ)>=2)&&(getStudents(g,player,STUDENT_MMONEY)>=3)&&(player==getCampus(g,a.destination))){
