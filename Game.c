@@ -398,5 +398,5 @@ int getCampuses(Game g, int player){
 	} else if (player == UNI_C){
 		numOfCampuses = g.player3.Campuses;
 	}
-	return numOfCampusesl;
+	return numOfCampuses;
 }
