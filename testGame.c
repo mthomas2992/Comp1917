@@ -99,7 +99,7 @@ void testGetKPIpoints (void);
 //void testGetARCs (void); 
 //void testGetGO8s (void); 
 //void testGetCampuses (void); 
-//void testGetIPs (void); 
+void testGetIPs (void); 
 
 
 int main (int argc, char *argv[]) {
@@ -130,7 +130,7 @@ int main (int argc, char *argv[]) {
    //testGetARCs();
    //testGetGO8s();
    //testGetCampuses();
-   //testGetIPs();
+   testGetIPs();
    
 	return EXIT_SUCCESS;
 	
