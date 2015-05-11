@@ -16,7 +16,7 @@
 typedef struct _coords {
    int x;
    int y;
-} coords 
+} coords; 
 
 typedef struct _students {
 	int THD;
@@ -25,7 +25,7 @@ typedef struct _students {
 	int MJ;
 	int MTV;
 	int MMONEY;
-} students
+} students;
 
 typedef struct _player {
 	int KPI;
@@ -38,10 +38,10 @@ typedef struct _player {
 	//path GO8slocation[20];
 	//path arclocation[40];
 	students students;
-} player
+} player;
 
 typedef struct _Game {
-	int turncount;
+	int turncount; //need to figure out stuff with pointers and yeah
 	int whoseTurn;
 	player player1;
 	player player2;
@@ -55,7 +55,7 @@ typedef struct _Game {
    int campusarray [5][10];
    //int xcoords; //NEED TO COME UP WITH NEW METHOD OF PASSING X COORDS
    //int ycoords; //USE STRUCT
-} Game
+} Game;
 
 
 int main (int argc, char *argv[]) {
