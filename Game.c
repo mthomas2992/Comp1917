@@ -86,7 +86,10 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
             g.arcarray[i][z]=INVALID;
             g.campusarray[i][z]=INVALID;
          }
+         z++;
       }
+      i++;
+      z=0;
    }
    //specify missed invalids
    g.arcarray[4][0]=INVALID;
