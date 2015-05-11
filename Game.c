@@ -444,3 +444,74 @@ int getCampuses(Game g, int player){
 	}
 	return numOfCampuses;
 }
+
+// return the number of Publications the specified player currently has
+int getPublications (Game g, int player) {
+   int playerPublications = 0;
+   if (player == UNI_A) {
+      playerPublications = g.player1.Pubs;
+   } else if (player == UNI_B) {
+      playerPublications = g.player2.Pubs;
+   } else if (player == UNI_C) {
+      playerPublications = g.player3.Pubs;
+   }
+   return playerPublications;
+}
+
+// return the current turn number of the game -1,0,1, ..
+int getTurnNumber (Game g) {
+   return g.turncount;
+}
+
+// what dice value produces students in the specified region?
+// 2..12
+int getDiceValue (Game g, int regionID) {
+   return g.regionid[regionID];
+}
+
+// return the number of IP Patents the specified player currently has
+int getIPs (Game g, int player) {
+   int playerIPs = 0;
+
+   if (player == UNI_A) {
+      playerIPs = g.player1.IPs
+   } else if (player == UNI_B) {
+      playerIPs = g.player2.IPs;
+   } else if (player == UNI_C) {
+      playerIPs = g.player3.IPs;
+   }
+   return playerIPs;
+}
+
+// return how many students of discipline type disciplineFrom
+// the specified player would need to retrain in order to get one
+// student of discipline type disciplineTo.  This will depend
+// on what retraining centers, if any, they have a campus at.
+int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
+   int exchangerate = 3;
+   if (((getCampus(g,'R') == player) || (getCampus(g,'RR') == player)) && (disciplineFrom == STUDENT_MTV)) {
+      exchangerate = 2;
+   } else if (((getCampus(g,'LL') == player) || (getCampus(g,'LLL') == player)) && (disciplineFrom == STUDENT_MMONEY)) {
+      exchangerate = 2;
+   } else if (((getCampus(g,'RRRLRLRLR') == player) || (getCampus(g,'RRRLRLRLRL') == player)) && (disciplineFrom==STUDENT_BPS)) {
+      exchangerate = 2;
+   } else if (((getCampus(g,'LLLLRLRLRL') == player) || (getCampus(g,'LLLLRLRLRLR') == player)) && (disciplineFrom == STUDENT_MJ)) {
+      exchangerate = 2;
+   }
+   return exchangerate;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
