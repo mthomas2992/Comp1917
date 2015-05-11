@@ -13,12 +13,12 @@
 #define RIGHT 4
 
 //type def struct for arc coords to return
-typedef struct _coords{
+typedef struct _coords {
    int x;
    int y;
 } coords 
 
-typedef struct _students{
+typedef struct _students {
 	int THD;
 	int BPS;
 	int BQN;
@@ -27,7 +27,7 @@ typedef struct _students{
 	int MMONEY;
 } students
 
-typedef struct _player{
+typedef struct _player {
 	int KPI;
 	int arcs;
 	int GO8s;
