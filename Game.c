@@ -376,3 +376,27 @@ int getStudents (Game g, int player, int discipline){ //Don't like this code, to
 
    return students;
 }
+
+int getARCs(Game g, int player){
+	int numOfARCs;
+	if (player == UNI_A){
+		numOfARCs = g.player1.arcs;
+	} else if (player == UNI_B){
+		numOfARCs = g.player2.arcs;
+	} else if (player == UNI_C){
+		numOfARCs = g.player3.arcs;
+	}
+	return numOfARCs;
+}
+
+int getCampuses(Game g, int player){
+	int numOfCampuses;
+	if (player == UNI_A){
+		numOfCampuses = g.player1.Campuses;
+	} else if (player == UNI_B){
+		numOfCampuses = g.player2.Campuses;
+	} else if (player == UNI_C){
+		numOfCampuses = g.player3.Campuses;
+	}
+	return numOfCampusesl;
+}
