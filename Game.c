@@ -91,6 +91,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       i++;
       z=0;
    }
+   
    //specify missed invalids
    g.arcarray[4][0]=INVALID;
    g.arcarray[5][0]=INVALID;
@@ -253,7 +254,7 @@ void translatepath(path arc){
 
 int isLegalAction (Game g, action a){
    int legal=FALSE;
-   int x=0;
+   int x=0; //NEED TO CONSIDER HOW TO ACTUALLY BUILD AN ARC
    int y=0;
    int w=0;
    int player = getWhoseTurn(g);
@@ -311,14 +312,45 @@ int isLegalAction (Game g, action a){
          legal=TRUE;
       }
    } else if (a.actioncode==BUILD_CAMPUS){
-      if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)){ //gate
-         //need to check that an arc leads to this vertex, clarify the arc vertex conversion
+      if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)&& (getARC(g,a.destination)==player)){ //gate, also uses getARC
          // need to also check no campuses within surounding area using similar scanning technique to arcs
          translatepath(a.destination); //translate given path into 2d array point
          x=g.xcoords;
          y=g.ycoords;
-         //need to consider scan function for introduction
-
+         legal=TRUE; //sets to true for proving wrong
+         if (y!=0){ //Scans for nearby campus's
+            w=y-1;
+            if (campusarray[x][w]==getWhoseTurn(g)){ //CAN PROBS COMPILE THIS INTO ITS OWN FUNCTION CALLED SCAN WHICH TAKES location, type to scan for and returns true if one is found, false if none.
+               legal=FALSE;
+            }
+         }
+         if (y!=10){
+            w=y+1;
+            if (campusarray[x][w]==getWhoseTurn(g)){
+               legal=FALSE;
+            }            
+         }
+         if (((x==3)||(x==1)||(x==5))&&(y%2==0)){
+            w=x-1;
+            if (campusarray[w][y]==getWhoseTurn(g)){
+               legal=FALSE;
+            }
+         } else if (((x==3)||(x==1)||(x==5))&&(y%2!=0)) {
+            w=x+1;
+            if (campusarray[w][y]==getWhoseTurn(g)){
+               legal=FALSE;
+            }
+         } else if ((x==0)||(x==2)||(x==4))&&(y%2==0)){
+            w=x+1;
+            if (campusarray[w][y]==getWhoseTurn(g)){
+               legal=FALSE;
+            }
+         } else if ((x==0)||(x==2)||(x==4))&&(y%2!=0)){
+            w=x-1;
+            if (campusarray[w][y]==getWhoseTurn(g)){
+               legal=FALSE;
+            }
+         }
       }
    } else if (a.actioncode==BUILD_GO8){
       if ((getStudents(g,player,STUDENT_MJ)>=2)&&(getStudents(g,player,STUDENT_MMONEY)>=3)&&(player==getCampus(g,a.destination))){
