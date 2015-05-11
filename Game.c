@@ -501,7 +501,66 @@ int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
    return exchangerate;
 }
 
-
+void makeAction(Game g, action a){
+	int currentPlayer = getWhoseTurn(g);
+	player *playerPTR;
+	if (currentPlayer == UNI_A){
+		playerPTR = &g.player1;
+	} else if (currentPlayer == UNI_B){
+		playerPTR = &g.player2;
+	} else if (currentPlayer == UNI_C){
+		playerPTR = &g.player3;
+	}
+	
+	if (isLegalAction(g,a) == TRUE){
+		if (a.actionCode == PASS){
+			throwDice();
+		} else if (a.actionCode == BUILD_CAMPUS){
+			
+		} else if (a.actionCode == BUILD_GO8){
+		
+		} else if (a.actionCode == OBTAIN_ARC){
+		
+		} else if (a.actionCode == START_SPINOFF){
+			g->playerPTR->students->MJ--;
+			g->playerPTR->students->MTV--;
+			g->playerPTR->students->MMONEY--;
+			srand(time(NULL));
+			int Spinoff = rand()%3;
+			if (Spinoff == IP_GAIN){
+				g->playerPTR->IPs++;
+			} else if (Spinoff == PUB_GAIN){
+				g->playerPTR->Pubs++;
+			}
+		} else if (a.actionCode == RETRAIN_STUDENTS){
+			int exchangeRate;
+			exchangeRate = getExchangeRate(g, currentPlayer, a.disciplineFrom, a.disciplineTo);
+			if (a.disciplineFrom == STUDENT_BPS){
+				g->playerPTR->students->BPS -= exchangeRate;
+			} else if (a.disciplineFrom == STUDENT_BQN){
+				g->playerPTR->students->BQN -= exchangeRate;
+			} else if (a.disciplineFrom == STUDENT_MJ){
+				g->playerPTR->students->MJ -= exchangeRate;
+			} else if (a.disciplineFrom == STUDENT_MTV){
+				g->playerPTR->students->MTV -= exchangeRate;
+			} else if (a.disciplineFrom == STUDENT_MMONEY){
+				g->playerPTR->students->MMONEY -= exchangeRate;
+			}
+			
+			if (a.disciplineTo == STUDENT_BPS){
+				player1.student.BPS++;
+			} else if (a.disciplineTo == STUDENT_BQN){
+				g->playerPTR->students->BQN++;
+			} else if (a.disciplineTo == STUDENT_MJ){
+				g->playerPTR->students->MJ++;
+			} else if (a.disciplineTo == STUDENT_MTV){
+				g->playerPTR->students->MTV++;
+			} else if (a.disciplineTo == STUDENT_MMONEY){
+				g->playerPTR->students->MMONEY++;
+			}
+		}
+	} 	
+}
 
 
 
