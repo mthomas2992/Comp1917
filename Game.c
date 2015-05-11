@@ -12,6 +12,12 @@
 #define LEFT 3
 #define RIGHT 4
 
+//type def struct for arc coords to return
+typedef struct _coords{
+   int x;
+   int y;
+} coords 
+
 typedef struct _students{
 	int THD;
 	int BPS;
@@ -47,8 +53,8 @@ typedef struct _Game {
    //going to need 2 2d int arrays to store both the arc and campus array
    int arcarray [5][10];
    int campusarray [5][10];
-   int xcoords;
-   int ycoords;
+   //int xcoords; //NEED TO COME UP WITH NEW METHOD OF PASSING X COORDS
+   //int ycoords; //USE STRUCT
 } Game
 
 
@@ -153,12 +159,13 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    return g;
 } //will need to write loop to initialise both arc and campus array
 
-void translatepath(path arc){
+coords translatepath(path arc){
    //different for the odds and evens
    //different for approach
    //first determine approach
    //either up,down,left or right
    int prevycoords=-1;
+   coords coord;
    int prevxcoords=2;
    int xcoords=2;
    int ycoords=0;
@@ -248,8 +255,12 @@ void translatepath(path arc){
       }
       index++;
    }
-   g.xcoords=xcoords;
-   g.ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
+   //g.xcoords=xcoords;
+   //g.ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
+   coord.x=xcoords;
+   coord.y=ycoords;
+
+   return coord;
 }
 
 int isLegalAction (Game g, action a){
@@ -258,12 +269,13 @@ int isLegalAction (Game g, action a){
    int y=0;
    int w=0;
    int player = getWhoseTurn(g);
+   coords coord;
    if (a.actioncode==OBTAIN_ARC){ //currently this assumes arcs are like vertex's and their points ARCS REPED BY THE VERTEXS THEY CONNECT
       if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)){ //gate to ensure sufficient students
          //translate action a and return coords in terms of x and y
-         translatepath(a.destination);
-         x=g.xcoords;
-         y=g.ycoords;
+         coord=translatepath(a.destination);
+         x=coord.x;
+         y=coord.y;
          if (arcarray[x][y]==VACANT_VERTEX){ //SCANS SURROUNDINGS FOR OTHER MATCHING ARCS RETURNS TRUE IF ONE IS FOUND
             if (y!=0){
                w=y-1;
@@ -314,9 +326,9 @@ int isLegalAction (Game g, action a){
    } else if (a.actioncode==BUILD_CAMPUS){
       if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)&& (getARC(g,a.destination)==player)){ //gate, also uses getARC
          // need to also check no campuses within surounding area using similar scanning technique to arcs
-         translatepath(a.destination); //translate given path into 2d array point
-         x=g.xcoords;
-         y=g.ycoords;
+         coord=translatepath(a.destination); //translate given path into 2d array point
+         x=coord.x;
+         y=coord.y;
          legal=TRUE; //sets to true for proving wrong
          if (y!=0){ //Scans for nearby campus's
             w=y-1;
