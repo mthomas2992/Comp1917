@@ -497,6 +497,8 @@ int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
       exchangerate = 2;
    } else if (((getCampus(g,'LLLLRLRLRL') == player) || (getCampus(g,'LLLLRLRLRLR') == player)) && (disciplineFrom == STUDENT_MJ)) {
       exchangerate = 2;
+   } else if (((getCampus(g,'RRRLRR') == player) || (getCampus(g,'RRRLRRR') == player)) && (disciplineFrom == STUDENT_BQN)){
+      exchangerate = 2;
    }
    return exchangerate;
 }
