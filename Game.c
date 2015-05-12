@@ -795,26 +795,8 @@ int getGO8s (Game g, int player){
 };
 
 int getKPIpoints (Game g, int player){
-   //possibly add in KPI calculations here
-   int returnVal;
-   /*
-   if(player == UNI_A){
-
-    returnVal = g->player1.KPI;
-
-   }else if(player == UNI_B){
-
-    returnVal = g->player2.KPI;
-
-   }else if(player == UNI_C){
-
-    returnVal = g->player3.KPI;
-
-   }else{
-
-      printf("Invalid player/game values")
-
-   } */
+   int returnVal=0;
+   int realreturn=0;
    int playerindex=UNI_A;
    //10 kpi for campus
    //20 kpi for go8
@@ -845,6 +827,14 @@ int getKPIpoints (Game g, int player){
       returnVal=0;
       playerindex++;
    }
+   if (player==UNI_A){
+      realreturn= g->player1.KPI;
+   } else if (player==UNI_B){
+      realreturn= g->player2.KPI;
+   } else if (player==UNI_C){
+      realreturn= g->player3.KPI;
+   }
+   return realreturn;
 };
 
 int getMostARCs (Game g){
