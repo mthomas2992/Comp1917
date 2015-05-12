@@ -441,7 +441,7 @@ int getCampuses(Game g, int player){
       numOfCampuses = g->player3.Campuses;
    }
    return numOfCampuses;
-} 
+}
 
 // return the number of Publications the specified player currently has
 int getPublications (Game g, int player) {
@@ -518,7 +518,7 @@ void makeAction(Game g, action a){
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
-            g->player1.arcs++; 
+            g->player1.arcs++;
          } else if (a.actionCode == START_SPINOFF){
             g->player1.students.MJ--;
             g->player1.students.MTV--;
@@ -544,7 +544,7 @@ void makeAction(Game g, action a){
             } else if (a.disciplineFrom == STUDENT_MMONEY){
                g->player1.students.MMONEY -= exchangeRate;
             }
-            
+
             if (a.disciplineTo == STUDENT_BPS){
                player1.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
@@ -574,7 +574,7 @@ void makeAction(Game g, action a){
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
-            g->player2.arcs++; 
+            g->player2.arcs++;
          } else if (a.actionCode == START_SPINOFF){
             g->player2.students.MJ--;
             g->player2.students.MTV--;
@@ -600,7 +600,7 @@ void makeAction(Game g, action a){
             } else if (a.disciplineFrom == STUDENT_MMONEY){
                g->player2.students.MMONEY -= exchangeRate;
             }
-            
+
             if (a.disciplineTo == STUDENT_BPS){
                player2.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
@@ -630,7 +630,7 @@ void makeAction(Game g, action a){
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
-            g->player3.arcs++; 
+            g->player3.arcs++;
          } else if (a.actionCode == START_SPINOFF){
             g->player3.students.MJ--;
             g->player3.students.MTV--;
@@ -656,7 +656,7 @@ void makeAction(Game g, action a){
             } else if (a.disciplineFrom == STUDENT_MMONEY){
                g->player3.students.MMONEY -= exchangeRate;
             }
-            
+
             if (a.disciplineTo == STUDENT_BPS){
                player3.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
@@ -740,10 +740,10 @@ void throwDice (Game g, int diceScore){
 
        g->whoseTurn = UNI_A;
 
-   } 
+   }
 
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
-   //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min. 
+   //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
 }
 
@@ -873,36 +873,36 @@ int getMostARCs (Game g){
    */
    //Using Corey's logic as it accounts for simultaneous matchings
    //Variables are named completley wrong but it will work
-   int P1Pubs = g->player1.arcs;
-   int P2Pubs = g->player2.arcs;
-   int P3Pubs = g->player3.arcs;
+   int p1Arcs = g->player1.arcs;
+   int p2Arcs = g->player2.arcs;
+   int p3Arcs = g->player3.arcs;
 
-   int currentMostPubs = g->mostArcs;
-   int mostPubsLocal = NO_ONE;
+   int currentMostArcs = g->mostArcs;
+   int mostArcsLocal = NO_ONE;
 
-   if((P1Pubs == 0)&&(P2Pubs == 0)&&(P3Pubs == 0)){
-      mostPubsLocal = NO_ONE;
+   if((p1Arcs == 0)&&(p2Arcs == 0)&&(p3Arcs == 0)){
+      mostArcsLocal = NO_ONE;
    }
 
-   if((P1Pubs)) > (P2Pubs)){
+   if((p1Arcs)) > (p2Arcs)){
    //Here we know player1.Pubs > player2.Pubs
-      if((P1Pubs) > (P3Pubs)){
+      if((p2Arcs) > (p3Arcs)){
          mostPubsLocal = UNI_A;
-      }else if((P1Pubs) == (P3Pubs)){
-         mostPubsLocal = currentMostPubs;
+      }else if((p1Arcs) == (p3Arcs)){
+         mostArcsLocal = currentMostArcs;
       }else{
-         mostPubsLocal = UNI_C;
+         mostArcsLocal = UNI_C;
       }
    //Here we know player2.Pubs >= player1.Pubs
-   }else if(P1Pubs == P2Pubs){
-      mostPubsLocal = currentMostPubs;
-   }else if((P2Pubs) > (P3Pubs)){
-      mostPubsLocal = UNI_B;
-   }else if((P2Pubs) == (P3Pubs)){
-      mostPubsLocal = currentmostPubsLocal;
+   }else if(p1Arcs == p2Arcs){
+      mostArcsLocal = currentMostArcs;
+   }else if((p2Arcs) > (p3Arcs)){
+      mostArcsLocal = UNI_B;
+   }else if((p2Arcs) == (p3Arcs)){
+      mostArcsLocal = currentmostArcs;
    }else{
-      mostPubsLocal = UNI_C;
+      mostArcsLocal = UNI_C;
    }
-   return mostPubsLocal;
+   return mostArcsLocal;
 
 }
