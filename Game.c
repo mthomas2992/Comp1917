@@ -565,35 +565,48 @@ void makeAction(Game g, action a){
 
 int getMostPublications(Game g){
    /* Last Edit: CBennetts 12/5/15
-   Since it was unclear how ties were resolved, i opted for the "noone has the most if its tied".
-   If thats wrong, might need a few changes
+   Changed it so that you must pass the current publication leader in order to take the 10 points.
    */
-   mostPubs = NO_ONE;
-   if(player1.Pubs > player2.Pubs){
-   //Here we know player1.Pubs > player2.Pubs
-      if(player1.Pubs > player3.Pubs){
-         mostPubs = UNI_A;
-      }else if(player1.Pubs = player3.Pubs){
-         mostPubs = NO_ONE;
-      }else{
-         mostPubs = UNI_C;
-      }
-   //Here we know player2.Pubs > player1.Pubs
-   }else if(player2.Pubs > player3.Pubs){
-      mostPubs = UNI_B;
-   }else if(player2.Pubs = player3.Pubs){
-      mostPubs = NO_ONE;
-   }else{
-      mostPubs = UNI_C;
+   int P1Pubs = g->player1.Pubs;
+   int P2Pubs = g->player2.Pubs;
+   int P3Pubs = g->player3.Pubs;
+
+   int currentMostPubs = g->mostPubs;
+   int mostPubsLocal = NO_ONE;
+
+   if(P1Pubs == 0 || P2Pubs == 0 || P3Pubs == 0){
+      return mostPubsLocal = NO_ONE;
    }
-   return mostPubs;
+
+   if((P1Pubs)) > (P2Pubs)){
+   //Here we know player1.Pubs > player2.Pubs
+      if((P1Pubs) > (P3Pubs)){
+         mostPubsLocal = UNI_A;
+      }else if((P1Pubs) == (P3Pubs)){
+         mostPubsLocal = currentMostPubs;
+      }else{
+         mostPubsLocal = UNI_C;
+      }
+   //Here we know player2.Pubs >= player1.Pubs
+   }else if(P1Pubs == P2Pubs){
+      mostPubsLocal = currentMostPubs;
+   }else if((P2Pubs) > (P3Pubs)){
+      mostPubsLocal = UNI_B;
+   }else if((P2Pubs) == (P3Pubs)){
+      mostPubsLocal = currentmostPubsLocal;
+   }else{
+      mostPubsLocal = UNI_C;
+   }
+   return mostPubsLocal;
 }
 
+//C Bennetts Region
 int getWhoseTurn(Game g){
    /* Last Edit: CBennetts 12/5/15
    Someone make sure to check this works, it seems too simple
    */
-   whoseTurn = (turnCount%(NUM_UNIS)) + 1;
+   int turnCountLocal = g->turncount;
+   int whoseTurn = ((turnCountLocal)%(NUM_UNIS)) + 1;
    return whoseTurn;
 }
 
@@ -615,34 +628,19 @@ int getCampus (Game g, path pathToVertex){
    /*
    Here where the stuff for string -> coord convertion goes
    */
-   stateOfVertex = (campusArray[x][y]);
+   stateOfVertex = (g->campusArray[x][y]);
    return stateOfVertex;
 }
 
 int getDiscipline (Game g, int regionID){
    /* Last Edit: CBennetts 12/5/15
    takes regionID and gets what discipline it generates
-   eg. regionID = 2, discipline = STUDENT_MJ
-   Unsure about how the disciplines are #defined.... may need some changes
    */
-   int discipline = 0;
-   if(regionID == 0 || regionID == 10 || regionID == 12 || regionID == 17){
-      discipline = STUDENT_BQN; //Light Blue
-   }else if(regionID == 1 || regionID == 3 || regionID == 15){
-      discipline = STUDENT_MMONEY; // Purple
-   }else if(regionID == 2 || regionID == 4 || regionID == 11 || regionID == 14){
-      discipline = STUDENT_MJ; // Yellow
-   }else if(regionID == 5 || regionID == 8 || regionId == 18){
-      discipline = STUDENT_BPS; // Red
-   }else if (regionID == 6 || regionID == 7 || regionID == 9 || regionID == 16){
-      discipline = STUDENT_MTV; // Green
-   }else if (regionID == 13){
-      discipline = STUDENT THD; // Dark Blue
-   }
-   return discipline;
+   int disciplineGot = 0;
+   disciplineGot = g->discipline[regionID];
+   return disciplineGot;
 }
-
-
+// C Bennetts Region
 
 void throwDice (Game g, int diceScore){
 
