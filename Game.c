@@ -56,13 +56,13 @@ typedef struct _game {
 
 //int makeActionipubs (int action);
 
-int main (int argc, char *argv[]) {
+/*int main (int argc, char *argv[]) {
 
     //I like commenting Get used to it.
     //I don't actually know whats meant to go in our mainline really...
 
    return EXIT_SUCCESS;
-}
+}*/
 Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    Game g=malloc(sizeof(g));
    g->mostarcs=NO_ONE;
