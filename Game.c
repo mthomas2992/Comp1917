@@ -644,6 +644,114 @@ int getDiscipline (Game g, int regionID){
 
 
 
+void throwDice (Game g, int diceScore){
+
+   g->turnCount++;
+
+   g->whoseTurn++;
+
+   if (g->whoseTurn > UNI_C){
+
+       g->whoseTurn = UNI_A;
+
+   }
+
+}
+
+
+
+}
+int getGO8s (Game g, int player){
+
+   int returnVal;
+
+   if(player == UNI_A){
+
+    returnVal = g->player1.GO8s;
+
+   }else if(player == UNI_B){
+
+    returnVal = g->player2.GO8s;
+
+   }else if(player == UNI_C){
+
+    returnVal = g->player3.GO8s;
+
+   }else{
+
+      printf("Invalid player/game values")
+
+   }
+
+   return returnVal;
+
+};
+
+int getKPIpoints (Game g, int player){
+
+   int returnVal;
+
+   if(player == UNI_A){
+
+    returnVal = g->player1.KPI;
+
+   }else if(player == UNI_B){
+
+    returnVal = g->player2.KPI;
+
+   }else if(player == UNI_C){
+
+    returnVal = g->player3.KPI;
+
+   }else{
+
+      printf("Invalid player/game values")
+
+   }
+
+   return returnVal;
+
+};
+
+int getMostARCs (Game g){
+
+   int p1Arcs;
+   int p2Arcs;
+   int p3Arcs;
+
+   int playerWithMostArcs;
+   int mostArcs;
+
+   p1Arcs = g->player1.arcs;
+   p2Arcs = g->player2.arcs;
+   p3Arcs = g->player3.arcs;
+
+   currentMost = g->mostArcs;
+
+
+   mostArcs = p1Arcs;
+   playerWithMostArcs = UNI_A:
+
+   if(p2Arcs > mostArcs){
+
+      mostArcs = p2Arcs;
+      playerWithMostArcs = UNI_B:
+
+   }
+   if(p3Arcs > mostArcs){
+
+      mostArcs = p3Arcs;
+      playerWithMostArcs = UNI_C:
+
+   }
+
+
+   return playerWithMostArcs;
+
+
+
+}
+
 
 
 
