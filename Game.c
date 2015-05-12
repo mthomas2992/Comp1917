@@ -658,7 +658,21 @@ void throwDice (Game g, int diceScore){
 
 }
 
+int getARC(Game g, path pathToEdge){
 
+   coords translatedFromPath;
+
+   translatedFromPath = translatepath(pathToEdge);
+
+   int x;
+   int y;
+
+   x = translatedFromPath.x;
+   y = translatedFromPath.y;
+
+   return arcarray[x][y];
+
+}
 
 }
 int getGO8s (Game g, int player){
