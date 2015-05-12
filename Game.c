@@ -563,6 +563,7 @@ void makeAction(Game g, action a){
 	}
 }
 
+//C Bennetts Region
 int getMostPublications(Game g){
    /* Last Edit: CBennetts 12/5/15
    Changed it so that you must pass the current publication leader in order to take the 10 points.
@@ -600,7 +601,6 @@ int getMostPublications(Game g){
    return mostPubsLocal;
 }
 
-//C Bennetts Region
 int getWhoseTurn(Game g){
    /* Last Edit: CBennetts 12/5/15
    Someone make sure to check this works, it seems too simple
