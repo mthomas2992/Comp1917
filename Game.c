@@ -518,11 +518,11 @@ void makeAction(Game g, action a){
 		if (a.actionCode == PASS){
 			throwDice();
 		} else if (a.actionCode == BUILD_CAMPUS){
-			
+			//write to array camus using translate
 		} else if (a.actionCode == BUILD_GO8){
-		
+		    //check campus on position then double value to recieve
 		} else if (a.actionCode == OBTAIN_ARC){
-		
+		    //check 
 		} else if (a.actionCode == START_SPINOFF){
 			g->playerPTR->students->MJ--;
 			g->playerPTR->students->MTV--;
