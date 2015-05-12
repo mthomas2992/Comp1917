@@ -729,7 +729,7 @@ int getDiscipline (Game g, int regionID){
 
 void throwDice (Game g, int diceScore){
    //this needs alot more logic
-   /*g->turnCount++;
+   g->turnCount++;
 
    g->whoseTurn++;
 
@@ -737,7 +737,10 @@ void throwDice (Game g, int diceScore){
 
        g->whoseTurn = UNI_A;
 
-   } */
+   } 
+
+   //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
+   //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min. 
 
 }
 
@@ -789,7 +792,7 @@ int getGO8s (Game g, int player){
 };
 
 int getKPIpoints (Game g, int player){
-
+   //possibly add in KPI calculations here
    int returnVal;
 
    if(player == UNI_A){
