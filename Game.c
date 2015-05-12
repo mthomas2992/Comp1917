@@ -16,7 +16,7 @@
 typedef struct _coords {
    int x;
    int y;
-} coords; 
+} coords;
 
 typedef struct _students {
 	int THD;
@@ -77,7 +77,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       g->regions[i]=discipline[i];
       g->regionid[i]=dice[i];
    }
-   
+
    //initialise the game board with invalids also
    i=0;
    int z=0;
@@ -95,7 +95,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       i++;
       z=0;
    }
-   
+
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
    g->arcarray[5][0]=INVALID;
@@ -109,7 +109,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->campusarray[5][1]=INVALID;
    g->campusarray[0][9]=INVALID;
    g->campusarray[0][10]=INVALID;
-   g->campusarray[1][10]=INVALID;  
+   g->campusarray[1][10]=INVALID;
 
 
    //player one
@@ -209,7 +209,7 @@ coords translatepath(path arc){
          leftx=INVALID;
          lefty=INVALID;
          rightx=INVALID;
-         righty=INVALID;         
+         righty=INVALID;
       } else if (((approach==DOWN)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){ //EVENS ODDS
          leftx=xcoords;
          lefty=ycoords+1;
@@ -285,9 +285,9 @@ int isLegalAction (Game g, action a){
                w=y+1;
                if (arcarray[x][w]==getWhoseTurn(g)){
                   legal=TRUE;
-               }            
+               }
             }
-            if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these 
+            if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these
                w=x-1;
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
@@ -338,7 +338,7 @@ int isLegalAction (Game g, action a){
             w=y+1;
             if (campusarray[x][w]==getWhoseTurn(g)){
                legal=FALSE;
-            }            
+            }
          }
          if (((x==3)||(x==1)||(x==5))&&(y%2==0)){
             w=x-1;
@@ -371,7 +371,7 @@ int isLegalAction (Game g, action a){
 }
 
 int getStudents (Game g, int player, int discipline){ //Don't like this code, to bulky for me
-   int students=0; 
+   int students=0;
    if (player==UNI_A){
       if (discipline==STUDENT_THD){
          students=g->player1.students.THD;
@@ -511,7 +511,7 @@ void makeAction(Game g, action a){
 	} else if (currentPlayer == UNI_C){
 		playerPTR = &g.player3;
 	}
-	
+
 	if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
 		if (a.actionCode == PASS){
 			throwDice();
@@ -521,7 +521,7 @@ void makeAction(Game g, action a){
 		    //check campus on position then double value to recieve
 
 		} else if (a.actionCode == OBTAIN_ARC){
-		    //check 
+		    //check
 		} else if (a.actionCode == START_SPINOFF){
 			g->playerPTR->students->MJ--;
 			g->playerPTR->students->MTV--;
@@ -547,7 +547,7 @@ void makeAction(Game g, action a){
 			} else if (a.disciplineFrom == STUDENT_MMONEY){
 				g->playerPTR->students->MMONEY -= exchangeRate;
 			}
-			
+
 			if (a.disciplineTo == STUDENT_BPS){
 				player1.student.BPS++;
 			} else if (a.disciplineTo == STUDENT_BQN){
@@ -560,7 +560,86 @@ void makeAction(Game g, action a){
 				g->playerPTR->students->MMONEY++;
 			}
 		}
-	} 	
+	}
+}
+
+int getMostPublications(Game g){
+   /* Last Edit: CBennetts 12/5/15
+   Since it was unclear how ties were resolved, i opted for the "noone has the most if its tied".
+   If thats wrong, might need a few changes
+   */
+   mostPubs = NO_ONE;
+   if(player1.Pubs > player2.Pubs){
+   //Here we know player1.Pubs > player2.Pubs
+      if(player1.Pubs > player3.Pubs){
+         mostPubs = UNI_A;
+      }else if(player1.Pubs = player3.Pubs){
+         mostPubs = NO_ONE;
+      }else{
+         mostPubs = UNI_C;
+      }
+   //Here we know player2.Pubs > player1.Pubs
+   }else if(player2.Pubs > player3.Pubs){
+      mostPubs = UNI_B;
+   }else if(player2.Pubs = player3.Pubs){
+      mostPubs = NO_ONE;
+   }else{
+      mostPubs = UNI_C;
+   }
+   return mostPubs;
+}
+
+int getWhoseTurn(Game g){
+   /* Last Edit: CBennetts 12/5/15
+   Someone make sure to check this works, it seems too simple
+   */
+   whoseTurn = (turnCount%(NUM_UNIS)) + 1;
+   return whoseTurn;
+}
+
+int getCampus (Game g, path pathToVertex){
+   /* Last Edit: CBennetts 12/5/15
+   string for the path -> needs to return whether point is occupied and who occupies it.
+   contents of a VERTEX
+   #define VACANT_VERTEX 0
+   #define CAMPUS_A 1
+   #define CAMPUS_B 2
+   #define CAMPUS_C 3
+   #define GO8_A 4
+   #define GO8_B 5
+   #define GO8_C 6
+   */
+   int stateOfVertex = VACANT_VERTEX;
+   int x = coord.x;
+   int y = coord.y;
+   /*
+   Here where the stuff for string -> coord convertion goes
+   */
+   stateOfVertex = (campusArray[x][y]);
+   return stateOfVertex;
+}
+
+int getDiscipline (Game g, int regionID){
+   /* Last Edit: CBennetts 12/5/15
+   takes regionID and gets what discipline it generates
+   eg. regionID = 2, discipline = STUDENT_MJ
+   Unsure about how the disciplines are #defined.... may need some changes
+   */
+   int discipline = 0;
+   if(regionID == 0 || regionID == 10 || regionID == 12 || regionID == 17){
+      discipline = STUDENT_BQN; //Light Blue
+   }else if(regionID == 1 || regionID == 3 || regionID == 15){
+      discipline = STUDENT_MMONEY; // Purple
+   }else if(regionID == 2 || regionID == 4 || regionID == 11 || regionID == 14){
+      discipline = STUDENT_MJ; // Yellow
+   }else if(regionID == 5 || regionID == 8 || regionId == 18){
+      discipline = STUDENT_BPS; // Red
+   }else if (regionID == 6 || regionID == 7 || regionID == 9 || regionID == 16){
+      discipline = STUDENT_MTV; // Green
+   }else if (regionID == 13){
+      discipline = STUDENT THD; // Dark Blue
+   }
+   return discipline;
 }
 
 
