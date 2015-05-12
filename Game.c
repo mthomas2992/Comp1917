@@ -47,8 +47,8 @@ typedef struct _game {
    player player3;
    int mostpubs;
    int mostarcs;
-   int regions[NUM_REGIONS];
-   int regionid[NUM_REGIONS];
+   int regions[NUM_REGIONS]; //this stores the discipline
+   int regionid[NUM_REGIONS]; //this stores the dice value of the region
    //going to need 2 2d int arrays to store both the arc and campus array
    int arcarray [5][10];
    int campusarray [5][10];
@@ -162,10 +162,7 @@ void disposeGame (Game g){
 }
 
 coords translatepath(path arc){
-   //different for the odds and evens
-   //different for approach
-   //first determine approach
-   //either up,down,left or right
+   //needs a response for if the path is empty
    int prevycoords=-1;
    coords coord;
    int prevxcoords=2;
@@ -257,8 +254,7 @@ coords translatepath(path arc){
       }
       index++;
    }
-   //g->xcoords=xcoords;
-   //g->ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
+
    coord.x=xcoords;
    coord.y=ycoords;
 
@@ -273,7 +269,7 @@ int isLegalAction (Game g, action a){
    int player = getWhoseTurn(g);
    coords coord;
    if (a.actioncode==OBTAIN_ARC){ //currently this assumes arcs are like vertex's and their points ARCS REPED BY THE VERTEXS THEY CONNECT
-      if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)){ //gate to ensure sufficient students
+      if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(a.destination[0]!='B')){ //gate to ensure sufficient students
          //translate action a and return coords in terms of x and y
          coord=translatepath(a.destination);
          x=coord.x;
@@ -474,7 +470,6 @@ int getDiceValue (Game g, int regionID) {
 // return the number of IP Patents the specified player currently has
 int getIPs (Game g, int player) {
    int playerIPs = 0;
-
    if (player == UNI_A) {
       playerIPs = g->player1.IPs
    } else if (player == UNI_B) {
@@ -675,7 +670,6 @@ void makeAction(Game g, action a){
    }
 }
 
-//C Bennetts Region
 int getMostPublications(Game g){
    /* Last Edit: CBennetts 12/5/15
    Changed it so that you must pass the current publication leader in order to take the 10 points.
@@ -684,11 +678,11 @@ int getMostPublications(Game g){
    int P2Pubs = g->player2.Pubs;
    int P3Pubs = g->player3.Pubs;
 
-   int currentMostPubs = g->mostPubs;
+   int currentMostPubs = g->mostpubs;
    int mostPubsLocal = NO_ONE;
 
-   if(P1Pubs == 0 || P2Pubs == 0 || P3Pubs == 0){
-      return mostPubsLocal = NO_ONE;
+   if((P1Pubs == 0)&&(P2Pubs == 0)&&(P3Pubs == 0)){
+      mostPubsLocal = NO_ONE;
    }
 
    if((P1Pubs)) > (P2Pubs)){
@@ -717,46 +711,25 @@ int getWhoseTurn(Game g){
    /* Last Edit: CBennetts 12/5/15
    Someone make sure to check this works, it seems too simple
    */
-   int turnCountLocal = g->turncount;
-   int whoseTurn = ((turnCountLocal)%(NUM_UNIS)) + 1;
-   return whoseTurn;
+   //int turnCountLocal = g->turncount;
+   //int whoseTurn = ((turnCountLocal)%(NUM_UNIS)) + 1;
+   //Its even simpler with our game struct
+   return g->whoseTurn;
 }
 
 int getCampus (Game g, path pathToVertex){
-   /* Last Edit: CBennetts 12/5/15
-   string for the path -> needs to return whether point is occupied and who occupies it.
-   contents of a VERTEX
-   #define VACANT_VERTEX 0
-   #define CAMPUS_A 1
-   #define CAMPUS_B 2
-   #define CAMPUS_C 3
-   #define GO8_A 4
-   #define GO8_B 5
-   #define GO8_C 6
-   */
-   int stateOfVertex = VACANT_VERTEX;
-   int x = coord.x;
-   int y = coord.y;
-   /*
-   Here where the stuff for string -> coord convertion goes
-   */
-   stateOfVertex = (g->campusArray[x][y]);
-   return stateOfVertex;
+   coords coord;
+   coord=translatepath(pathToVertex);
+   return campusarray[coord.x][coord.y];
 }
 
 int getDiscipline (Game g, int regionID){
-   /* Last Edit: CBennetts 12/5/15
-   takes regionID and gets what discipline it generates
-   */
-   int disciplineGot = 0;
-   disciplineGot = g->discipline[regionID];
-   return disciplineGot;
+   return g->regions[regionID];
 }
-// C Bennetts Region
 
 void throwDice (Game g, int diceScore){
-
-   g->turnCount++;
+   //this needs alot more logic
+   /*g->turnCount++;
 
    g->whoseTurn++;
 
@@ -764,12 +737,12 @@ void throwDice (Game g, int diceScore){
 
        g->whoseTurn = UNI_A;
 
-   }
+   } */
 
 }
 
 int getARC(Game g, path pathToEdge){
-
+   /*
    coords translatedFromPath;
 
    translatedFromPath = translatepath(pathToEdge);
@@ -781,7 +754,11 @@ int getARC(Game g, path pathToEdge){
    y = translatedFromPath.y;
 
    return arcarray[x][y];
-
+   */
+   //Simplified to save memory
+   coords coord;
+   coord=translatepath(pathToEdge);
+   return arcarray[coord.x][coord.y];
 }
 
 }
@@ -802,7 +779,7 @@ int getGO8s (Game g, int player){
     returnVal = g->player3.GO8s;
 
    }else{
-
+      //not to sure if we need this, leaving it in anyway
       printf("Invalid player/game values")
 
    }
@@ -838,7 +815,7 @@ int getKPIpoints (Game g, int player){
 };
 
 int getMostARCs (Game g){
-
+   /*
    int p1Arcs;
    int p2Arcs;
    int p3Arcs;
@@ -869,9 +846,40 @@ int getMostARCs (Game g){
 
    }
 
-
    return playerWithMostArcs;
+   */
+   //Using Corey's logic as it accounts for simultaneous matchings
+   //Variables are named completley wrong but it will work
+   int P1Pubs = g->player1.arcs;
+   int P2Pubs = g->player2.arcs;
+   int P3Pubs = g->player3.arcs;
 
+   int currentMostPubs = g->mostArcs;
+   int mostPubsLocal = NO_ONE;
 
+   if((P1Pubs == 0)&&(P2Pubs == 0)&&(P3Pubs == 0)){
+      mostPubsLocal = NO_ONE;
+   }
+
+   if((P1Pubs)) > (P2Pubs)){
+   //Here we know player1.Pubs > player2.Pubs
+      if((P1Pubs) > (P3Pubs)){
+         mostPubsLocal = UNI_A;
+      }else if((P1Pubs) == (P3Pubs)){
+         mostPubsLocal = currentMostPubs;
+      }else{
+         mostPubsLocal = UNI_C;
+      }
+   //Here we know player2.Pubs >= player1.Pubs
+   }else if(P1Pubs == P2Pubs){
+      mostPubsLocal = currentMostPubs;
+   }else if((P2Pubs) > (P3Pubs)){
+      mostPubsLocal = UNI_B;
+   }else if((P2Pubs) == (P3Pubs)){
+      mostPubsLocal = currentmostPubsLocal;
+   }else{
+      mostPubsLocal = UNI_C;
+   }
+   return mostPubsLocal;
 
 }
