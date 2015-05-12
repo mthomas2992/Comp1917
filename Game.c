@@ -40,7 +40,7 @@ typedef struct _player {
 	students students;
 } player;
 
-typedef struct _Game {
+typedef struct _game {
 	int turncount; //need to figure out stuff with pointers and yeah
 	int whoseTurn;
 	player player1;
@@ -53,9 +53,7 @@ typedef struct _Game {
    //going to need 2 2d int arrays to store both the arc and campus array
    int arcarray [5][10];
    int campusarray [5][10];
-   //int xcoords; //NEED TO COME UP WITH NEW METHOD OF PASSING X COORDS
-   //int ycoords; //USE STRUCT
-} Game;
+} game;
 
 
 int main (int argc, char *argv[]) {
@@ -67,17 +65,17 @@ int main (int argc, char *argv[]) {
 }
 Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
 	Game g;
-   g.mostarcs=NO_ONE;
-   g.mostpubs=NO_ONE;
-   g.turncount=-1; //terra nullius
-   g.whoseTurn=NO_ONE; //terra nullius
-   g.xcoords=0;
-   g.ycoords=0;
+   g->mostarcs=NO_ONE;
+   g->mostpubs=NO_ONE;
+   g->turncount=-1; //terra nullius
+   g->whoseTurn=NO_ONE; //terra nullius
+   g->xcoords=0;
+   g->ycoords=0;
 
    int i=0;
    while(i<NUM_REGIONS){ //input board into struct, might be better in a 2D array
-      g.regions[i]=discipline[i];
-      g.regionid[i]=dice[i];
+      g->regions[i]=discipline[i];
+      g->regionid[i]=dice[i];
    }
    
    //initialise the game board with invalids also
@@ -86,11 +84,11 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    while (i<=5){
       while (z<=10){
          if ((z+i>=2)&&(z+i<=13)){
-            g.arcarray[i][z]=VACANT_ARC;
-            g.campusarray[i][z]=VACANT_VERTEX;
+            g->arcarray[i][z]=VACANT_ARC;
+            g->campusarray[i][z]=VACANT_VERTEX;
          } else {
-            g.arcarray[i][z]=INVALID;
-            g.campusarray[i][z]=INVALID;
+            g->arcarray[i][z]=INVALID;
+            g->campusarray[i][z]=INVALID;
          }
          z++;
       }
@@ -99,62 +97,62 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    }
    
    //specify missed invalids
-   g.arcarray[4][0]=INVALID;
-   g.arcarray[5][0]=INVALID;
-   g.arcarray[5][1]=INVALID;
-   g.arcarray[0][9]=INVALID;
-   g.arcarray[0][10]=INVALID;
-   g.arcarray[1][10]=INVALID;
+   g->arcarray[4][0]=INVALID;
+   g->arcarray[5][0]=INVALID;
+   g->arcarray[5][1]=INVALID;
+   g->arcarray[0][9]=INVALID;
+   g->arcarray[0][10]=INVALID;
+   g->arcarray[1][10]=INVALID;
 
-   g.campusarray[4][0]=INVALID;
-   g.campusarray[5][0]=INVALID;
-   g.campusarray[5][1]=INVALID;
-   g.campusarray[0][9]=INVALID;
-   g.campusarray[0][10]=INVALID;
-   g.campusarray[1][10]=INVALID;  
+   g->campusarray[4][0]=INVALID;
+   g->campusarray[5][0]=INVALID;
+   g->campusarray[5][1]=INVALID;
+   g->campusarray[0][9]=INVALID;
+   g->campusarray[0][10]=INVALID;
+   g->campusarray[1][10]=INVALID;  
 
 
    //player one
-   g.player1.KPI=20;
-   g.player1.arcs=0;
-   g.player1.GO8s=0;
-   g.player1.Campuses=2;
-   g.player1.IPs=0;
-   g.player1.Pubs=0;
-   g.player1.students.THD=0;
-   g.player1.students.BPS=3;
-   g.player1.students.BQN=3;
-   g.player1.students.MJ=0;
-   g.player1.students.MTV=0;
-   g.player1.students.MMONEY=0;
+   g->player1.KPI=20;
+   g->player1.arcs=0;
+   g->player1.GO8s=0;
+   g->player1.Campuses=2;
+   g->player1.IPs=0;
+   g->player1.Pubs=0;
+   g->player1.students.THD=0;
+   g->player1.students.BPS=3;
+   g->player1.students.BQN=3;
+   g->player1.students.MJ=0;
+   g->player1.students.MTV=0;
+   g->player1.students.MMONEY=0;
 
    //player two
-   g.player2.KPI=20;
-   g.player2.arcs=0;
-   g.player2.GO8s=0;
-   g.player2.Campuses=2;
-   g.player2.IPs=0;
-   g.player2.Pubs=0;
-   g.player2.students.THD=0;
-   g.player2.students.BPS=3;
-   g.player2.students.BQN=3;
-   g.player2.students.MJ=0;
-   g.player2.students.MTV=0;
-   g.player2.students.MMONEY=0;
+   g->player2.KPI=20;
+   g->player2.arcs=0;
+   g->player2.GO8s=0;
+   g->player2.Campuses=2;
+   g->player2.IPs=0;
+   g->player2.Pubs=0;
+   g->player2.students.THD=0;
+   g->player2.students.BPS=3;
+   g->player2.students.BQN=3;
+   g->player2.students.MJ=0;
+   g->player2.students.MTV=0;
+   g->player2.students.MMONEY=0;
 
    //player three
-   g.player3.KPI=20;
-   g.player3.arcs=0;
-   g.player3.GO8s=0;
-   g.player3.Campuses=2;
-   g.player3.IPs=0;
-   g.player3.Pubs=0;
-   g.player3.students.THD=0;
-   g.player3.students.BPS=3;
-   g.player3.students.BQN=3;
-   g.player3.students.MJ=0;
-   g.player3.students.MTV=0;
-   g.player3.students.MMONEY=0;
+   g->player3.KPI=20;
+   g->player3.arcs=0;
+   g->player3.GO8s=0;
+   g->player3.Campuses=2;
+   g->player3.IPs=0;
+   g->player3.Pubs=0;
+   g->player3.students.THD=0;
+   g->player3.students.BPS=3;
+   g->player3.students.BQN=3;
+   g->player3.students.MJ=0;
+   g->player3.students.MTV=0;
+   g->player3.students.MMONEY=0;
 
    return g;
 } //will need to write loop to initialise both arc and campus array
@@ -255,8 +253,8 @@ coords translatepath(path arc){
       }
       index++;
    }
-   //g.xcoords=xcoords;
-   //g.ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
+   //g->xcoords=xcoords;
+   //g->ycoords=ycoords; //stores the translated values in the struct for access //Will translate any inputted path into 2D array coords outputted to the game structure, untested as of 10/5/15 midnight - Matt
    coord.x=xcoords;
    coord.y=ycoords;
 
@@ -376,45 +374,45 @@ int getStudents (Game g, int player, int discipline){ //Don't like this code, to
    int students=0; 
    if (player==UNI_A){
       if (discipline==STUDENT_THD){
-         students=g.player1.students.THD;
+         students=g->player1.students.THD;
       } else if (discipline==STUDENT_BPS){
-         students=g.player1.students.BPS;
+         students=g->player1.students.BPS;
       } else if (discipline==STUDENT_BQN){
-         students=g.player1.students.BQN;
+         students=g->player1.students.BQN;
       } else if (discipline==STUDENT_MJ){
-         students=g.player1.students.MJ;
+         students=g->player1.students.MJ;
       } else if (discipline==STUDENT_MTV){
-         students=g.player1.students.MTV;
+         students=g->player1.students.MTV;
       } else if (discipline==STUDENT_MMONEY){
-         students=g.player1.students.MMONEY;
+         students=g->player1.students.MMONEY;
       }
    } else if (player==UNI_B){
       if (discipline==STUDENT_THD){
-         students=g.player2.students.THD;
+         students=g->player2.students.THD;
       } else if (discipline==STUDENT_BPS){
-         students=g.player2.students.BPS;
+         students=g->player2.students.BPS;
       } else if (discipline==STUDENT_BQN){
-         students=g.player2.students.BQN;
+         students=g->player2.students.BQN;
       } else if (discipline==STUDENT_MJ){
-         students=g.player2.students.MJ;
+         students=g->player2.students.MJ;
       } else if (discipline==STUDENT_MTV){
-         students=g.player2.students.MTV;
+         students=g->player2.students.MTV;
       } else if (discipline==STUDENT_MMONEY){
-         students=g.player2.students.MMONEY;
+         students=g->player2.students.MMONEY;
       }
    } else if (player==UNI_C){
       if (discipline==STUDENT_THD){
-         students=g.player3.students.THD;
+         students=g->player3.students.THD;
       } else if (discipline==STUDENT_BPS){
-         students=g.player3.students.BPS;
+         students=g->player3.students.BPS;
       } else if (discipline==STUDENT_BQN){
-         students=g.player3.students.BQN;
+         students=g->player3.students.BQN;
       } else if (discipline==STUDENT_MJ){
-         students=g.player3.students.MJ;
+         students=g->player3.students.MJ;
       } else if (discipline==STUDENT_MTV){
-         students=g.player3.students.MTV;
+         students=g->player3.students.MTV;
       } else if (discipline==STUDENT_MMONEY){
-         students=g.player3.students.MMONEY;
+         students=g->player3.students.MMONEY;
       }
    }
 
@@ -424,11 +422,11 @@ int getStudents (Game g, int player, int discipline){ //Don't like this code, to
 int getARCs(Game g, int player){
 	int numOfARCs;
 	if (player == UNI_A){
-		numOfARCs = g.player1.arcs;
+		numOfARCs = g->player1.arcs;
 	} else if (player == UNI_B){
-		numOfARCs = g.player2.arcs;
+		numOfARCs = g->player2.arcs;
 	} else if (player == UNI_C){
-		numOfARCs = g.player3.arcs;
+		numOfARCs = g->player3.arcs;
 	}
 	return numOfARCs;
 }
@@ -436,11 +434,11 @@ int getARCs(Game g, int player){
 int getCampuses(Game g, int player){
 	int numOfCampuses;
 	if (player == UNI_A){
-		numOfCampuses = g.player1.Campuses;
+		numOfCampuses = g->player1.Campuses;
 	} else if (player == UNI_B){
-		numOfCampuses = g.player2.Campuses;
+		numOfCampuses = g->player2.Campuses;
 	} else if (player == UNI_C){
-		numOfCampuses = g.player3.Campuses;
+		numOfCampuses = g->player3.Campuses;
 	}
 	return numOfCampuses;
 }
@@ -449,24 +447,24 @@ int getCampuses(Game g, int player){
 int getPublications (Game g, int player) {
    int playerPublications = 0;
    if (player == UNI_A) {
-      playerPublications = g.player1.Pubs;
+      playerPublications = g->player1.Pubs;
    } else if (player == UNI_B) {
-      playerPublications = g.player2.Pubs;
+      playerPublications = g->player2.Pubs;
    } else if (player == UNI_C) {
-      playerPublications = g.player3.Pubs;
+      playerPublications = g->player3.Pubs;
    }
    return playerPublications;
 }
 
 // return the current turn number of the game -1,0,1, ..
 int getTurnNumber (Game g) {
-   return g.turncount;
+   return g->turncount;
 }
 
 // what dice value produces students in the specified region?
 // 2..12
 int getDiceValue (Game g, int regionID) {
-   return g.regionid[regionID];
+   return g->regionid[regionID];
 }
 
 // return the number of IP Patents the specified player currently has
@@ -474,11 +472,11 @@ int getIPs (Game g, int player) {
    int playerIPs = 0;
 
    if (player == UNI_A) {
-      playerIPs = g.player1.IPs
+      playerIPs = g->player1.IPs
    } else if (player == UNI_B) {
-      playerIPs = g.player2.IPs;
+      playerIPs = g->player2.IPs;
    } else if (player == UNI_C) {
-      playerIPs = g.player3.IPs;
+      playerIPs = g->player3.IPs;
    }
    return playerIPs;
 }
@@ -514,13 +512,14 @@ void makeAction(Game g, action a){
 		playerPTR = &g.player3;
 	}
 	
-	if (isLegalAction(g,a) == TRUE){
+	if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
 		if (a.actionCode == PASS){
 			throwDice();
 		} else if (a.actionCode == BUILD_CAMPUS){
 			//write to array camus using translate
 		} else if (a.actionCode == BUILD_GO8){
 		    //check campus on position then double value to recieve
+
 		} else if (a.actionCode == OBTAIN_ARC){
 		    //check 
 		} else if (a.actionCode == START_SPINOFF){
