@@ -12,11 +12,13 @@
 #define LEFT 3
 #define RIGHT 4
 
+#define IP_GAIN 1
+#define PUB_GAIN 2
 //type def struct for arc coords to return
 typedef struct _coords {
    int x;
    int y;
-} coords; 
+} coords;
 
 typedef struct _students {
 	int THD;
@@ -34,14 +36,11 @@ typedef struct _player {
 	int Campuses;
 	int IPs;
 	int Pubs;
-	//path Campuseslocation[20]; //need to figure out way to store these locations and easily find the adjacent regions for student production
-	//path GO8slocation[20];
-	//path arclocation[40];
 	students students;
 } player;
 
 typedef struct _game {
-	int turncount; //need to figure out stuff with pointers and yeah
+	int turncount;
 	int whoseTurn;
 	player player1;
 	player player2;
@@ -55,6 +54,7 @@ typedef struct _game {
    int campusarray [5][10];
 } game;
 
+//int makeActionipubs (int action);
 
 int main (int argc, char *argv[]) {
 
@@ -64,7 +64,7 @@ int main (int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
-	Game g;
+	Game g=malloc(sizeof(g));
    g->mostarcs=NO_ONE;
    g->mostpubs=NO_ONE;
    g->turncount=-1; //terra nullius
@@ -77,7 +77,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       g->regions[i]=discipline[i];
       g->regionid[i]=dice[i];
    }
-   
+
    //initialise the game board with invalids also
    i=0;
    int z=0;
@@ -95,7 +95,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       i++;
       z=0;
    }
-   
+
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
    g->arcarray[5][0]=INVALID;
@@ -109,7 +109,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->campusarray[5][1]=INVALID;
    g->campusarray[0][9]=INVALID;
    g->campusarray[0][10]=INVALID;
-   g->campusarray[1][10]=INVALID;  
+   g->campusarray[1][10]=INVALID;
 
 
    //player one
@@ -156,6 +156,10 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
 
    return g;
 } //will need to write loop to initialise both arc and campus array
+
+void disposeGame (Game g){
+   free(g);
+}
 
 coords translatepath(path arc){
    //different for the odds and evens
@@ -209,7 +213,7 @@ coords translatepath(path arc){
          leftx=INVALID;
          lefty=INVALID;
          rightx=INVALID;
-         righty=INVALID;         
+         righty=INVALID;
       } else if (((approach==DOWN)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){ //EVENS ODDS
          leftx=xcoords;
          lefty=ycoords+1;
@@ -285,9 +289,9 @@ int isLegalAction (Game g, action a){
                w=y+1;
                if (arcarray[x][w]==getWhoseTurn(g)){
                   legal=TRUE;
-               }            
+               }
             }
-            if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these 
+            if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these
                w=x-1;
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
@@ -338,7 +342,7 @@ int isLegalAction (Game g, action a){
             w=y+1;
             if (campusarray[x][w]==getWhoseTurn(g)){
                legal=FALSE;
-            }            
+            }
          }
          if (((x==3)||(x==1)||(x==5))&&(y%2==0)){
             w=x-1;
@@ -371,7 +375,7 @@ int isLegalAction (Game g, action a){
 }
 
 int getStudents (Game g, int player, int discipline){ //Don't like this code, to bulky for me
-   int students=0; 
+   int students=0;
    if (player==UNI_A){
       if (discipline==STUDENT_THD){
          students=g->player1.students.THD;
@@ -441,7 +445,7 @@ int getCampuses(Game g, int player){
 		numOfCampuses = g->player3.Campuses;
 	}
 	return numOfCampuses;
-}
+} 
 
 // return the number of Publications the specified player currently has
 int getPublications (Game g, int player) {
@@ -503,75 +507,371 @@ int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
 
 void makeAction(Game g, action a){
 	int currentPlayer = getWhoseTurn(g);
-	player *playerPTR;
-	if (currentPlayer == UNI_A){
-		playerPTR = &g.player1;
-	} else if (currentPlayer == UNI_B){
-		playerPTR = &g.player2;
-	} else if (currentPlayer == UNI_C){
-		playerPTR = &g.player3;
-	}
-	
-	if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
-		if (a.actionCode == PASS){
-			throwDice();
-		} else if (a.actionCode == BUILD_CAMPUS){
-			//write to array camus using translate
-		} else if (a.actionCode == BUILD_GO8){
-		    //check campus on position then double value to recieve
-
-		} else if (a.actionCode == OBTAIN_ARC){
-		    //check 
-		} else if (a.actionCode == START_SPINOFF){
-			g->playerPTR->students->MJ--;
-			g->playerPTR->students->MTV--;
-			g->playerPTR->students->MMONEY--;
-			srand(time(NULL));
-			int Spinoff = rand()%3;
-			if (Spinoff == IP_GAIN){
-				g->playerPTR->IPs++;
-			} else if (Spinoff == PUB_GAIN){
-				g->playerPTR->Pubs++;
-			}
-		} else if (a.actionCode == RETRAIN_STUDENTS){
-			int exchangeRate;
-			exchangeRate = getExchangeRate(g, currentPlayer, a.disciplineFrom, a.disciplineTo);
-			if (a.disciplineFrom == STUDENT_BPS){
-				g->playerPTR->students->BPS -= exchangeRate;
-			} else if (a.disciplineFrom == STUDENT_BQN){
-				g->playerPTR->students->BQN -= exchangeRate;
-			} else if (a.disciplineFrom == STUDENT_MJ){
-				g->playerPTR->students->MJ -= exchangeRate;
-			} else if (a.disciplineFrom == STUDENT_MTV){
-				g->playerPTR->students->MTV -= exchangeRate;
-			} else if (a.disciplineFrom == STUDENT_MMONEY){
-				g->playerPTR->students->MMONEY -= exchangeRate;
-			}
-			
-			if (a.disciplineTo == STUDENT_BPS){
-				player1.student.BPS++;
-			} else if (a.disciplineTo == STUDENT_BQN){
-				g->playerPTR->students->BQN++;
-			} else if (a.disciplineTo == STUDENT_MJ){
-				g->playerPTR->students->MJ++;
-			} else if (a.disciplineTo == STUDENT_MTV){
-				g->playerPTR->students->MTV++;
-			} else if (a.disciplineTo == STUDENT_MMONEY){
-				g->playerPTR->students->MMONEY++;
-			}
-		}
-	} 	
+   if (getWhoseTurn(g)==UNI_A){
+   	if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
+   		if (a.actionCode == PASS){
+   			//throwDice(); //check this do we actually call it or is it called by the interface
+   		} else if (a.actionCode == BUILD_CAMPUS){
+            coords coord1=translatepath(a.destination);
+            g->campusarray[coord1.x][coord1.y]=getWhoseTurn(g);
+            g->player1.Campuses++;
+   		} else if (a.actionCode == BUILD_GO8){
+            coords coord2=translatepath(a.destination);
+            g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
+            g->player1.GO8s++;
+   		} else if (a.actionCode == OBTAIN_ARC){
+            coords coord3=translatepath(a.destination);
+            g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
+            g->player1.arcs++; 
+   		} else if (a.actionCode == START_SPINOFF){
+   			g->player1.students.MJ--;
+   			g->player1.students.MTV--;
+   			g->player1.students.MMONEY--;
+   			srand(time(NULL));
+   			int Spinoff = rand()%3; //need to check if one must be added
+   			if (Spinoff == IP_GAIN){
+   				g->player1.IPs++;
+   			} else if (Spinoff >= PUB_GAIN){
+   				g->player1.Pubs++;
+   			}
+   		} else if (a.actionCode == RETRAIN_STUDENTS){
+   			int exchangeRate;
+   			exchangeRate = getExchangeRate(g, currentPlayer, a.disciplineFrom, a.disciplineTo);
+   			if (a.disciplineFrom == STUDENT_BPS){ //checks all and modifies all
+   				g->player1.students.BPS -= exchangeRate;
+   			} else if (a.disciplineFrom == STUDENT_BQN){
+   				g->player1.students.BQN -= exchangeRate;
+   			} else if (a.disciplineFrom == STUDENT_MJ){
+   				g->player1.students.MJ -= exchangeRate;
+   			} else if (a.disciplineFrom == STUDENT_MTV){
+   				g->player1.students.MTV -= exchangeRate;
+   			} else if (a.disciplineFrom == STUDENT_MMONEY){
+   				g->player1.students.MMONEY -= exchangeRate;
+   			}
+   			
+   			if (a.disciplineTo == STUDENT_BPS){
+   				player1.student.BPS++;
+   			} else if (a.disciplineTo == STUDENT_BQN){
+   				g->player1.students.BQN++;
+   			} else if (a.disciplineTo == STUDENT_MJ){
+   				g->player1.students.MJ++;
+   			} else if (a.disciplineTo == STUDENT_MTV){
+   				g->player1.students.MTV++;
+   			} else if (a.disciplineTo == STUDENT_MMONEY){
+   				g->player1.students.MMONEY++;
+   			}
+   		}
+   	}
+   } else if (getWhoseTurn(g)==UNI_B){
+      if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
+         if (a.actionCode == PASS){
+            //throwDice(); //check this do we actually call it or is it called by the interface
+         } else if (a.actionCode == BUILD_CAMPUS){
+            coords coord1=translatepath(a.destination);
+            g->campusarray[coord1.x][coord1.y]=getWhoseTurn(g);
+            g->player2.Campuses++;
+         } else if (a.actionCode == BUILD_GO8){
+            coords coord2=translatepath(a.destination);
+            g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
+            g->player2.GO8s;
+         } else if (a.actionCode == OBTAIN_ARC){
+            coords coord3=translatepath(a.destination);
+            g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
+            g->player2.arcs++; 
+         } else if (a.actionCode == START_SPINOFF){
+            g->player2.students.MJ--;
+            g->player2.students.MTV--;
+            g->player2.students.MMONEY--;
+            srand(time(NULL));
+            int Spinoff = rand()%3; //need to check if one must be added
+            if (Spinoff == IP_GAIN){
+               g->player2.IPs++;
+            } else if (Spinoff >= PUB_GAIN){
+               g->player2.Pubs++;
+            }
+         } else if (a.actionCode == RETRAIN_STUDENTS){
+            int exchangeRate;
+            exchangeRate = getExchangeRate(g, currentPlayer, a.disciplineFrom, a.disciplineTo);
+            if (a.disciplineFrom == STUDENT_BPS){ //checks all and modifies all
+               g->player2.students.BPS -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_BQN){
+               g->player2.students.BQN -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MJ){
+               g->player2.students.MJ -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MTV){
+               g->player2.students.MTV -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MMONEY){
+               g->player2.students.MMONEY -= exchangeRate;
+            }
+            
+            if (a.disciplineTo == STUDENT_BPS){
+               player2.student.BPS++;
+            } else if (a.disciplineTo == STUDENT_BQN){
+               g->player2.students.BQN++;
+            } else if (a.disciplineTo == STUDENT_MJ){
+               g->player2.students.MJ++;
+            } else if (a.disciplineTo == STUDENT_MTV){
+               g->player2.students.MTV++;
+            } else if (a.disciplineTo == STUDENT_MMONEY){
+               g->player2.students.MMONEY++;
+            }
+         }
+      }
+   } else if (getWhoseTurn(g)==UNI_B){
+      if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
+         if (a.actionCode == PASS){
+            //throwDice(); //check this do we actually call it or is it called by the interface
+         } else if (a.actionCode == BUILD_CAMPUS){
+            coords coord1=translatepath(a.destination);
+            g->campusarray[coord1.x][coord1.y]=getWhoseTurn(g);
+            g->player3.Campuses++;
+         } else if (a.actionCode == BUILD_GO8){
+            coords coord2=translatepath(a.destination);
+            g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
+            g->player3.GO8s;
+         } else if (a.actionCode == OBTAIN_ARC){
+            coords coord3=translatepath(a.destination);
+            g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
+            g->player3.arcs++; 
+         } else if (a.actionCode == START_SPINOFF){
+            g->player3.students.MJ--;
+            g->player3.students.MTV--;
+            g->player3.students.MMONEY--;
+            srand(time(NULL));
+            int Spinoff = rand()%3; //need to check if one must be added
+            if (Spinoff == IP_GAIN){
+               g->player3.IPs++;
+            } else if (Spinoff >= PUB_GAIN){
+               g->player3.Pubs++;
+            }
+         } else if (a.actionCode == RETRAIN_STUDENTS){
+            int exchangeRate;
+            exchangeRate = getExchangeRate(g, currentPlayer, a.disciplineFrom, a.disciplineTo);
+            if (a.disciplineFrom == STUDENT_BPS){ //checks all and modifies all
+               g->player3.students.BPS -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_BQN){
+               g->player3.students.BQN -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MJ){
+               g->player3.students.MJ -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MTV){
+               g->player3.students.MTV -= exchangeRate;
+            } else if (a.disciplineFrom == STUDENT_MMONEY){
+               g->player3.students.MMONEY -= exchangeRate;
+            }
+            
+            if (a.disciplineTo == STUDENT_BPS){
+               player3.student.BPS++;
+            } else if (a.disciplineTo == STUDENT_BQN){
+               g->player3.students.BQN++;
+            } else if (a.disciplineTo == STUDENT_MJ){
+               g->player3.students.MJ++;
+            } else if (a.disciplineTo == STUDENT_MTV){
+               g->player3.students.MTV++;
+            } else if (a.disciplineTo == STUDENT_MMONEY){
+               g->player3.students.MMONEY++;
+            }
+         }
+      }
+   }
 }
 
+//C Bennetts Region
+int getMostPublications(Game g){
+   /* Last Edit: CBennetts 12/5/15
+   Changed it so that you must pass the current publication leader in order to take the 10 points.
+   */
+   int P1Pubs = g->player1.Pubs;
+   int P2Pubs = g->player2.Pubs;
+   int P3Pubs = g->player3.Pubs;
+
+   int currentMostPubs = g->mostPubs;
+   int mostPubsLocal = NO_ONE;
+
+   if(P1Pubs == 0 || P2Pubs == 0 || P3Pubs == 0){
+      return mostPubsLocal = NO_ONE;
+   }
+
+   if((P1Pubs)) > (P2Pubs)){
+   //Here we know player1.Pubs > player2.Pubs
+      if((P1Pubs) > (P3Pubs)){
+         mostPubsLocal = UNI_A;
+      }else if((P1Pubs) == (P3Pubs)){
+         mostPubsLocal = currentMostPubs;
+      }else{
+         mostPubsLocal = UNI_C;
+      }
+   //Here we know player2.Pubs >= player1.Pubs
+   }else if(P1Pubs == P2Pubs){
+      mostPubsLocal = currentMostPubs;
+   }else if((P2Pubs) > (P3Pubs)){
+      mostPubsLocal = UNI_B;
+   }else if((P2Pubs) == (P3Pubs)){
+      mostPubsLocal = currentmostPubsLocal;
+   }else{
+      mostPubsLocal = UNI_C;
+   }
+   return mostPubsLocal;
+}
+
+int getWhoseTurn(Game g){
+   /* Last Edit: CBennetts 12/5/15
+   Someone make sure to check this works, it seems too simple
+   */
+   int turnCountLocal = g->turncount;
+   int whoseTurn = ((turnCountLocal)%(NUM_UNIS)) + 1;
+   return whoseTurn;
+}
+
+int getCampus (Game g, path pathToVertex){
+   /* Last Edit: CBennetts 12/5/15
+   string for the path -> needs to return whether point is occupied and who occupies it.
+   contents of a VERTEX
+   #define VACANT_VERTEX 0
+   #define CAMPUS_A 1
+   #define CAMPUS_B 2
+   #define CAMPUS_C 3
+   #define GO8_A 4
+   #define GO8_B 5
+   #define GO8_C 6
+   */
+   int stateOfVertex = VACANT_VERTEX;
+   int x = coord.x;
+   int y = coord.y;
+   /*
+   Here where the stuff for string -> coord convertion goes
+   */
+   stateOfVertex = (g->campusArray[x][y]);
+   return stateOfVertex;
+}
+
+int getDiscipline (Game g, int regionID){
+   /* Last Edit: CBennetts 12/5/15
+   takes regionID and gets what discipline it generates
+   */
+   int disciplineGot = 0;
+   disciplineGot = g->discipline[regionID];
+   return disciplineGot;
+}
+// C Bennetts Region
+
+void throwDice (Game g, int diceScore){
+
+   g->turnCount++;
+
+   g->whoseTurn++;
+
+   if (g->whoseTurn > UNI_C){
+
+       g->whoseTurn = UNI_A;
+
+   }
+
+}
+
+int getARC(Game g, path pathToEdge){
+
+   coords translatedFromPath;
+
+   translatedFromPath = translatepath(pathToEdge);
+
+   int x;
+   int y;
+
+   x = translatedFromPath.x;
+   y = translatedFromPath.y;
+
+   return arcarray[x][y];
+
+}
+
+}
+int getGO8s (Game g, int player){
+
+   int returnVal;
+
+   if(player == UNI_A){
+
+    returnVal = g->player1.GO8s;
+
+   }else if(player == UNI_B){
+
+    returnVal = g->player2.GO8s;
+
+   }else if(player == UNI_C){
+
+    returnVal = g->player3.GO8s;
+
+   }else{
+
+      printf("Invalid player/game values")
+
+   }
+
+   return returnVal;
+
+};
+
+int getKPIpoints (Game g, int player){
+
+   int returnVal;
+
+   if(player == UNI_A){
+
+    returnVal = g->player1.KPI;
+
+   }else if(player == UNI_B){
+
+    returnVal = g->player2.KPI;
+
+   }else if(player == UNI_C){
+
+    returnVal = g->player3.KPI;
+
+   }else{
+
+      printf("Invalid player/game values")
+
+   }
+
+   return returnVal;
+
+};
+
+int getMostARCs (Game g){
+
+   int p1Arcs;
+   int p2Arcs;
+   int p3Arcs;
+
+   int playerWithMostArcs;
+   int mostArcs;
+
+   p1Arcs = g->player1.arcs;
+   p2Arcs = g->player2.arcs;
+   p3Arcs = g->player3.arcs;
+
+   currentMost = g->mostArcs;
+
+
+   mostArcs = p1Arcs;
+   playerWithMostArcs = UNI_A:
+
+   if(p2Arcs > mostArcs){
+
+      mostArcs = p2Arcs;
+      playerWithMostArcs = UNI_B:
+
+   }
+   if(p3Arcs > mostArcs){
+
+      mostArcs = p3Arcs;
+      playerWithMostArcs = UNI_C:
+
+   }
+
+
+   return playerWithMostArcs;
 
 
 
-
-
-
-
-
-
-
-
-
+}
