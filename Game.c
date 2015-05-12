@@ -514,6 +514,7 @@ void makeAction(Game g, action a){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
             g->player1.GO8s++;
+            g->player1.Campuses--;
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
@@ -568,7 +569,8 @@ void makeAction(Game g, action a){
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
-            g->player2.GO8s;
+            g->player2.GO8s++;
+            g->player1.Campuses--;
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
@@ -623,7 +625,8 @@ void makeAction(Game g, action a){
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
-            g->player3.GO8s;
+            g->player3.GO8s++;
+            g->player1.Campuses--;
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
@@ -794,7 +797,7 @@ int getGO8s (Game g, int player){
 int getKPIpoints (Game g, int player){
    //possibly add in KPI calculations here
    int returnVal;
-
+   /*
    if(player == UNI_A){
 
     returnVal = g->player1.KPI;
@@ -811,10 +814,37 @@ int getKPIpoints (Game g, int player){
 
       printf("Invalid player/game values")
 
+   } */
+   int playerindex=UNI_A;
+   //10 kpi for campus
+   //20 kpi for go8
+   //2 kpi per arc
+   // 10 kpi for most arcs
+   //10 kpi for most pubs
+   //10 kpi for IP's
+   //therefore (lol I am acting like this is some kind of discrete maths proof)
+   while (playerindex<=UNI_C){
+      returnVal=returnVal+10*getCampuses(g,playerindex);
+      returnVal=returnVal+20*getGO8s(g,playerindex);
+      returnVal=returnVal+2*getARCs(g,playerindex);
+      if (getMostPublications(g)==playerindex){
+         returnVal=returnVal+10;
+      }
+      if (getMostARCs(g)==playerindex){
+         returnVal=returnVal+10;
+      }
+      returnVal=returnVal+10*getIPs(g,playerindex);
+
+      if (playerindex==UNI_A){
+         g->player1.KPI=returnVal;
+      } else if (playerindex==UNI_B){
+         g->player2.KPI=returnVal;
+      } else if (playerindex==UNI_C){
+         g->player3.KPI=returnVal;
+      }
+      returnVal=0;
+      playerindex++;
    }
-
-   return returnVal;
-
 };
 
 int getMostARCs (Game g){
