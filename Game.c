@@ -738,7 +738,10 @@ void throwDice (Game g, int diceScore){
    if (g->whoseTurn > UNI_C){
        g->whoseTurn = UNI_A;
    }
-
+   g->mostpubs=getMostPublications(g);
+   g->mostarcs=getMostARCs(g);
+   
+   
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
