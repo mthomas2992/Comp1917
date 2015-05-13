@@ -733,13 +733,10 @@ int getDiscipline (Game g, int regionID){
 void throwDice (Game g, int diceScore){
    //this needs alot more logic
    g->turnCount++;
-
    g->whoseTurn++;
 
    if (g->whoseTurn > UNI_C){
-
        g->whoseTurn = UNI_A;
-
    }
 
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
