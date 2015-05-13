@@ -20,6 +20,12 @@ typedef struct _coords {
    int y;
 } coords;
 
+typedef struct _regions {
+   int a;
+   int b;
+   int c;
+} regions;
+
 typedef struct _students {
    int THD;
    int BPS;
@@ -740,8 +746,10 @@ void throwDice (Game g, int diceScore){
    }
    g->mostpubs=getMostPublications(g);
    g->mostarcs=getMostARCs(g);
-   
-   
+
+   if (r.a==STUDENT_THD){
+      //need to write logic which accounts for duplicate regions
+   }
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
