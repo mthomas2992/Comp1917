@@ -792,7 +792,7 @@ int getGO8s (Game g, int player){
 
    return returnVal;
 
-};
+}
 
 int getKPIpoints (Game g, int player){
    int returnVal=0;
@@ -835,7 +835,7 @@ int getKPIpoints (Game g, int player){
       realreturn= g->player3.KPI;
    }
    return realreturn;
-};
+}
 
 int getMostARCs (Game g){
    /*
