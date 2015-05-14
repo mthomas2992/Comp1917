@@ -167,14 +167,14 @@ void testgetMostARCs(void){
    Game test = newGame(disciplines,dice);
    assert(getMostARCs(test) == NO_ONE);
 
-   throwdice(test,DEFAULT_DICE[0]);
+   throwdice(test,dice[0]);
    action getARC;
    getARC.actionCode = OBTAIN_ARC;
    getARC.destination = "R";
    makeAction(test,getARC1);
    assert(getMostARCs(test) == UNI_A);
 
-   throwdice(test,DEFAULT_DICE[1]);
+   throwdice(test,dice[1]);
    getARC.destination = "RRLRL";
    makeAction(test,getARC2);
    /* I'm not sure what happens if two universities have
@@ -192,23 +192,23 @@ void testgetMostPublications(void){
    Game test = newGame(disciplines,dice);
    assert(getMostPublications(test) == NO_ONE);
    
-   throwDice(test,DEFAULT_DICE[0]);
+   throwDice(test,dice[0]);
    action obtain_publication;
    obtain_publication.actionCode = OBTAIN_PUBLICATION;
    makeAction(test,obtain_publication);
    assert(getMostPublications(test) == UNI_A);
    
-   throwDice(test,DEFAULT_DICE[1]);
+   throwDice(test,dice[1]);
    makeAction(test,obtain_publication);
    /* Again, I'm not sure what happens when two or more
       players have the same amount of publications */
    assert(getMostPublications(test) == NO_ONE);
    
-   throwDice(test,DEFAULT_DICE[2]);
+   throwDice(test,dice[2]);
    makeAction(test,obtain_publication);
    assert(getMostPublications(test) == NO_ONE);
    
-   throwDice(test,DEFAULT_DICE[3]);
+   throwDice(test,dice[3]);
    makeAction(test,obtain_publication);
    assert(getMostPublications(test) == UNI_A);
 
@@ -224,19 +224,19 @@ void testgetTurnNumber(void){
    Game test = newGame(disciplines,dice);
    assert(getTurnNumber(test) == -1);
    
-   throwDice(test,DEFAULT_DICE[0]);
+   throwDice(test,dice[0]);
    makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 0);
    
-   throwDice(test,DEFAULT_DICE[1]);
+   throwDice(test,dice[1]);
    makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 1);
 
-   throwDice(test,DEFAULT_DICE[2]);
+   throwDice(test,dice[2]);
    makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 2);
 
-   throwDice(test,DEFAULT_DICE[3]);
+   throwDice(test,dice[3]);
    makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 3);
 
@@ -253,44 +253,44 @@ void testThrowdice(void){
    
    assert(getTurnNumber(test) == -1);
    
-   throwDice(test,DEFAULT_DICE[0]);
-   assert(DEFAULT_DICE[0] >= MIN_DICE_VALUE);
-   assert(DEFAULT_DICE[0] <= MAX_DICE_VALUE);
+   throwDice(test,dice[0]);
+   assert(dice[0] >= MIN_DICE_VALUE);
+   assert(dice[0] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 0);
 
-   throwDice(test,DEFAULT_DICE[1]);
-   assert(DEFAULT_DICE[1] >= MIN_DICE_VALUE);
-   assert(DEFAULT_DICE[1] <= MAX_DICE_VALUE);
+   throwDice(test,dice[1]);
+   assert(dice[1] >= MIN_DICE_VALUE);
+   assert(dice[1] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 1);
 
-   throwDice(test,DEFAULT_DICE[2]);
-   assert(DEFAULT_DICE[2] >= MIN_DICE_VALUE);
-   assert(DEFAULT_DICE[2] <= MAX_DICE_VALUE);
+   throwDice(test,dice[2]);
+   assert(dice[2] >= MIN_DICE_VALUE);
+   assert(dice[2] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 2);
 
-   throwDice(test,DEFAULT_DICE[3]);
-   assert(DEFAULT_DICE[3] >= MIN_DICE_VALUE);
-    assert(DEFAULT_DICE[3] <= MAX_DICE_VALUE);
+   throwDice(test,dice[3]);
+   assert(dice[3] >= MIN_DICE_VALUE);
+   assert(dice[3] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 3);
 
-   throwDice(test,DEFAULT_DICE[4]);
-   assert(DEFAULT_DICE[4] >= MIN_DICE_VALUE);
-    assert(DEFAULT_DICE[4] <= MAX_DICE_VALUE);
+   throwDice(test,dice[4]);
+   assert(dice[4] >= MIN_DICE_VALUE);
+   assert(dice[4] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 4);
 
-   throwDice(test,DEFAULT_DICE[5]);
-   assert(DEFAULT_DICE[5] >= MIN_DICE_VALUE);
-    assert(DEFAULT_DICE[5] <= MAX_DICE_VALUE);
+   throwDice(test,dice[5]);
+   assert(dice[5] >= MIN_DICE_VALUE);
+   assert(dice[5] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 5);
 
-   throwDice(test,DEFAULT_DICE[6]);
-   assert(DEFAULT_DICE[6] >= MIN_DICE_VALUE);
-    assert(DEFAULT_DICE[6] <= MAX_DICE_VALUE);
+   throwDice(test,dice[6]);
+   assert(dice[6] >= MIN_DICE_VALUE);
+   assert(dice[6] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 6);
 
-   throwDice(test,DEFAULT_DICE[7]);
-   assert(DEFAULT_DICE[7] >= MIN_DICE_VALUE);
-    assert(DEFAULT_DICE[7] <= MAX_DICE_VALUE);
+   throwDice(test,dice[7]);
+   assert(dice[7] >= MIN_DICE_VALUE);
+   assert(dice[7] <= MAX_DICE_VALUE);
    assert(getTurnNumber(test) == 7);
    
    disposeGame(test);
@@ -314,6 +314,7 @@ void testgetCampus(void){
    path path8 = "LRRLRLRLLLRR";
    path path9 = "RLRLRL";
    path path10 = "RLRLRLLLRR";
+   
    assert(getCampus(test,path1) == CAMPUS_A);
    assert(getCampus(test,path2) == VACANT_VERTEX);
    assert(getCampus(test,path3) == VACANT_VERTEX);
@@ -328,7 +329,6 @@ void testgetCampus(void){
    printf("getCampus Tests passed\n");
 }
 //getARC
-// return and test when ve
 void testgetARC(void){
    printf("Testing getARC\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
@@ -353,6 +353,7 @@ void testgetARC(void){
    disposeGame(test);
    printf("getArc Tests passed\n");
 }
+
 //getWhoseTurn
 void testgetWhoseTurn(void){
    printf("Testing getWhoseTurn\n");
@@ -362,19 +363,19 @@ void testgetWhoseTurn(void){
    
    assert(getWhoseTurn(test) == NO_ONE);
    
-   throwDice(test,DICE_VALUE[0]);
+   throwDice(test,dice[0]);
    assert(getWhoseTurn(test) == UNI_A);
    
-   throwDice(test,DICE_VALUE[1]);
+   throwDice(test,dice[1]);
    assert(getWhoseTurn(test) == UNI_B);
    
-   throwDice(test,DICE_VALUE[2]);
+   throwDice(test,dice[2]);
    assert(getWhoseTurn(test) == UNI_C);
    
-   throwDice(test,DICE_VALUE[3]);
+   throwDice(test,dice[3]);
    assert(getWhoseTurn(test) == UNI_A);
    
-   throwDice(test,DICE_VALUE[4]);
+   throwDice(test,dice[4]);
    assert(getWhoseTurn(test) == UNI_B);
    disposeGame(test);
    printf("getWhoseTurn Tests passed\n");
@@ -393,31 +394,31 @@ void testgetPublications(void){
    assert(getPublications(test,UNI_B) == 0);
    assert(getPublications(test,UNI_C) == 0);
    
-   throwDice(test,DEFAULT_DICE[0]);
+   throwDice(test,dice[0]);
    makeAction(test,obtain_publication);
    assert(getPublications(test,UNI_A) == 1);
    assert(getPublications(test,UNI_B) == 0);
    assert(getPublications(test,UNI_C) == 0);
    
-   throwDice(test,DEFAULT_DICE[1]);
+   throwDice(test,dice[1]);
    makeAction(test,obtain_publication);
    assert(getPublications(test,UNI_A) == 1);
    assert(getPublications(test,UNI_B) == 1);
    assert(getPublications(test,UNI_C) == 0);
    
-   throwDice(test,DEFAULT_DICE[2]);
+   throwDice(test,dice[2]);
    makeAction(test,obtain_publication);
    assert(getPublications(test,UNI_A) == 1);
    assert(getPublications(test,UNI_B) == 1);
    assert(getPublications(test,UNI_C) == 1);
    
-   throwDice(test,DEFAULT_DICE[3]);
+   throwDice(test,dice[3]);
    makeAction(test,obtain_publication);
    assert(getPublications(test,UNI_A) == 2);
    assert(getPublications(test,UNI_B) == 1);
    assert(getPublications(test,UNI_C) == 1);
    
-   throwDice(test,DEFAULT_DICE[4]);
+   throwDice(test,dice[4]);
    makeAction(test,obtain_publication);
    assert(getPublications(test,UNI_A) == 2);
    assert(getPublications(test,UNI_B) == 2);
@@ -749,8 +750,7 @@ void testGetKPIpoints (void){
 
 //Inputs: Game g, int player
 void testGetIPs (void){
-
-	int disciplines[] = DEFAULT_DISCIPLINES;
+   int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
    Game g = newGame(disciplines,dice);
 
