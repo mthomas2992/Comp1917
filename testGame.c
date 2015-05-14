@@ -136,16 +136,14 @@ int main (int argc, char *argv[]) {
 	
 }
 
-//disposeGame
 void testdisposeGame(void){   
    printf("Testing disposeGame\n");
    Game test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
-   disposeGame(g);
+   disposeGame(test);
    assert(test == NULL);
    printf("disposeGame passed!\n");
 }
    
-//getDiceValue 
 void testgetDiceValue(void){ 
    printf("Testing getDiceValue\n");
    Game test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
@@ -165,24 +163,22 @@ void testgetDiceValue(void){
 void testgetMostARCs(void){
    printf("Testing getMostARCs\n");
    Game test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
-   assert(getMostARCs = NO_ONE);
+   assert(getMostARCs(test) == NO_ONE);
 
    throwdice(test,DEFAULT_DICE[0]);
    action getARC;
    getARC.actionCode = OBTAIN_ARC;
    getARC.destination = "R";
-   makeAction(test,getARC);
-   assert(getMostARCs(test) = UNI_A);
+   makeAction(test,getARC1);
+   assert(getMostARCs(test) == UNI_A);
 
    throwdice(test,DEFAULT_DICE[1]);
-   action getARC;
-   getARC.actionCode = OBTAIN_ARC;
    getARC.destination = "RRLRL";
-   makeAction(test,getARC);
+   makeAction(test,getARC2);
    /* I'm not sure what happens if two universities have
       the same amount of ARC grants */
    assert(getMostARCs(test) == NO_ONE);
-   disposeGame(g);
+   disposeGame(test);
    printf("getMostArcs passed!\n");
 }
       
@@ -193,6 +189,8 @@ void testgetMostPublications(void){
    assert(getMostPublications(test) == NO_ONE);
    
    throwDice(test,DEFAULT_DICE[0]);
+   action obtain_publication;
+   obtain_publication.actionCode = OBTAIN_PUBLICATION;
    makeAction(test,obtain_publication);
    assert(getMostPublications(test) == UNI_A);
    
@@ -204,6 +202,7 @@ void testgetMostPublications(void){
    
    throwDice(test,DEFAULT_DICE[2]);
    makeAction(test,obtain_publication);
+   assert(getMostPublications(test) == NO_ONE);
    
    throwDice(test,DEFAULT_DICE[3]);
    makeAction(test,obtain_publication);
@@ -217,7 +216,7 @@ void testgetMostPublications(void){
 void testgetTurnNumber(void){
    printf("Testing getTurnNumber\n");
    Game test = newGame (DEFAULT_DISCIPLINES,DEFAULT_DICE);
-   assert(getTurnNumber(g) == -1);
+   assert(getTurnNumber(test) == -1);
    
    throwDice(test,DEFAULT_DICE[0]);
    makeAction(test,obtain_publication);
@@ -296,74 +295,56 @@ void testgetCampus(void){
    Game test;
    test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
    
-   action obtain_campus;
-   obtain_campus.actionCode = BUILD_CAMPUS;
-   assert(sizeof(pathtoVertex) <= PATH_LIMIT);
-   
-   obtain_campus.destination = "RLLLLLL";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_A);
-   
-   obtain_campus.destination = "L";
-   assert(getCampus(test,obtain_campus.destination) == VACANT_VERTEX);
-   
-   obtain_campus.destination = "R";
-   assert(getCampus(test,obtain_campus.destination) == VACANT_VERTEX);
-   
-   obtain_campus.destination = "LRLRL";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_C);
-   
-   obtain_campus.destination = "RRLRL";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_B);
-   
-   obtain_campus.destination = "RLRLRLRRLR";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_C);
-   
-   obtain_campus.destination = "RLRLRLRLLRR";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_A);
-   
-   obtain_campus.destination = "LRRLRLRLLLRR";
-   assert(getCampus(test,obtain_campus.destination) == CAMPUS_B);
-   
-   obtain_campus.destination = "RLRLRL";
-   assert(getCampus(test,obtain_campus.destination) == VACANT_VERTEX);
-   
-   obtain_campus.destination = "RLRLRLLLRR";
-   assert(getCampus(test,obtain_campus.destination) == VACANT_VERTEX);
+   path path1 = "RLLLLLL";
+   path path2 = "L";
+   path path3 = "R";
+   path path4 = "LRLRL";
+   path path5 = "RRLRL"'
+   path path6 = "RLRLRLRRLR";
+   path path7 = "RLRLRLRLLRR";
+   path path8 = "LRRLRLRLLLRR";
+   path path9 = "RLRLRL";
+   path path10 = "RLRLRLLLRR";
+
+   assert(getCampus(test,path1) == CAMPUS_A);
+   assert(getCampus(test,path2) == VACANT_VERTEX);
+   assert(getCampus(test,path3) == VACANT_VERTEX);
+   assert(getCampus(test,path4) == CAMPUS_C);
+   assert(getCampus(test,path5) == CAMPUS_B);
+   assert(getCampus(test,path6) == CAMPUS_C);
+   assert(getCampus(test,path7) == CAMPUS_A);
+   assert(getCampus(test,path8) == CAMPUS_B);
+   assert(getCampus(test,path9) == VACANT_VERTEX);
+   assert(getCampus(test,path10) == VACANT_VERTEX);
+
    disposeGame(test);
    printf("getCampus Tests passed\n");
 }
 
 //getARC
+// return and test when ve
 void testgetARC(void){
    printf("Testing getARC\n");
    
    Game test;
    test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
+
+   path path1 = "L";
+   path path2 = "R";
+   path path3 = "RL";
+   path path4 = "LR";
+   path path5 = "LRRRL";
+   path path6 = "RRLLL";
+   path path7 = "RLR";
    
-   action obtain_arc;
-   obtain_arc.actionCode = OBTAIN_ARC;
-   assert(sizeof(pathtoEdge) <= PATH_LIMIT);
-   
-   obtain_arc.destination = "L"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "R"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "RL"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "LR"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "LRRRL"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "RRLLL"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
-   
-   obtain_arc.destination = "RLR"
-   assert(getARC(test,obtain_arc.destination) == VACANT_ARC);
+   assert(getCampus(test,path1) == VACANT_ARC);
+   assert(getCampus(test,path2) == VACANT_ARC);
+   assert(getCampus(test,path3) == VACANT_ARC);
+   assert(getCampus(test,path4) == VACANT_ARC);
+   assert(getCampus(test,path5) == VACANT_ARC);
+   assert(getCampus(test,path6) == VACANT_ARC);
+   assert(getCampus(test,path7) == VACANT_ARC);
+ 
    disposeGame(test);
    printf("getArc Tests passed\n");
 }
@@ -399,6 +380,7 @@ void testgetPublications(void){
    printf("Testing getPublications\n");
    Game test;
    test = newGame(DEFAULT_DISCIPLINES,DICE_VALUE);
+   
    action obtain_publication;
    obtain_publication.actionCode = OBTAIN_PUBLICATION;
    
