@@ -567,11 +567,14 @@ void makeAction(Game g, action a){
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
             g->player1.GO8s++;
             g->player1.Campuses--; 
-            //need to subtract
+            g->player1.students.MJ=g->player2.students.MJ-2;
+            g->player1.students.MMONEY= g->player2.students.MMONEY-3;
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
             g->player1.arcs++;
+            g->player1.students.BPS--; //need to subtract values from player
+            g->player1.students.BQN--;
          } else if (a.actionCode == START_SPINOFF){
             g->player1.students.MJ--;
             g->player1.students.MTV--;
@@ -619,15 +622,27 @@ void makeAction(Game g, action a){
             coords coord1=translatepath(a.destination);
             g->campusarray[coord1.x][coord1.y]=getWhoseTurn(g);
             g->player2.Campuses++;
+
+            g->player2.students.BPS--; //need to subtract values from player
+            g->player2.students.BQN--;
+            g->player2.students.MJ--;
+            g->player2.students.MTV--:
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
             g->player2.GO8s++;
-            g->player1.Campuses--;
+            g->player2.Campuses--;
+
+            //2mjs 3 mmonneys
+            g->player2.students.MJ=g->player2.students.MJ-2;
+            g->player2.students.MMONEY= g->player2.students.MMONEY-3;
+
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
             g->player2.arcs++;
+            g->player2.students.BPS--; //need to subtract values from player
+            g->player2.students.BQN--;
          } else if (a.actionCode == START_SPINOFF){
             g->player2.students.MJ--;
             g->player2.students.MTV--;
@@ -675,15 +690,24 @@ void makeAction(Game g, action a){
             coords coord1=translatepath(a.destination);
             g->campusarray[coord1.x][coord1.y]=getWhoseTurn(g);
             g->player3.Campuses++;
+
+            g->player3.students.BPS--; //need to subtract values from player
+            g->player3.students.BQN--;
+            g->player3.students.MJ--;
+            g->player3.students.MTV--:
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
             g->player3.GO8s++;
-            g->player1.Campuses--;
+            g->player3.Campuses--;
+            g->player3.students.MJ=g->player2.students.MJ-2;
+            g->player3.students.MMONEY= g->player2.students.MMONEY-3;
          } else if (a.actionCode == OBTAIN_ARC){
             coords coord3=translatepath(a.destination);
             g->arcarray[coord3.x][coord3.y]=getWhoseTurn(g);
             g->player3.arcs++;
+            g->player3.students.BPS--; //need to subtract values from player
+            g->player3.students.BQN--;
          } else if (a.actionCode == START_SPINOFF){
             g->player3.students.MJ--;
             g->player3.students.MTV--;
