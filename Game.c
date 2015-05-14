@@ -761,7 +761,10 @@ void throwDice (Game g, int diceScore){
             addStudent(g,r.b,campusarray[xindex][yindex]);
             addStudent(g,r.c,campusarray[xindex][yindex]);
          }
+         yindex++;
       }
+      xindex++;
+      yindex=0;
    }
 
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
