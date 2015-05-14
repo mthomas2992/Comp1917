@@ -85,3 +85,89 @@
          rightx=INVALID;
          righty=INVALID;         
       } */
+
+
+
+//Prior to pointer hacking
+
+            if (player == UNI_A){
+      if (student == STUDENT_THD){
+         g->player1.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player1.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player1.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player1.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player1.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player1.students.BPS += amount;
+      }
+   }
+   if (player == UNI_B){
+      if (student == STUDENT_THD){
+         g->player2.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player2.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player2.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player2.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player2.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player2.students.BPS += amount;
+      }
+   }
+   if (player == UNI_C){
+      if (student == STUDENT_THD){
+         g->player3.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player3.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player3.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player3.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player3.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player3.students.BPS += amount;
+      }
+   }
+
+//get most arcs prev
+   /*
+   int p1Arcs;
+   int p2Arcs;
+   int p3Arcs;
+
+   int playerWithMostArcs;
+   int mostArcs;
+
+   p1Arcs = g->player1.arcs;
+   p2Arcs = g->player2.arcs;
+   p3Arcs = g->player3.arcs;
+
+   currentMost = g->mostArcs;
+
+
+   mostArcs = p1Arcs;
+   playerWithMostArcs = UNI_A:
+
+   if(p2Arcs > mostArcs){
+
+      mostArcs = p2Arcs;
+      playerWithMostArcs = UNI_B:
+
+   }
+   if(p3Arcs > mostArcs){
+
+      mostArcs = p3Arcs;
+      playerWithMostArcs = UNI_C:
+
+   }
+
+   return playerWithMostArcs;
+   */
+   //Using Corey's logic as it accounts for simultaneous matchings
