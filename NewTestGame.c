@@ -224,6 +224,8 @@ void testgetTurnNumber(void){
    Game test = newGame(disciplines,dice);
    assert(getTurnNumber(test) == -1);
 
+   action obtain_publication; //Not too sure why we need to obtain_publication here.  Did someone try to do Mr.Pass in here?
+
    throwDice(test,dice[0]);
    makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 0);
@@ -451,7 +453,7 @@ void newGametests(void){ //needs to check board is correct, also check prior tha
 
       while(disciplinecheck<=STUDENT_MMONEY){
          if ((disciplinecheck==STUDENT_BPS) || (disciplinecheck==STUDENT_BQN)){
-            assert(getStudents(test,playerx,diciplinecheck)==3);
+            assert(getStudents(test,playerx,disciplinecheck)==3);
          } else if (disciplinecheck==STUDENT_THD) {
             assert(getStudents(test,playerx,disciplinecheck)==0);
          } else {
@@ -460,7 +462,7 @@ void newGametests(void){ //needs to check board is correct, also check prior tha
          disciplinecheck++;
       }
       playerx++;
-      disciplinecheck==STUDENT_THD;
+      disciplinecheck=STUDENT_THD;//There was a '==' here causing an error.  Not too sure why that was there.  This line is weird...
    }
    disposeGame(test);
 }
@@ -540,7 +542,7 @@ void getDisciplinetests(void){
    //check that it can read the given arrays
    int dt=0;
    while (dt<=NUM_REGIONS){
-      assert(getDiscipline(gdt,dt)==diciplinesdt[dt]);
+      assert(getDiscipline(gdt,dt)==disciplinesdt[dt]);
       dt++;
    }
    disposeGame(gdt);
@@ -555,10 +557,10 @@ void getDisciplinetests(void){
    Game gdt2 =newGame (disciplinesdt2, dicedt);
    dt=0;
    while (dt<=NUM_REGIONS){
-      assert(getDiscipline(gdt2,dt)==diciplinesdt2[dt]);
+      assert(getDiscipline(gdt2,dt)==disciplinesdt2[dt]);
       dt++;
    }
-   disposegame(gdt2);
+   disposeGame(gdt2);
 } //can be elaborated on for more thorough testing CHECKED
 
 void getStudentstest(void){
@@ -590,7 +592,7 @@ void getStudentstest(void){
    }
 
    throwDice(gst,1);
-   assert(getStudents())
+   assert(getStudents());
 
 
    //find way to generate data to test this on
