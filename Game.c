@@ -769,9 +769,24 @@ void throwDice (Game g, int diceScore){
 
 }
 
-//needs to be declared
 void addStudent (Game g, int student, int player, int amount){
+   if (player == UNI_A) {
+      player *p = &g->player1;
+   }
+   else if (player == UNI_B) {
+      player *p = &g->player2;
+   }
+   else if (player == UNI_C) {
+      player *p = &g->player3; 
+   }
 
+   p->students.THD += amount;
+   p->students.MMONEY += amount;
+   p->students.MJ += amount;
+   p->students.MTV += amount;
+   p->students.BQN += amount;
+   p->students.BPS += amount;
+   /*
    if (player == UNI_A){
       if (student == STUDENT_THD){
          g->player1.students.THD += amount;
@@ -817,6 +832,7 @@ void addStudent (Game g, int student, int player, int amount){
          g->player3.students.BPS += amount;
       }
    }
+   */
 }
 
 int getARC(Game g, path pathToEdge){
