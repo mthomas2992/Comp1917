@@ -82,8 +82,6 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->mostpubs=NO_ONE;
    g->turncount=-1; //terra nullius
    g->whoseTurn=NO_ONE; //terra nullius
-   g->xcoords=0;
-   g->ycoords=0;
 
    int i=0;
    while(i<NUM_REGIONS){ //input board into struct, might be better in a 2D array
@@ -110,8 +108,8 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    }
 
    //need to intialise hardcoded array
-   region regionarray[5][10];
-   region r;
+   regions regionarray[5][10];
+   regions r;
    /*r.a= /
    r.b=
    r.c=
@@ -133,13 +131,13 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->campusarray[0][10]=INVALID;
    g->campusarray[1][10]=INVALID;
 
-   playerindex=UNI_A
+   int playerindex=UNI_A;
    while (playerindex<=UNI_C){
-      if (player == UNI_A) {
+      if (playerindex == UNI_A) {
          player *p = &g->player1;
-      } else if (player == UNI_B) { //Pointer hack
+      } else if (playerindex == UNI_B) { //Pointer hack
          player *p = &g->player2;
-      } else if (player == UNI_C) {
+      } else if (playerindex == UNI_C) {
          player *p = &g->player3; 
       }
       
@@ -225,7 +223,7 @@ coords translatepath(path arc){
    int tempy=0;
    int approach=DOWN;
    int index=0;
-   while(arc[index]!=NULL)){
+   while(arc[index]!=0){
       //determine approach 
       //There is never a possibility of changing both x and y, therefore it isn't accounted for (yeah it should error trap but its our own function)
       if (prevycoords<ycoords){
