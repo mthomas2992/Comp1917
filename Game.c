@@ -746,10 +746,21 @@ void throwDice (Game g, int diceScore){
    }
    g->mostpubs=getMostPublications(g);
    g->mostarcs=getMostARCs(g);
-
-   if (r.a==STUDENT_THD){
-      //need to write logic which accounts for duplicate regions
+   regions r;
+   // scan through array
+   int xindex=0;
+   int yindex=0;
+   while (xindex<=5){
+      while(yindex<=10){
+         if ((campusarray[xindex][yindex]!=VACANT_VERTEX)&&(campusarray[xindex][yindex]!=INVALID)){
+            r=regionarray[xindex][yindex];
+            addStudent(g,r.a,campusarray[xindex][yindex]);
+            addStudent(g,r.b,campusarray[xindex][yindex]);
+            addStudent(g,r.c,campusarray[xindex][yindex]);
+         }
+      }
    }
+
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
@@ -805,7 +816,7 @@ int getGO8s (Game g, int player){
 int getKPIpoints (Game g, int player){
    int returnVal=0;
    int realreturn=0;
-   int playerindex=UNI_A;
+   //int playerindex=UNI_A;
    //10 kpi for campus
    //20 kpi for go8
    //2 kpi per arc
@@ -813,28 +824,28 @@ int getKPIpoints (Game g, int player){
    //10 kpi for most pubs
    //10 kpi for IP's
    //therefore (lol I am acting like this is some kind of discrete maths proof)
-   while (playerindex<=UNI_C){
-      returnVal=returnVal+10*getCampuses(g,playerindex);
-      returnVal=returnVal+20*getGO8s(g,playerindex);
-      returnVal=returnVal+2*getARCs(g,playerindex);
-      if (getMostPublications(g)==playerindex){
-         returnVal=returnVal+10;
-      }
-      if (getMostARCs(g)==playerindex){
-         returnVal=returnVal+10;
-      }
-      returnVal=returnVal+10*getIPs(g,playerindex);
-
-      if (playerindex==UNI_A){
-         g->player1.KPI=returnVal;
-      } else if (playerindex==UNI_B){
-         g->player2.KPI=returnVal;
-      } else if (playerindex==UNI_C){
-         g->player3.KPI=returnVal;
-      }
-      returnVal=0;
-      playerindex++;
+   //while (playerindex<=UNI_C){
+   returnVal=returnVal+10*getCampuses(g,playerindex);
+   returnVal=returnVal+20*getGO8s(g,playerindex);
+   returnVal=returnVal+2*getARCs(g,playerindex);
+   if (getMostPublications(g)==playerindex){
+      returnVal=returnVal+10;
    }
+   if (getMostARCs(g)==playerindex){
+      returnVal=returnVal+10;
+   }
+   returnVal=returnVal+10*getIPs(g,playerindex);
+
+   if (playerindex==UNI_A){
+      g->player1.KPI=returnVal;
+   } else if (playerindex==UNI_B){
+      g->player2.KPI=returnVal;
+   } else if (playerindex==UNI_C){
+      g->player3.KPI=returnVal;
+   }
+   returnVal=0;
+   //playerindex++;
+   //}
    if (player==UNI_A){
       realreturn= g->player1.KPI;
    } else if (player==UNI_B){
