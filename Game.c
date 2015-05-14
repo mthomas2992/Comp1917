@@ -753,7 +753,7 @@ void throwDice (Game g, int diceScore){
    // scan through array
    int xindex=0;
    int yindex=0;
-   while (xindex<=5){
+   while (xindex<=5){ //check logic
       while(yindex<=10){
          if ((campusarray[xindex][yindex]!=VACANT_VERTEX)&&(campusarray[xindex][yindex]!=INVALID)){
             r=regionarray[xindex][yindex];
@@ -767,6 +767,9 @@ void throwDice (Game g, int diceScore){
       yindex=0;
    }
 
+   if (diceScore==7){
+      
+   }
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
