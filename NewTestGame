@@ -305,8 +305,8 @@ void testgetCampus(void){
    Game test = newGame(disciplines,dice);
    
    path path1 = "RLLLLLL";
-   path path2 = "L";
-   path path3 = "R";
+   path path2 = 'L';
+   path path3 = 'R';
    path path4 = "LRLRL";
    path path5 = "RRLRL";
    path path6 = "RLRLRLRRLR";
@@ -334,8 +334,8 @@ void testgetARC(void){
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
    Game test = newGame(disciplines,dice);
-   path path1 = "L";
-   path path2 = "R";
+   path path1 = 'L';
+   path path2 = 'R';
    path path3 = "RL";
    path path4 = "LR";
    path path5 = "LRRRL";
@@ -428,65 +428,43 @@ void testgetPublications(void){
 }
 //Matts tests
 void newGametests(void){ //needs to check board is correct, also check prior that game is null
-   int disciplinesgt[] = DEFAULT_DISCIPLINES;
-   int dicegt[] = DEFAULT_DICE;
-   Game gnt =newGame (disciplinesgt, dicegt);
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game test = newGame(disciplines, dice);
    
-   //ensure starting values are completley empty
-   assert(getMostARCs(gnt)==0);
-   assert(getMostPublications(gnt)==0);
-   assert(getTurnNumber(gnt)==-1); // first turn is identified as -1
-   assert(getWhoseTurn(gnt)==NO_ONE);
+   //ensure starting values are completely empty
+   assert(getMostARCs(test)==0);
+   assert(getMostPublications(test)==0);
+   assert(getTurnNumber(test)==-1); // first turn is identified as -1
+   assert(getWhoseTurn(test)==NO_ONE);
+   
    //check that each player is at the initial for all their values
-   int playerx=UNI_A;
-   int diciplinecheck=STUDENT_THD;
-   while (playerx<=UNI_C){
-      assert(getKPIpoints(gnt,playerx)==20);
-      assert(getARCs(gnt,playerx)==0);
-      assert(getGO8s(gnt,playerx)==0);
-      assert(getCampuses(gnt,playerx)==2);
-      assert(getIPs(gnt,playerx)==0):
-      assert(getPublications(gnt,playerx)==0);
-      while(diciplinecheck<=STUDENT_MMONEY){
+   int playerx = UNI_A;
+   int disciplinecheck = STUDENT_THD;
+   while (playerx <= UNI_C){
+      assert(getKPIpoints(test,playerx)==20);
+      assert(getARCs(test,playerx)==0);
+      assert(getGO8s(test,playerx)==0);
+      assert(getCampuses(test,playerx)==2);
+      assert(getIPs(test,playerx)==0);
+      assert(getPublications(test,playerx)==0);
+	  
+      while(disciplinecheck<=STUDENT_MMONEY){
          if ((diciplinecheck==STUDENT_BPS) || (diciplinecheck==STUDENT_BQN)){
-            assert(getStudents(gnt,playerx,diciplinecheck)==3);
+            assert(getStudents(test,playerx,diciplinecheck)==3);
          } else if (diciplinecheck==STUDENT_THD) {
-            assert(getStudents(gnt,playerx,diciplinecheck)==0);
-         } else{
-            assert(getStudents(gnt,playerx,diciplinecheck)==1);
+            assert(getStudents(test,playerx,diciplinecheck)==0);
+         } else {
+            assert(getStudents(test,playerx,diciplinecheck)==1);
          }
-         diciplinecheck++
+         diciplinecheck++;
       }
       playerx++;
       diciplinecheck==STUDENT_THD;
    }
-   //Vertex generator/checker VERY VERY VERY DODGY ONLY CHECKS CONSTANT LEFTS COMMENTED OUT DUE TO POSSIBLE EXTREME LOGIC ERRORS
-   /*int pathcount=0;
-   path pathtest;  //unsure about syntax
-   while (pathcount<PATH_LIMIT){
-      pathtest[pathcount]='L';
-      assert(getCampus(gnt,pathtest)==VACANT_VERTEX);
-      pathcount++
-   }*/
-   //check exchange rate for all players
-   int diciplinecheck2=1;
-   int diciplinecheck3=1;
-   playerx=UNI_A;
-   while (playerx<=UNI_C){
-      while(diciplinecheck2<=STUDENT_MMONEY){
-         while(diciplinecheck3<=STUDENT_MMONEY){
-            assert(getExchangeRate(gnt,playerx,diciplinecheck2,diciplinecheck3)==3); //assumes default exchange rate is 3
-            diciplinecheck3++;
-         }
-         diciplinecheck2++;
-         diciplinecheck3=1;
-      }
-      playerx++;
-      diciplinecheck2=1;
-      diciplinecheck3=1;
-   }
-   disposeGame(gnt);
-} //Needs checking once functional add getwhose turn test CHECKED
+   disposeGame(test);
+} 
+
 void makeActiontests(void){
    int disciplinesat[] = DEFAULT_DISCIPLINES;
    int diceat[] = DEFAULT_DICE;
@@ -562,7 +540,7 @@ void getDisciplinetests(void){
    //check that it can read the given arrays
    int dt=0;
    while (dt<=NUM_REGIONS){
-      assert(getDiscipline(gdt,diciplinesdt[dt])==diciplinesdt[dt]);
+      assert(getDiscipline(gdt,dt)==diciplinesdt[dt]);
       dt++;
    }
    disposeGame(gdt);
@@ -577,10 +555,10 @@ void getDisciplinetests(void){
    Game gdt2 =newGame (disciplinesdt2, dicedt);
    dt=0;
    while (dt<=NUM_REGIONS){
-      assert(getDiscipline(gdt2,diciplinesdt2[dt])==diciplinesdt2[dt]);
+      assert(getDiscipline(gdt2,dt)==diciplinesdt2[dt]);
       dt++;
    }
-
+   disposegame(gdt2);
 } //can be elaborated on for more thorough testing CHECKED
 
 void getStudentstest(void){
@@ -610,6 +588,9 @@ void getStudentstest(void){
       playerz++;
       disciplinecount=0;
    }
+   
+   throwDice(gst,1);
+   assert(getStudents())
 
 
    //find way to generate data to test this on
@@ -674,11 +655,24 @@ void isLegalActiontests(void){
    disposeGame(gla);
 } //CHECKED
 
-//void getExchangeRatetests(void){
-   //intially already checked in newGametests function
-   //therefore this function needs to check if this works after a retrain center is used? But how to know if a retrain center is connected
+void getExchangeRatetests(void){
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game test = newGame(disciplines,dice);
+   
+   throwDice(test,1);
+   assert(getExchangeRate(test, UNI_A, STUDENT_BPS, STUDENT_MTV)==2);
+   assert(getExchangeRate(test, UNI_A, STUDENT_BQN, STUDENT_MTV)==2);
+   assert(getExchangeRate(test, UNI_A, STUDENT_BPS, STUDENT_MMONEY)==3);
+   assert(getExchangeRate(test, UNI_A, STUDENT_BQN, STUDENT_MMONEY)==3);
+   
+   assert(getExchangeRate(test, UNI_B, STUDENT_BPS, STUDENT_BQN)==2);
+   assert(getExchangeRate(test, UNI_B, STUDENT_MJ, STUDENT_BQN)==2);
+   assert(getExchangeRate(test, UNI_B, STUDENT_BPS, STUDENT_MMONEY)==3);
+   assert(getExchangeRate(test, UNI_B, STUDENT_BPS, STUDENT_MTV)==3);
 
-//}
+   disposeGame(test);
+}
 
 //Inputs: Game g, int player
 void testGetKPIpoints (void){
