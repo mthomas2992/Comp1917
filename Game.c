@@ -766,9 +766,28 @@ void throwDice (Game g, int diceScore){
       xindex++;
       yindex=0;
    }
+   int wipeMMONNEY=0;
+   int wipeMTV=0;
+   int wipeMTV2=0;
+   int wipeMMONNEY2=0;
 
    if (diceScore==7){
-      
+      //need to reset MTV's and MMONNEYs
+      //add difference to THDS
+      if (player == UNI_A) { //1337 pointer hacking
+      player *p = &g->player1;
+      } else if (player == UNI_B) {
+         player *p = &g->player2;
+      } else if (player == UNI_C) {
+         player *p = &g->player3; 
+      }
+      wipeMMONNEY=p->students.MMONEY;
+      wipeMTV=p->students.MTV;
+      wipeMMONNEY2=wipeMMONNEY-2*wipeMMONNEY;
+      wipeMTV2=wipeMTV-2*wipeMTV;
+      addStudent(g,STUDENT_MMONEY,player,wipeMMONNEY2);
+      addStudent(g,STUDENT_MTV,player,wipeMTV2);
+      addStudent(g,STUDENT_THD,player,wipeMTV+wipeMMONNEY);
    }
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
