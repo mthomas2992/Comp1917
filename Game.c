@@ -60,6 +60,9 @@ typedef struct _game {
    int campusarray [5][10];
 } game;
 
+void addStudent (Game g, int student, int player, int amount);
+coords translatepath(path arc);
+
 //int makeActionipubs (int action);
 
 /*int main (int argc, char *argv[]) {
@@ -764,6 +767,56 @@ void throwDice (Game g, int diceScore){
    //This is a highly important function that drives the game, I have no idea how its called or anything because of the lack of documentation from course
    //needs to advance several values, check maxs, calculate KPI's, add students based on surrounding regions FUCK this I got 30 min.
 
+}
+
+//needs to be declared
+void addStudent (Game g, int student, int player, int amount){
+
+   if (player == UNI_A){
+      if (student == STUDENT_THD){
+         g->player1.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player1.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player1.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player1.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player1.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player1.students.BPS += amount;
+      }
+   }
+   if (player == UNI_B){
+      if (student == STUDENT_THD){
+         g->player2.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player2.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player2.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player2.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player2.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player2.students.BPS += amount;
+      }
+   }
+   if (player == UNI_C){
+      if (student == STUDENT_THD){
+         g->player3.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player3.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player3.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player3.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player3.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player3.students.BPS += amount;
+      }
+   }
 }
 
 int getARC(Game g, path pathToEdge){
