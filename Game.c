@@ -828,10 +828,6 @@ void throwDice (Game g, int diceScore){
       xindex++;
       yindex=0;
    }
-   int wipeMMONNEY=0;
-   int wipeMTV=0;
-   int wipeMTV2=0;
-   int wipeMMONNEY2=0;
 
    if (diceScore==7){
       if (player == UNI_A) { //1337 pointer hacking
