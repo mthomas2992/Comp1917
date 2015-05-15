@@ -341,12 +341,12 @@ int isLegalAction (Game g, action a){
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
-            } else if ((x==0)||(x==2)||(x==4))&&(y%2==0)){
+            } else if (((x==0)||(x==2)||(x==4))&&(y%2==0)){
                w=x+1;
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
-            } else if ((x==0)||(x==2)||(x==4))&&(y%2!=0)){
+            } else if (((x==0)||(x==2)||(x==4))&&(y%2!=0)){
                w=x-1;
                if (arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
