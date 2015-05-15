@@ -394,12 +394,12 @@ int isLegalAction (Game g, action a){
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
-         } else if (((x==0)||(x==2)||(x==4))&&(y%2==0))){
+         } else if ((x%2==0)&&(y%2==0)){
             w=x+1;
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
-         } else if (((x==0)||(x==2)||(x==4))&&(y%2!=0)){
+         } else if ((x%2==0)&&(y%2!=0)){
             w=x-1;
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
@@ -935,7 +935,7 @@ int getMostARCs (Game g){
          mostArcsLocal = UNI_C;
       }
    //Here we know player2.Pubs >= player1.Pubs
-   } else if (p1Arcs == p2Arcs){
+   } else if (p1Arcs == p2Arcs) {
       mostArcsLocal = currentMostArcs;
    } else if ((p2Arcs) > (p3Arcs)){
       mostArcsLocal = UNI_B;
