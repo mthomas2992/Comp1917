@@ -131,7 +131,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->campusarray[0][10]=INVALID;
    g->campusarray[1][10]=INVALID;
 
-   int playerindex=UNI_A;
+   /*int playerindex=UNI_A;
    while (playerindex<=UNI_C){
       if (playerindex == UNI_A) {
          player *p = &g->player1;
@@ -155,8 +155,8 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
       p->students.MMONEY=0;
 
       playerindex++;
-   }
-   /*
+   }*/
+
    //player one 
    g->player1.KPI=20;
    g->player1.arcs=0;
@@ -198,7 +198,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->player3.students.MJ=0;
    g->player3.students.MTV=0;
    g->player3.students.MMONEY=0;
-   */
+   
    return g;
 }
 
