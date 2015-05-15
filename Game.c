@@ -198,7 +198,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->player3.students.MJ=0;
    g->player3.students.MTV=0;
    g->player3.students.MMONEY=0;
-   
+
    return g;
 }
 
@@ -217,8 +217,6 @@ coords translatepath(path arc){
    int lefty=0;
    int rightx=0;
    int righty=0;
-   int backx=0;
-   int backy=0;
    int tempx=0;
    int tempy=0;
    int approach=DOWN;
@@ -236,49 +234,50 @@ coords translatepath(path arc){
          approach=LEFT;
       }
       //Compressed code, uncompressed found in other file
-      if (((approach==DOWN)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){ //EVENS EVENS and ODDS ODDS
+      if (((approach==DOWN)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==DOWN)&&(xcoords%2==1)&&(ycoords%2!=0))){ //EVENS EVENS and ODDS ODDS
          leftx=xcoords+1;
          lefty=ycoords;
          rightx=xcoords;
          righty=ycoords+1;
-      } else if (((approach==UP)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==UP)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+      } else if (((approach==UP)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==UP)&&(xcoords%2==1)&&(ycoords%2!=0))){
          leftx=xcoords;
          lefty=ycoords-1;
          rightx=xcoords+1;
          righty=ycoords;
-      } else if (((approach==RIGHT)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+      } else if (((approach==RIGHT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2!=0))){
          leftx=xcoords;
          lefty=ycoords-1;
          rightx=xcoords;
          righty=ycoords+1;
-      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2==0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2!=0))){
+      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2!=0))){
          //avoiding combining the invalid statements as they are so damn long
          leftx=INVALID; //if this happens it should be picked up by the islegalfunction
          lefty=INVALID;
          rightx=INVALID;
          righty=INVALID;
-      } else if (((approach==DOWN)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==DOWN)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){ //EVENS ODDS
+      } else if (((approach==DOWN)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==DOWN)&&(xcoords%2==1)&&(ycoords%2==0))){ //EVENS ODDS
          leftx=xcoords;
          lefty=ycoords+1;
          rightx=xcoords-1;
          righty=ycoords;
-      } else if (((approach==UP)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==UP)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+      } else if (((approach==UP)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==UP)&&(xcoords%2==1)&&(ycoords%2==0))){
          leftx=xcoords-1;
          lefty=ycoords;
          rightx=xcoords;
          righty=ycoords-1;
-      } else if (((approach==RIGHT)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==RIGHT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+      } else if (((approach==RIGHT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2==0))){
          //not possible DOUBLE CHECK
          leftx=INVALID;
          lefty=INVALID;
          rightx=INVALID;
          righty=INVALID;
-      } else if (((approach==LEFT)&&(xcoords==0)||(xcoords==2)||(xcoords==4))&&(ycoords%2!=0))||((approach==LEFT)&&((xcoords==3)||(xcoords==1)||(xcoords==5))&&(ycoords%2==0))){
+      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==LEFT)&&(xcoords%2==1)&&(ycoords%2==0))){
          leftx=xcoords;
          lefty=ycoords-1;
          rightx=xcoords;
          righty=ycoords+1;
-      }
+      } 
+
       //assuming new coords have been obtained
       if (arc[index]=='L'){
          prevxcoords=xcoords;
@@ -314,7 +313,7 @@ int isLegalAction (Game g, action a){
    int w=0;
    int player = getWhoseTurn(g);
    coords coord;
-   if (a.actioncode==OBTAIN_ARC){ //currently this assumes arcs are like vertex's and their points ARCS REPED BY THE VERTEXS THEY CONNECT
+   if (a.actionCode==OBTAIN_ARC){ //currently this assumes arcs are like vertex's and their points ARCS REPED BY THE VERTEXS THEY CONNECT
       if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(a.destination[0]!='B') && sizeof(a.destination)<=PATH_LIMIT){ //gate to ensure sufficient students & valid path
          coord=translatepath(a.destination); //translate action a and return coords in terms of x and y
          x=coord.x;
@@ -356,17 +355,17 @@ int isLegalAction (Game g, action a){
          }
          //also needs to check if a vacant arc first
       }
-   } else if (a.actioncode==RETRAIN_STUDENTS){
+   } else if (a.actionCode==RETRAIN_STUDENTS){
       if ((a.disciplineFrom>=getExchangeRate(g,player,a.disciplineFrom,a.diciplineTo)) && (a.disciplineFrom!=STUDENT_THD)){ //checks not THD and above rate
          legal=TRUE;
       }
-   } else if (a.actioncode==PASS){
+   } else if (a.actionCode==PASS){
       legal=TRUE;
-   } else if (a.actioncode==START_SPINOFF){
+   } else if (a.actionCode==START_SPINOFF){
       if((getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)&&(getStudents(g,player,STUDENT_MMONEY)>=1)){
          legal=TRUE;
       }
-   } else if (a.actioncode==BUILD_CAMPUS){
+   } else if (a.actionCode==BUILD_CAMPUS){
       if ((getStudents(g,player,STUDENT_BPS)>=1)&&(getStudents(g,player,STUDENT_BQN)>=1)&&(getStudents(g,player,STUDENT_MJ)>=1)&&(getStudents(g,player,STUDENT_MTV)>=1)&& (getARC(g,a.destination)==player)){ //gate, also uses getARC
          // need to also check no campuses within surounding area using similar scanning technique to arcs
          coord=translatepath(a.destination); //translate given path into 2d array point
@@ -407,7 +406,7 @@ int isLegalAction (Game g, action a){
             }
          }
       }
-   } else if (a.actioncode==BUILD_GO8){
+   } else if (a.actionCode==BUILD_GO8){
       if ((getStudents(g,player,STUDENT_MJ)>=2)&&(getStudents(g,player,STUDENT_MMONEY)>=3)&&(player==getCampus(g,a.destination))){
          legal=TRUE;
       } //uses getcampus function
