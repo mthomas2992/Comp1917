@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 
 #include "Game.h"
 
@@ -515,7 +516,7 @@ int getDiceValue (Game g, int regionID) {
 int getIPs (Game g, int player) {
    int playerIPs = 0;
    if (player == UNI_A) {
-      playerIPs = g->player1.IPs
+      playerIPs = g->player1.IPs;
    } else if (player == UNI_B) {
       playerIPs = g->player2.IPs;
    } else if (player == UNI_C) {
@@ -530,15 +531,15 @@ int getIPs (Game g, int player) {
 // on what retraining centers, if any, they have a campus at.
 int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
    int exchangerate = DEFAULT_EXCHANGE; //checks if campuses are on retrain areas, if they are sets it lower
-   if (((getCampus(g,'R') == player) || (getCampus(g,'RR') == player)) && (disciplineFrom == STUDENT_MTV)) {
+   if (((getCampus(g,'R') == player) || (getCampus(g,"RR") == player)) && (disciplineFrom == STUDENT_MTV)) {
       exchangerate = RETRAIN_EXCHANGE;
-   } else if (((getCampus(g,'LL') == player) || (getCampus(g,'LLL') == player)) && (disciplineFrom == STUDENT_MMONEY)) {
+   } else if (((getCampus(g,"LL") == player) || (getCampus(g,"LLL") == player)) && (disciplineFrom == STUDENT_MMONEY)) {
       exchangerate = RETRAIN_EXCHANGE;
-   } else if (((getCampus(g,'RRRLRLRLR') == player) || (getCampus(g,'RRRLRLRLRL') == player)) && (disciplineFrom==STUDENT_BPS)) {
+   } else if (((getCampus(g,"RRRLRLRLR") == player) || (getCampus(g,"RRRLRLRLRL") == player)) && (disciplineFrom==STUDENT_BPS)) {
       exchangerate = RETRAIN_EXCHANGE;
-   } else if (((getCampus(g,'LLLLRLRLRL') == player) || (getCampus(g,'LLLLRLRLRLR') == player)) && (disciplineFrom == STUDENT_MJ)) {
+   } else if (((getCampus(g,"LLLLRLRLRL") == player) || (getCampus(g,"LLLLRLRLRLR") == player)) && (disciplineFrom == STUDENT_MJ)) {
       exchangerate = RETRAIN_EXCHANGE;
-   } else if (((getCampus(g,'RRRLRR') == player) || (getCampus(g,'RRRLRRR') == player)) && (disciplineFrom == STUDENT_BQN)){
+   } else if (((getCampus(g,"RRRLRR") == player) || (getCampus(g,"RRRLRRR") == player)) && (disciplineFrom == STUDENT_BQN)){
       exchangerate = RETRAIN_EXCHANGE;
    }
    return exchangerate;
@@ -599,7 +600,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               g->player1.student.BPS++;
+               g->player1.students.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player1.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -667,7 +668,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               g->player2.student.BPS++;
+               g->player2.students.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player2.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -691,7 +692,7 @@ void makeAction(Game g, action a){
             g->player3.students.BPS--; //need to subtract values from player
             g->player3.students.BQN--;
             g->player3.students.MJ--;
-            g->player3.students.MTV--:
+            g->player3.students.MTV--;
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
@@ -732,7 +733,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               g->player3.student.BPS++;
+               g->player3.students.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player3.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -774,7 +775,7 @@ int getMostPublications(Game g){
    } else if((P2Pubs) > (P3Pubs)){
       mostPubsLocal = UNI_B;
    } else if((P2Pubs) == (P3Pubs)){
-      mostPubsLocal = currentmostPubsLocal;
+      mostPubsLocal = currentmostPubs;
    } else{
       mostPubsLocal = UNI_C;
    }
@@ -794,7 +795,7 @@ int getWhoseTurn(Game g){
 int getCampus (Game g, path pathToVertex){
    coords coord;
    coord=translatepath(pathToVertex);
-   return campusarray[coord.x][coord.y];
+   return g->campusarray[coord.x][coord.y];
 }
 
 int getDiscipline (Game g, int regionID){
@@ -803,7 +804,7 @@ int getDiscipline (Game g, int regionID){
 
 void throwDice (Game g, int diceScore){
    //this needs alot more logic
-   g->turnCount++;
+   g->turncount++;
    g->whoseTurn++;
 
    if (g->whoseTurn > UNI_C){
