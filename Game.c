@@ -759,7 +759,7 @@ int getMostPublications(Game g){
       mostPubsLocal = NO_ONE;
    }
 
-   if((P1Pubs) > (P2Pubs)){
+   if ((P1Pubs) > (P2Pubs)) {
    //Here we know player1.Pubs > player2.Pubs
       if((P1Pubs) > (P3Pubs)){
          mostPubsLocal = UNI_A;
@@ -819,9 +819,9 @@ void throwDice (Game g, int diceScore){
       while(yindex<=10){
          if ((campusarray[xindex][yindex]!=VACANT_VERTEX)&&(campusarray[xindex][yindex]!=INVALID)){
             r=regionarray[xindex][yindex];
-            addStudent(g,r.a,campusarray[xindex][yindex]);
-            addStudent(g,r.b,campusarray[xindex][yindex]);
-            addStudent(g,r.c,campusarray[xindex][yindex]);
+            addStudent(g,r.a,campusarray[xindex][yindex],1);
+            addStudent(g,r.b,campusarray[xindex][yindex],1);
+            addStudent(g,r.c,campusarray[xindex][yindex],1);
          }
          yindex++;
       }
@@ -925,23 +925,23 @@ int getMostARCs (Game g){
       mostArcsLocal = NO_ONE;
    }
 
-   if((p1Arcs)) > (p2Arcs)){
+   if((p1Arcs) > (p2Arcs)){
    //Here we know player1.Pubs > player2.Pubs
       if((p2Arcs) > (p3Arcs)){
-         mostPubsLocal = UNI_A;
+         mostArcsLocal = UNI_A;
       } else if((p1Arcs) == (p3Arcs)){
          mostArcsLocal = currentMostArcs;
       } else {
          mostArcsLocal = UNI_C;
       }
    //Here we know player2.Pubs >= player1.Pubs
-   }else if(p1Arcs == p2Arcs){
+   } else if (p1Arcs == p2Arcs){
       mostArcsLocal = currentMostArcs;
-   }else if((p2Arcs) > (p3Arcs)){
+   } else if ((p2Arcs) > (p3Arcs)){
       mostArcsLocal = UNI_B;
-   }else if((p2Arcs) == (p3Arcs)){
+   } else if ((p2Arcs) == (p3Arcs)){
       mostArcsLocal = currentmostArcs;
-   }else{
+   } else {
       mostArcsLocal = UNI_C;
    }
    return mostArcsLocal;
