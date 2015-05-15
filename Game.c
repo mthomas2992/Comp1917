@@ -394,12 +394,12 @@ int isLegalAction (Game g, action a){
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
-         } else if ((x==0)||(x==2)||(x==4))&&(y%2==0)){
+         } else if (((x==0)||(x==2)||(x==4))&&(y%2==0))){
             w=x+1;
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
-         } else if ((x==0)||(x==2)||(x==4))&&(y%2!=0)){
+         } else if (((x==0)||(x==2)||(x==4))&&(y%2!=0)){
             w=x-1;
             if (campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
@@ -599,7 +599,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               player1.student.BPS++;
+               g->player1.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player1.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -623,7 +623,7 @@ void makeAction(Game g, action a){
             g->player2.students.BPS--; //need to subtract values from player
             g->player2.students.BQN--;
             g->player2.students.MJ--;
-            g->player2.students.MTV--:
+            g->player2.students.MTV--;
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
@@ -667,7 +667,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               player2.student.BPS++;
+               g->player2.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player2.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -732,7 +732,7 @@ void makeAction(Game g, action a){
             }
 
             if (a.disciplineTo == STUDENT_BPS){
-               player3.student.BPS++;
+               g->player3.student.BPS++;
             } else if (a.disciplineTo == STUDENT_BQN){
                g->player3.students.BQN++;
             } else if (a.disciplineTo == STUDENT_MJ){
@@ -755,11 +755,11 @@ int getMostPublications(Game g){
    int currentMostPubs = g->mostpubs;
    int mostPubsLocal = NO_ONE;
 
-   if((P1Pubs == 0)&&(P2Pubs == 0)&&(P3Pubs == 0)){
+   if ((P1Pubs == 0)&&(P2Pubs == 0)&&(P3Pubs == 0)){
       mostPubsLocal = NO_ONE;
    }
 
-   if((P1Pubs)) > (P2Pubs)){
+   if((P1Pubs) > (P2Pubs)){
    //Here we know player1.Pubs > player2.Pubs
       if((P1Pubs) > (P3Pubs)){
          mostPubsLocal = UNI_A;
@@ -769,13 +769,13 @@ int getMostPublications(Game g){
          mostPubsLocal = UNI_C;
       }
    //Here we know player2.Pubs >= player1.Pubs
-   }else if(P1Pubs == P2Pubs){
+   } else if(P1Pubs == P2Pubs){
       mostPubsLocal = currentMostPubs;
-   }else if((P2Pubs) > (P3Pubs)){
+   } else if((P2Pubs) > (P3Pubs)){
       mostPubsLocal = UNI_B;
-   }else if((P2Pubs) == (P3Pubs)){
+   } else if((P2Pubs) == (P3Pubs)){
       mostPubsLocal = currentmostPubsLocal;
-   }else{
+   } else{
       mostPubsLocal = UNI_C;
    }
    return mostPubsLocal;
