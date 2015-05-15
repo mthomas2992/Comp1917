@@ -63,6 +63,7 @@ typedef struct _game {
    //going to need 2 2d int arrays to store both the arc and campus array
    int arcarray [5][10];
    int campusarray [5][10];
+   regions regionarray[5][10];
 } game;
 
 void addStudent (Game g, int student, int player, int amount);
@@ -775,7 +776,7 @@ int getMostPublications(Game g){
    } else if((P2Pubs) > (P3Pubs)){
       mostPubsLocal = UNI_B;
    } else if((P2Pubs) == (P3Pubs)){
-      mostPubsLocal = currentmostPubs;
+      mostPubsLocal = currentMostPubs;
    } else{
       mostPubsLocal = UNI_C;
    }
@@ -821,23 +822,24 @@ void throwDice (Game g, int diceScore){
       while(yindex<=10){
          if ((g->campusarray[xindex][yindex]!=VACANT_VERTEX)&&(g->campusarray[xindex][yindex]!=INVALID)){
             r=g->regionarray[xindex][yindex];
-            addStudent(g,r.a,campusarray[xindex][yindex],1);
-            addStudent(g,r.b,campusarray[xindex][yindex],1);
-            addStudent(g,r.c,campusarray[xindex][yindex],1);
+            addStudent(g,r.a,g->campusarray[xindex][yindex],1);
+            addStudent(g,r.b,g->campusarray[xindex][yindex],1);
+            addStudent(g,r.c,g->campusarray[xindex][yindex],1);
          }
          yindex++;
       }
       xindex++;
       yindex=0;
    }
+   player *p
 
    if (diceScore==7){
       if (player == UNI_A) { //1337 pointer hacking
-         player *p = &g->player1; //makes the pointer equal to the memory location of player1, so you can shortcut to it with the p pointer
+         *p = &g->player1; //makes the pointer equal to the memory location of player1, so you can shortcut to it with the p pointer
       } else if (player == UNI_B) {
-         player *p = &g->player2;
+         *p = &g->player2;
       } else if (player == UNI_C) {
-         player *p = &g->player3; 
+         *p = &g->player3; 
       }
       p->students.THD=p->students.THD+p->students.MMONEY+p->students.MTV;
       p->students.MMONEY=0;
