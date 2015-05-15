@@ -810,6 +810,7 @@ void throwDice (Game g, int diceScore){
    if (g->whoseTurn > UNI_C){
        g->whoseTurn = UNI_A;
    }
+   int player=getWhoseTurn(g);
    g->mostpubs=getMostPublications(g);
    g->mostarcs=getMostARCs(g);
    regions r;
@@ -818,8 +819,8 @@ void throwDice (Game g, int diceScore){
    int yindex=0;
    while (xindex<=5){ //check logic
       while(yindex<=10){
-         if ((campusarray[xindex][yindex]!=VACANT_VERTEX)&&(campusarray[xindex][yindex]!=INVALID)){
-            r=regionarray[xindex][yindex];
+         if ((g->campusarray[xindex][yindex]!=VACANT_VERTEX)&&(g->campusarray[xindex][yindex]!=INVALID)){
+            r=g->regionarray[xindex][yindex];
             addStudent(g,r.a,campusarray[xindex][yindex],1);
             addStudent(g,r.b,campusarray[xindex][yindex],1);
             addStudent(g,r.c,campusarray[xindex][yindex],1);
@@ -864,10 +865,9 @@ void addStudent (Game g, int student, int player, int amount){
 int getARC(Game g, path pathToEdge){
    coords coord;
    coord=translatepath(pathToEdge);
-   return arcarray[coord.x][coord.y];
+   return g->arcarray[coord.x][coord.y];
 }
 
-}
 int getGO8s (Game g, int player){
    int returnVal=INVALID;
    if (player == UNI_A){
@@ -902,7 +902,7 @@ int getKPIpoints (Game g, int player){
       returnVal=returnVal+10;
    }
    returnVal=returnVal+10*getIPs(g,player);
-
+   int playerindex=getWhoseTurn(g);
    if (playerindex==UNI_A){
       g->player1.KPI=returnVal;
    } else if (playerindex==UNI_B){
@@ -941,7 +941,7 @@ int getMostARCs (Game g){
    } else if ((p2Arcs) > (p3Arcs)){
       mostArcsLocal = UNI_B;
    } else if ((p2Arcs) == (p3Arcs)){
-      mostArcsLocal = currentmostArcs;
+      mostArcsLocal = currentMostArcs;
    } else {
       mostArcsLocal = UNI_C;
    }
