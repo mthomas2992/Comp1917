@@ -558,7 +558,7 @@ void makeAction(Game g, action a){
             g->player1.students.BPS--; //need to subtract values from player
             g->player1.students.BQN--;
             g->player1.students.MJ--;
-            g->player1.students.MTV--:
+            g->player1.students.MTV--;
          } else if (a.actionCode == BUILD_GO8){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
@@ -922,7 +922,7 @@ int getMostARCs (Game g){
    int p2Arcs = g->player2.arcs;
    int p3Arcs = g->player3.arcs;
 
-   int currentMostArcs = g->mostArcs;
+   int currentMostArcs = g->mostarcs;
    int mostArcsLocal = NO_ONE;
 
    if((p1Arcs == 0)&&(p2Arcs == 0)&&(p3Arcs == 0)){
@@ -933,9 +933,9 @@ int getMostARCs (Game g){
    //Here we know player1.Pubs > player2.Pubs
       if((p2Arcs) > (p3Arcs)){
          mostPubsLocal = UNI_A;
-      }else if((p1Arcs) == (p3Arcs)){
+      } else if((p1Arcs) == (p3Arcs)){
          mostArcsLocal = currentMostArcs;
-      }else{
+      } else {
          mostArcsLocal = UNI_C;
       }
    //Here we know player2.Pubs >= player1.Pubs
