@@ -318,37 +318,37 @@ int isLegalAction (Game g, action a){
          coord=translatepath(a.destination); //translate action a and return coords in terms of x and y
          x=coord.x;
          y=coord.y;
-         if (arcarray[x][y]==VACANT_VERTEX){ //SCANS SURROUNDINGS FOR OTHER MATCHING ARCS RETURNS TRUE IF ONE IS FOUND
+         if (g->arcarray[x][y]==VACANT_VERTEX){ //SCANS SURROUNDINGS FOR OTHER MATCHING ARCS RETURNS TRUE IF ONE IS FOUND
             if (y!=0){
                w=y-1;
-               if (arcarray[x][w]==getWhoseTurn(g)){ //REMOVE NEED FOR VALID POINT FUNCTION BY INITIALISING ARRAY TO HAVE AN IMPOSSIBLE VALUE (10) IN THE INVALID POINTS
+               if (g->arcarray[x][w]==getWhoseTurn(g)){ //REMOVE NEED FOR VALID POINT FUNCTION BY INITIALISING ARRAY TO HAVE AN IMPOSSIBLE VALUE (10) IN THE INVALID POINTS
                   legal=TRUE;
                }
             }
             if (y!=10){
                w=y+1;
-               if (arcarray[x][w]==getWhoseTurn(g)){
+               if (g->arcarray[x][w]==getWhoseTurn(g)){
                   legal=TRUE;
                }
             }
             if (((x==3)||(x==1)||(x==5))&&(y%2==0)){ //checks for odd column, even row do some logic testing on these
                w=x-1;
-               if (arcarray[w][y]==getWhoseTurn(g)){
+               if (g->arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
             } else if (((x==3)||(x==1)||(x==5))&&(y%2!=0)) {
                w=x+1;
-               if (arcarray[w][y]==getWhoseTurn(g)){
+               if (g->arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
             } else if (((x==0)||(x==2)||(x==4))&&(y%2==0)){
                w=x+1;
-               if (arcarray[w][y]==getWhoseTurn(g)){
+               if (g->arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
             } else if (((x==0)||(x==2)||(x==4))&&(y%2!=0)){
                w=x-1;
-               if (arcarray[w][y]==getWhoseTurn(g)){
+               if (g->arcarray[w][y]==getWhoseTurn(g)){
                   legal=TRUE;
                }
             }
@@ -374,34 +374,34 @@ int isLegalAction (Game g, action a){
          legal=TRUE; //sets to true for proving wrong
          if (y!=0){ //Scans for nearby campus's
             w=y-1;
-            if (campusarray[x][w]==getWhoseTurn(g)){ //CAN PROBS COMPILE THIS INTO ITS OWN FUNCTION CALLED SCAN WHICH TAKES location, type to scan for and returns true if one is found, false if none.
+            if (g->campusarray[x][w]==getWhoseTurn(g)){ //CAN PROBS COMPILE THIS INTO ITS OWN FUNCTION CALLED SCAN WHICH TAKES location, type to scan for and returns true if one is found, false if none.
                legal=FALSE;
             }
          }
          if (y!=10){
             w=y+1;
-            if (campusarray[x][w]==getWhoseTurn(g)){
+            if (g->campusarray[x][w]==getWhoseTurn(g)){
                legal=FALSE;
             }
          }
          if (((x==3)||(x==1)||(x==5))&&(y%2==0)){
             w=x-1;
-            if (campusarray[w][y]==getWhoseTurn(g)){
+            if (g->campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
          } else if (((x==3)||(x==1)||(x==5))&&(y%2!=0)) {
             w=x+1;
-            if (campusarray[w][y]==getWhoseTurn(g)){
+            if (g->campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
          } else if ((x%2==0)&&(y%2==0)){
             w=x+1;
-            if (campusarray[w][y]==getWhoseTurn(g)){
+            if (g->campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
          } else if ((x%2==0)&&(y%2!=0)){
             w=x-1;
-            if (campusarray[w][y]==getWhoseTurn(g)){
+            if (g->campusarray[w][y]==getWhoseTurn(g)){
                legal=FALSE;
             }
          }
