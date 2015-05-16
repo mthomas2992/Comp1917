@@ -136,6 +136,8 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    r.b=3;
    g->regionarray[1][1]=r;
 
+   
+
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
    g->arcarray[5][0]=INVALID;
