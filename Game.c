@@ -6,7 +6,7 @@
 
 #include "Game.h"
 
-#define INVALID 10
+#define INVALID 20
 
 #define UP 1
 #define DOWN 2
@@ -96,6 +96,7 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    int z=0;
    while (i<=5){ //this initialises on the y axis traverse rather then x, should be fine though
       while (z<=10){
+         g->regionarray[i][z]=INVALID;
          if ((z+i>=2)&&(z+i<=13)){ //corners of the array that should be invalid add to these numbers
             g->arcarray[i][z]=VACANT_ARC;
             g->campusarray[i][z]=VACANT_VERTEX;
@@ -110,13 +111,30 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    }
 
    //need to intialise hardcoded array
-   regions regionarray[5][10];
    regions r;
-   /*r.a= /
-   r.b=
-   r.c=
-   regionarray[x][y]=r GEneral hardcode structure, can probably be changed for the better
-   */
+   r.a=INVALID;
+   r.b=INVALID;
+   r.c=0;
+   g->regionarray[0][2]=r;
+   g->regionarray[0][3]=r;
+
+   r.a=0;
+   r.b=1;
+   r.c=INVALID;
+   g->regionarray[0][4]=r;
+   g->regionarray[0][5]=r;
+
+   r.a=1;
+   r.b=2;
+   r.c=INVALID;
+   g->regionarray[0][6]=r;
+   g->regionarray[0][7]=r;
+
+   r.a=INVALID;
+   g->regionarray[0][8]=r;
+
+   r.b=3;
+   g->regionarray[1][1]=r;
 
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
@@ -818,13 +836,21 @@ void throwDice (Game g, int diceScore){
    // scan through array
    int xindex=0;
    int yindex=0;
+   int discipline=INVALID;
    while (xindex<=5){ //check logic
       while(yindex<=10){
          if ((g->campusarray[xindex][yindex]!=VACANT_VERTEX)&&(g->campusarray[xindex][yindex]!=INVALID)){
-            r=g->regionarray[xindex][yindex];
-            addStudent(g,r.a,g->campusarray[xindex][yindex],1);
-            addStudent(g,r.b,g->campusarray[xindex][yindex],1);
-            addStudent(g,r.c,g->campusarray[xindex][yindex],1);
+            r=g->regionarray[xindex][yindex]; //this regions array needs to be written
+            if (g->regionid[r.a]==diceScore){
+               discipline=g->regions[r.a];
+               addStudent(g,discipline,g->campusarray[xindex][yindex],1);
+            } else if (g->regionid[r.b]==diceScore){
+               discipline=g->regions[r.b];
+               addStudent(g,discipline,g->campusarray[xindex][yindex],1);
+            } else if (g->regionid[r.c]==diceScore){
+               discipline=g->regions[r.c];
+               addStudent(g,discipline,g->campusarray[xindex][yindex],1);
+            }
          }
          yindex++;
       }
