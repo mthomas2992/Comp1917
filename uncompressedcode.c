@@ -171,3 +171,29 @@
    return playerWithMostArcs;
    */
    //Using Corey's logic as it accounts for simultaneous matchings
+
+   /*int playerindex=UNI_A;
+   while (playerindex<=UNI_C){
+      if (playerindex == UNI_A) {
+         player *p = &g->player1;
+      } else if (playerindex == UNI_B) { //Pointer hack
+         player *p = &g->player2;
+      } else if (playerindex == UNI_C) {
+         player *p = &g->player3; 
+      }
+      
+      p->KPI=20; //intialise all values
+      p->arcs=0;
+      p->GO8s=0;
+      p->Campuses=2;
+      p->IPs=0;
+      p->Pubs=0;
+      p->students.THD=0;
+      p->students.BPS=3;
+      p->students.BQN=3;
+      p->students.MJ=0;
+      p->students.MTV=0;
+      p->students.MMONEY=0;
+
+      playerindex++;
+   }*/

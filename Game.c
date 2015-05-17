@@ -78,8 +78,8 @@ coords translatepath(path arc);
 
    return EXIT_SUCCESS;
 }*/
-Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
-   Game g=malloc(sizeof(g));
+Game newGame (int discipline[], int dice[]){
+   Game g=malloc(sizeof(g)); //check this is malloced right
    g->mostarcs=NO_ONE;
    g->mostpubs=NO_ONE;
    g->turncount=-1; //terra nullius
@@ -94,9 +94,13 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    //initialise the game board with invalids also
    i=0;
    int z=0;
+   regions r;
+   r.a=INVALID;
+   r.b=INVALID;
+   r.c=INVALID;
    while (i<=5){ //this initialises on the y axis traverse rather then x, should be fine though
       while (z<=10){
-         g->regionarray[i][z]=INVALID;
+         g->regionarray[i][z]=r;
          if ((z+i>=2)&&(z+i<=13)){ //corners of the array that should be invalid add to these numbers
             g->arcarray[i][z]=VACANT_ARC;
             g->campusarray[i][z]=VACANT_VERTEX;
@@ -111,9 +115,6 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    }
 
    //need to intialise hardcoded array
-   regions r;
-   r.a=INVALID;
-   r.b=INVALID;
    r.c=0;
    g->regionarray[0][2]=r;
    g->regionarray[0][3]=r;
@@ -136,7 +137,141 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    r.b=3;
    g->regionarray[1][1]=r;
 
-   
+   r.a=0;
+   g->regionarray[1][2]=r;
+
+   r.c=4;
+   g->regionarray[1][3]=r;
+
+   r.b=1;
+   g->regionarray[1][4]=r;
+
+   r.a=5;
+   g->regionarray[1][5]=r;
+
+   r.c=2;
+   g->regionarray[1][6]=r;
+
+   r.b=6;
+   g->regionarray[1][7]=r;
+
+   r.a=INVALID
+   g->regionarray[1][8]=r;
+
+   r.c=INVALID;
+   g->regionarray[1][9]=r;
+
+   r.a=INVALID;
+   r.b=INVALID;
+   r.c=7;
+   g->regionarray[2][0];
+
+   r.a=3;
+   g->regionarray[2][1];
+
+   r.b=8;
+   g->regionarray[2][2];
+
+   r.c=4;
+   g->regionarray[2][3];
+
+   r.a=9;
+   g->regionarray[2][4];
+
+   r.b=5;
+   g->regionarray[2][5];
+
+   r.c=10;
+   g->regionarray[2][6];
+
+   r.a=6;
+   g->regionarray[2][7];
+
+   r.b=11;
+   g->regionarray[2][8];
+
+   r.c=INVALID;
+   g->regionarray[2][9];
+
+   r.a=INVALID;
+   g->regionarray[2][10];
+
+   r.b=7;
+   g->regionarray[3][0];
+
+   r.c=12;
+   g->regionarray[3][1];
+
+   r.a=8;
+   g->regionarray[3][2];
+
+   r.b=13;
+   g->regionarray[3][3];
+
+   r.c=9;
+   g->regionarray[3][4];
+
+   r.a=14;
+   g->regionarray[3][5];
+
+   r.b=10;
+   g->regionarray[3][6];
+
+   r.c=15;
+   g->regionarray[3][7];
+
+   r.a=11;
+   g->regionarray[3][8];
+
+   r.b=INVALID;
+   g->regionarray[3][9];
+
+   r.c=INVALID;
+   g->regionarray[3][10];
+
+   r.a=12;
+   g->regionarray[4][1];
+
+   r.b=16;
+   g->regionarray[4][2];
+
+   r.c=13;
+   g->regionarray[4][3];
+
+   r.a=17;
+   g->regionarray[4][4];
+
+   r.b=14;
+   g->regionarray[4][5];
+
+   r.c=18;
+   g->regionarray[4][6];
+
+   r.a=15;
+   g->regionarray[4][7];
+
+   r.b=INVALID;
+   g->regionarray[4][8];
+
+   r.c=INVALID;
+   g->regionarray[4][9];
+
+   r.a=16;
+   g->regionarray[5][2];
+   g->regionarray[5][3];
+
+   r.b=17;
+   g->regionarray[5][4];
+
+   r.a=INVALID;
+   g->regionarray[5][5];
+
+   r.a=18;
+   g->regionarray[5][6];
+
+   r.b=INVALID;
+   g->regionarray[5][7];
+   g->regionarray[5][8];
 
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
@@ -152,32 +287,6 @@ Game newGame (int discipline[], int dice[]){ //Matt NEED TO MALLOC IN SOME STUFF
    g->campusarray[0][9]=INVALID;
    g->campusarray[0][10]=INVALID;
    g->campusarray[1][10]=INVALID;
-
-   /*int playerindex=UNI_A;
-   while (playerindex<=UNI_C){
-      if (playerindex == UNI_A) {
-         player *p = &g->player1;
-      } else if (playerindex == UNI_B) { //Pointer hack
-         player *p = &g->player2;
-      } else if (playerindex == UNI_C) {
-         player *p = &g->player3; 
-      }
-      
-      p->KPI=20; //intialise all values
-      p->arcs=0;
-      p->GO8s=0;
-      p->Campuses=2;
-      p->IPs=0;
-      p->Pubs=0;
-      p->students.THD=0;
-      p->students.BPS=3;
-      p->students.BQN=3;
-      p->students.MJ=0;
-      p->students.MTV=0;
-      p->students.MMONEY=0;
-
-      playerindex++;
-   }*/
 
    //player one 
    g->player1.KPI=20;
@@ -884,12 +993,19 @@ void addStudent (Game g, int student, int player, int amount){
       player *p = &g->player3; 
    }
 
-   p->students.THD += amount;
-   p->students.MMONEY += amount;
-   p->students.MJ += amount;
-   p->students.MTV += amount;
-   p->students.BQN += amount;
-   p->students.BPS += amount;
+   if (player == STUDENT_BPS){
+         p->students.BPS += amount;
+   } else if (player == STUDENT_BQN){
+         p->students.BQN += amount;
+   } else if (player == STUDENT_MJ){
+         p->students.MJ += amount;
+   } else if (player == STUDENT_MTV){
+         p->students.MTV += amount;
+   } else if (player == STUDENT_MMONEY){
+         p->students.MMONEY += amount;
+   } else if (player==STUDENT_THD){
+         p->students.THD += amount;
+   } //if an invalud number is passed in nothing happens
 }
 
 int getARC(Game g, path pathToEdge){
