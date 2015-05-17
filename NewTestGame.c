@@ -175,14 +175,14 @@ void testgetMostARCs(void){
    Game test = newGame(disciplines,dice);
    assert(getMostARCs(test) == NO_ONE);
    path path2 = 'L';
-   throwdice(test,3);
+   throwDice(test,3);
    action getARC;
    getARC.actionCode = OBTAIN_ARC;
    getARC.destination = path2;
    makeAction(test,getARC);//Was: makeAction(test,getARC1); getARC1 wasn't declared and hasn't been initialised anywhere.
    assert(getMostARCs(test) == UNI_A);
 
-   throwdice(test,3);
+   throwDice(test,3);
    getARC.destination = "RRLRL";
    makeAction(test,getARC);//Was: makeAction(test,getARC2); getARC2 wasn't declared and hasn't been initialised anywhere.
    /* I'm not sure what happens if two universities have
