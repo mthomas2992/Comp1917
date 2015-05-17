@@ -597,11 +597,6 @@ void getStudentstest(void){
       playerz++;
       disciplinecount=0;
    }
-
-   throwDice(gst,1);
-   assert(getStudents());
-
-
    //find way to generate data to test this on
    disposeGame(gst);
 } //limited in tests CHECKED
@@ -733,7 +728,7 @@ void testGetKPIpoints (void){
    assert (getKPIpoints (g, UNI_A) == 42);
    assert (getARCs (g, UNI_A) == 2);
    assert (getMostARCs (g) == UNI_A);
-   assert (getArc (g, path15) == ARC_A);
+   assert (getARC (g, path15) == ARC_A);
    assert (getCampuses (g, UNI_A) == 3);
    assert (getCampus (g, path15) == CAMPUS_A);
 
