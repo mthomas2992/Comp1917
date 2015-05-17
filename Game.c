@@ -68,7 +68,11 @@ typedef struct _game {
 
 void addStudent (Game g, int student, int player, int amount);
 coords translatepath(path arc);
+int main (int argc, char *argv[]) {
+   printf("compiled\n");
 
+   return EXIT_SUCCESS;
+}
 //int makeActionipubs (int action);
 
 /*int main (int argc, char *argv[]) {
@@ -155,7 +159,7 @@ Game newGame (int discipline[], int dice[]){
    r.b=6;
    g->regionarray[1][7]=r;
 
-   r.a=INVALID
+   r.a=INVALID;
    g->regionarray[1][8]=r;
 
    r.c=INVALID;
@@ -164,114 +168,114 @@ Game newGame (int discipline[], int dice[]){
    r.a=INVALID;
    r.b=INVALID;
    r.c=7;
-   g->regionarray[2][0];
+   g->regionarray[2][0]=r;
 
    r.a=3;
-   g->regionarray[2][1];
+   g->regionarray[2][1]=r;
 
    r.b=8;
-   g->regionarray[2][2];
+   g->regionarray[2][2]=r;
 
    r.c=4;
-   g->regionarray[2][3];
+   g->regionarray[2][3]=r;
 
    r.a=9;
-   g->regionarray[2][4];
+   g->regionarray[2][4]=r;
 
    r.b=5;
-   g->regionarray[2][5];
+   g->regionarray[2][5]=r;
 
    r.c=10;
-   g->regionarray[2][6];
+   g->regionarray[2][6]=r;
 
    r.a=6;
-   g->regionarray[2][7];
+   g->regionarray[2][7]=r;
 
    r.b=11;
-   g->regionarray[2][8];
+   g->regionarray[2][8]=r;
 
    r.c=INVALID;
-   g->regionarray[2][9];
+   g->regionarray[2][9]=r;
 
    r.a=INVALID;
-   g->regionarray[2][10];
+   g->regionarray[2][10]=r;
 
    r.b=7;
-   g->regionarray[3][0];
+   g->regionarray[3][0]=r;
 
    r.c=12;
-   g->regionarray[3][1];
+   g->regionarray[3][1]=r;
 
    r.a=8;
-   g->regionarray[3][2];
+   g->regionarray[3][2]=r;
 
    r.b=13;
-   g->regionarray[3][3];
+   g->regionarray[3][3]=r;
 
    r.c=9;
-   g->regionarray[3][4];
+   g->regionarray[3][4]=r;
 
    r.a=14;
-   g->regionarray[3][5];
+   g->regionarray[3][5]=r;
 
    r.b=10;
-   g->regionarray[3][6];
+   g->regionarray[3][6]=r;
 
    r.c=15;
-   g->regionarray[3][7];
+   g->regionarray[3][7]=r;
 
    r.a=11;
-   g->regionarray[3][8];
+   g->regionarray[3][8]=r;
 
    r.b=INVALID;
-   g->regionarray[3][9];
+   g->regionarray[3][9]=r;
 
    r.c=INVALID;
-   g->regionarray[3][10];
+   g->regionarray[3][10]=r;
 
    r.a=12;
-   g->regionarray[4][1];
+   g->regionarray[4][1]=r;
 
    r.b=16;
-   g->regionarray[4][2];
+   g->regionarray[4][2]=r;
 
    r.c=13;
-   g->regionarray[4][3];
+   g->regionarray[4][3]=r;
 
    r.a=17;
-   g->regionarray[4][4];
+   g->regionarray[4][4]=r;
 
    r.b=14;
-   g->regionarray[4][5];
+   g->regionarray[4][5]=r;
 
    r.c=18;
-   g->regionarray[4][6];
+   g->regionarray[4][6]=r;
 
    r.a=15;
-   g->regionarray[4][7];
+   g->regionarray[4][7]=r;
 
    r.b=INVALID;
-   g->regionarray[4][8];
+   g->regionarray[4][8]=r;
 
    r.c=INVALID;
-   g->regionarray[4][9];
+   g->regionarray[4][9]=r;
 
    r.a=16;
-   g->regionarray[5][2];
-   g->regionarray[5][3];
+   g->regionarray[5][2]=r;
+   g->regionarray[5][3]=r;
 
    r.b=17;
-   g->regionarray[5][4];
+   g->regionarray[5][4]=r;
 
    r.a=INVALID;
-   g->regionarray[5][5];
+   g->regionarray[5][5]=r;
 
    r.a=18;
-   g->regionarray[5][6];
+   g->regionarray[5][6]=r;
 
    r.b=INVALID;
-   g->regionarray[5][7];
-   g->regionarray[5][8];
+   g->regionarray[5][7]=r;
+   g->regionarray[5][8]=r;
 
    //specify missed invalids
    g->arcarray[4][0]=INVALID;
@@ -487,7 +491,7 @@ int isLegalAction (Game g, action a){
          //also needs to check if a vacant arc first
       }
    } else if (a.actionCode==RETRAIN_STUDENTS){
-      if ((a.disciplineFrom>=getExchangeRate(g,player,a.disciplineFrom,a.diciplineTo)) && (a.disciplineFrom!=STUDENT_THD)){ //checks not THD and above rate
+      if ((a.disciplineFrom>=getExchangeRate(g,player,a.disciplineFrom,a.disciplineTo)) && (a.disciplineFrom!=STUDENT_THD)){ //checks not THD and above rate
          legal=TRUE;
       }
    } else if (a.actionCode==PASS){
@@ -595,7 +599,7 @@ int getStudents (Game g, int player, int discipline){ //Don't like this code, to
 }
 
 int getARCs(Game g, int player){
-   int numOfARCs;
+   int numOfARCs=0;
    if (player == UNI_A){
       numOfARCs = g->player1.arcs;
    } else if (player == UNI_B){
@@ -607,7 +611,7 @@ int getARCs(Game g, int player){
 }
 
 int getCampuses(Game g, int player){
-   int numOfCampuses;
+   int numOfCampuses=0;
    if (player == UNI_A){
       numOfCampuses = g->player1.Campuses;
    } else if (player == UNI_B){
@@ -661,7 +665,7 @@ int getIPs (Game g, int player) {
 // on what retraining centers, if any, they have a campus at.
 int getExchangeRate (Game g, int player, int disciplineFrom, int disciplineTo) {
    int exchangerate = DEFAULT_EXCHANGE; //checks if campuses are on retrain areas, if they are sets it lower
-   if (((getCampus(g,'R') == player) || (getCampus(g,"RR") == player)) && (disciplineFrom == STUDENT_MTV)) {
+   if (((getCampus(g,"R") == player) || (getCampus(g,"RR") == player)) && (disciplineFrom == STUDENT_MTV)) {
       exchangerate = RETRAIN_EXCHANGE;
    } else if (((getCampus(g,"LL") == player) || (getCampus(g,"LLL") == player)) && (disciplineFrom == STUDENT_MMONEY)) {
       exchangerate = RETRAIN_EXCHANGE;
@@ -968,44 +972,70 @@ void throwDice (Game g, int diceScore){
       xindex++;
       yindex=0;
    }
-   player *p;
 
    if (diceScore==7){
       if (player == UNI_A) { //1337 pointer hacking
-         *p = &g->player1; //makes the pointer equal to the memory location of player1, so you can shortcut to it with the p pointer
+         g->player1.students.THD=g->player1.students.THD+g->player1.students.MMONEY+g->player1.students.MTV;
+         g->player1.students.MMONEY=0;
+         g->player1.students.MTV=0;
       } else if (player == UNI_B) {
-         *p = &g->player2;
+         g->player2.students.THD=g->player2.students.THD+g->player2.students.MMONEY+g->player2.students.MTV;
+         g->player2.students.MMONEY=0;
+         g->player2.students.MTV=0;
       } else if (player == UNI_C) {
-         *p = &g->player3; 
+         g->player3.students.THD=g->player3.students.THD+g->player3.students.MMONEY+g->player3.students.MTV;
+         g->player3.students.MMONEY=0;
+         g->player3.students.MTV=0;
       }
-      p->students.THD=p->students.THD+p->students.MMONEY+p->students.MTV;
-      p->students.MMONEY=0;
-      p->students.MTV=0;
    }
 }
 
 void addStudent (Game g, int student, int player, int amount){
-   if (player == UNI_A) {
-      player *p = &g->player1;
-   } else if (player == UNI_B) { //NO SPACES HAHAHAHA
-      player *p = &g->player2;
-   } else if (player == UNI_C) {
-      player *p = &g->player3; 
+   if (player == UNI_A){
+      if (student == STUDENT_THD){
+         g->player1.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player1.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player1.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player1.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player1.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player1.students.BPS += amount;
+      }
    }
-
-   if (player == STUDENT_BPS){
-         p->students.BPS += amount;
-   } else if (player == STUDENT_BQN){
-         p->students.BQN += amount;
-   } else if (player == STUDENT_MJ){
-         p->students.MJ += amount;
-   } else if (player == STUDENT_MTV){
-         p->students.MTV += amount;
-   } else if (player == STUDENT_MMONEY){
-         p->students.MMONEY += amount;
-   } else if (player==STUDENT_THD){
-         p->students.THD += amount;
-   } //if an invalud number is passed in nothing happens
+   if (player == UNI_B){
+      if (student == STUDENT_THD){
+         g->player2.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player2.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player2.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player2.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player2.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player2.students.BPS += amount;
+      }
+   }
+   if (player == UNI_C){
+      if (student == STUDENT_THD){
+         g->player3.students.THD += amount;
+      } else if (student == STUDENT_MMONEY){
+         g->player3.students.MMONEY += amount;
+      } else if (student == STUDENT_MJ){
+         g->player3.students.MJ += amount;
+      } else if (student == STUDENT_MTV){
+         g->player3.students.MTV += amount;
+      } else if (student == STUDENT_BQN){
+         g->player3.students.BQN += amount;
+      } else if (student == STUDENT_BPS){
+         g->player3.students.BPS += amount;
+      }
+   }
 }
 
 int getARC(Game g, path pathToEdge){
