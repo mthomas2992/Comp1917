@@ -696,6 +696,10 @@ void getExchangeRatetests(void){
 
 //Inputs: Game g, int player
 void testGetKPIpoints (void){
+
+   path path3 = "R";
+   path path15 = "RL";
+
    // return the number of ARC grants the specified player currently has
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
@@ -709,29 +713,29 @@ void testGetKPIpoints (void){
    throwDice (g, 2);
    action testA;
    testA.actionCode = OBTAIN_ARC;
-   testA.destination = "R";
+   testA.destination = path3;
    makeAction (g, testA);
    assert (getKPIpoints (g, UNI_A) == 32);
    assert (getARCs (g, UNI_A) == 1);
    assert (getMostARCs (g) == UNI_A);
-   assert (getARC (g, "R") == ARC_A);
+   assert (getARC (g, path3) == ARC_A);
 
    throwDice (g, 2);
    throwDice (g, 2);
    throwDice (g, 2); //Uni A turn again
-   testA.destination = "RL";
+   testA.destination = path15;
    makeAction (g, testA);
 
    action testB;
    testB.actionCode = BUILD_CAMPUS;
-   testB.destination = "RL";
+   testB.destination = path15;
    makeAction (g, testB);
    assert (getKPIpoints (g, UNI_A) == 42);
    assert (getARCs (g, UNI_A) == 2);
    assert (getMostARCs (g) == UNI_A);
-   assert (getArc (g, "RL") == ARC_A);
+   assert (getArc (g, path15) == ARC_A);
    assert (getCampuses (g, UNI_A) == 3);
-   assert (getCampus (g, "RL") == CAMPUS_A);
+   assert (getCampus (g, path15) == CAMPUS_A);
 
    assert (getGO8s (g, UNI_A) == 0);
 
@@ -754,7 +758,7 @@ void testGetKPIpoints (void){
 
    action testC;
    testC.actionCode = BUILD_GO8;
-   testC.destination = "RL";
+   testC.destination = path15;
    makeAction (g, testC);
    assert (getGO8s (g, UNI_A) == 1);
 
