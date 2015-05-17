@@ -156,7 +156,7 @@ void testgetDiceValue(void){
    assert(getDiceValue(test,9) == STUDENT_MJ);
    assert(getDiceValue(test,10) == STUDENT_BQN);
    */
-   index=0;      
+   int index=0;      
    while (index<19){      
       assert(getDiceValue(test,index)==9);     
    }
