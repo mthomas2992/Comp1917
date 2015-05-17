@@ -472,6 +472,9 @@ void newGametests(void){ //needs to check board is correct, also check prior tha
 }
 
 void makeActiontests(void){
+
+   path path2 = "L";
+
    int disciplinesat[] = DEFAULT_DISCIPLINES;
    int diceat[] = DEFAULT_DICE;
 
@@ -492,7 +495,7 @@ void makeActiontests(void){
 
    action attest1; // create an action to obtain an arc
    attest1.actionCode=OBTAIN_ARC;
-   attest1.destination="L";
+   attest1.destination= path2;
    makeAction(gat,attest1); //makes action, assuming that this is for player one otherwise assert will fail, no idea to know if this is right
 
    playeronecheck=getARCs(gat,UNI_A); //after action checks all players for obtained arcs, don't really need to recheck 2 and 3 at all in this function but do so anyway as error trap
@@ -604,6 +607,17 @@ void getStudentstest(void){
 } //limited in tests CHECKED
 
 void isLegalActiontests(void){
+
+   path path2 = "L";
+
+   path path11 = "LLLLLLLLLLLLLLLLRRRRLRLRLL";
+
+   path path12 = "BLRRL";
+
+   path path13 = "LRRL";
+
+   path path14 = "BLR";
+
    int disciplinesla[] = DEFAULT_DISCIPLINES;
    int dicela[] = DEFAULT_DICE;
    Game gla =newGame (disciplinesla, dicela);
@@ -612,15 +626,15 @@ void isLegalActiontests(void){
    //test arc legals
    action testa;
    testa.actionCode=OBTAIN_ARC;
-   testa.destination="BLRRL";
+   testa.destination=path12;
 
    action testb;
    testb.actionCode=OBTAIN_ARC;
-   testb.destination="LLLLLLLLLLLLLLLLRRRRLRLRLL";
+   testb.destination=path11;
 
    action testc; //possible error here
    testc.actionCode=OBTAIN_ARC;
-   testc.destination="L";
+   testc.destination=path2;
 
    assert(isLegalAction(gla,testa)==FALSE);
    assert(isLegalAction(gla,testb)==FALSE);
@@ -650,11 +664,11 @@ void isLegalActiontests(void){
 
    action testg;
    testg.actionCode=BUILD_CAMPUS;
-   testg.destination="LRRL";
+   testg.destination=path13;
 
    action testh;
    testh.actionCode=BUILD_CAMPUS;
-   testh.destination="BLR";
+   testh.destination=path14;
 
    assert(isLegalAction(gla,testg)==FALSE);
    assert(isLegalAction(gla,testh)==FALSE);
