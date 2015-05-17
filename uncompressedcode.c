@@ -90,7 +90,7 @@
 
 //Prior to pointer hacking
 
-            if (player == UNI_A){
+   if (player == UNI_A){
       if (student == STUDENT_THD){
          g->player1.students.THD += amount;
       } else if (student == STUDENT_MMONEY){
@@ -197,3 +197,40 @@
 
       playerindex++;
    }*/
+
+   player *p;
+
+   if (diceScore==7){
+      if (player == UNI_A) { //1337 pointer hacking
+         *p = &g->player1; //makes the pointer equal to the memory location of player1, so you can shortcut to it with the p pointer
+      } else if (player == UNI_B) {
+         *p = &g->player2;
+      } else if (player == UNI_C) {
+         *p = &g->player3; 
+      }
+      p->students.THD=p->students.THD+p->students.MMONEY+p->students.MTV;
+      p->students.MMONEY=0;
+      p->students.MTV=0;
+   }
+
+   /*if (player == UNI_A) {
+      player *p = &g->player1;
+   } else if (player == UNI_B) { //NO SPACES HAHAHAHA
+      player *p = &g->player2;
+   } else if (player == UNI_C) {
+      player *p = &g->player3; 
+   }
+
+   if (player == STUDENT_BPS){
+         p->students.BPS += amount;
+   } else if (player == STUDENT_BQN){
+         p->students.BQN += amount;
+   } else if (player == STUDENT_MJ){
+         p->students.MJ += amount;
+   } else if (player == STUDENT_MTV){
+         p->students.MTV += amount;
+   } else if (player == STUDENT_MMONEY){
+         p->students.MMONEY += amount;
+   } else if (player==STUDENT_THD){
+         p->students.THD += amount;
+   } //if an invalud number is passed in nothing happens */
