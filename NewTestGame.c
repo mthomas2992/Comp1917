@@ -505,7 +505,7 @@ void makeActiontests(void){
    attest3.actionCode=PASS;
    makeAction(gat,attest3);
    int turn2= getWhoseTurn(gat);
-   if (turn1=UNI_C){
+   if (turn1==UNI_C){
       assert(turn2==UNI_A);
    } else {
       assert((turn1+1)==turn2);
@@ -698,7 +698,7 @@ void testGetKPIpoints (void){
    assert (getKPIpoints (g, UNI_A) == 32);
    assert (getARCs (g, UNI_A) == 1);
    assert (getMostARCs (g) == UNI_A);
-   assert (getArc (g, 'R') == ARC_A);
+   assert (getARC (g, 'R') == ARC_A);
 
    throwDice (g, 2);
    throwDice (g, 2);
