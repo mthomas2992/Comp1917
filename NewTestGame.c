@@ -68,6 +68,7 @@
                 3, 2, 0, 3,\
                 5, 4, 2, 1}
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
+#define MOD_DICE {9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}
 
 //void bryanstests(void);
 //void Joerickstests(void);
@@ -145,15 +146,20 @@ void testdisposeGame(void){
 void testgetDiceValue(void){
    printf("Testing getDiceValue\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = DEFAULT_DICE;
+   int dice[] = MOD_DICE;
    Game test = newGame(disciplines,dice);
-
+   /*
    assert(getDiceValue(test,7) == STUDENT_THD);
    assert(getDiceValue(test,12) == STUDENT_MMONEY);
    assert(getDiceValue(test,11) == STUDENT_MTV);
    assert(getDiceValue(test,5) == STUDENT_BPS);
    assert(getDiceValue(test,9) == STUDENT_MJ);
    assert(getDiceValue(test,10) == STUDENT_BQN);
+   */
+   index=0;      
+   while (index<19){      
+      assert(getDiceValue(test,index)==9);     
+   }
 
    disposeGame(test);
    printf("getDiceValue passed!\n");
@@ -171,14 +177,14 @@ void testgetMostARCs(void){
    Game test = newGame(disciplines,dice);
    assert(getMostARCs(test) == NO_ONE);
 
-   throwdice(test,dice[0]);
+   throwDice(test,dice[0]);
    action getARC;
    getARC.actionCode = OBTAIN_ARC;
    getARC.destination = path3;
    makeAction(test,getARC);//Was: makeAction(test,getARC1); getARC1 wasn't declared and hasn't been initialised anywhere.
    assert(getMostARCs(test) == UNI_A);
 
-   throwdice(test,dice[1]);
+   throwDice(test,dice[1]);
    getARC.destination = path5;
    makeAction(test,getARC);//Was: makeAction(test,getARC2); getARC2 wasn't declared and hasn't been initialised anywhere.
    /* I'm not sure what happens if two universities have
@@ -501,7 +507,7 @@ void makeActiontests(void){
    attest3.actionCode=PASS;
    makeAction(gat,attest3);
    int turn2= getWhoseTurn(gat);
-   if (turn1=UNI_C){
+   if (turn1==UNI_C){
       assert(turn2==UNI_A);
    } else {
       assert((turn1+1)==turn2);
@@ -694,7 +700,7 @@ void testGetKPIpoints (void){
    assert (getKPIpoints (g, UNI_A) == 32);
    assert (getARCs (g, UNI_A) == 1);
    assert (getMostARCs (g) == UNI_A);
-   assert (getArc (g, "R") == ARC_A);
+   assert (getARC (g, "R") == ARC_A);
 
    throwDice (g, 2);
    throwDice (g, 2);
