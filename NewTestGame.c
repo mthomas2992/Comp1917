@@ -599,7 +599,7 @@ void getStudentstest(void){
    }
 
    throwDice(gst,1);
-   assert(getStudents());
+   assert(getStudents(Game g, int player, int discipline));
 
 
    //find way to generate data to test this on
