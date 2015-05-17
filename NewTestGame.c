@@ -69,9 +69,6 @@
                 5, 4, 2, 1}
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
-#define MOD_DICE {9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}
-
-
 //void bryanstests(void);
 //void Joerickstests(void);
 
@@ -136,54 +133,53 @@ int main (int argc, char *argv[]) {
 }
 
 void testdisposeGame(void){
-   /*printf("Testing disposeGame\n");
+   printf("Testing disposeGame\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
    Game test = newGame(disciplines,dice);
    disposeGame(test);
    assert(test == NULL);
    printf("disposeGame passed!\n");
-   */ 
 }
 
 void testgetDiceValue(void){
    printf("Testing getDiceValue\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = MOD_DICE;
+   int dice[] = DEFAULT_DICE;
    Game test = newGame(disciplines,dice);
-   /*
+
    assert(getDiceValue(test,7) == STUDENT_THD);
    assert(getDiceValue(test,12) == STUDENT_MMONEY);
    assert(getDiceValue(test,11) == STUDENT_MTV);
    assert(getDiceValue(test,5) == STUDENT_BPS);
    assert(getDiceValue(test,9) == STUDENT_MJ);
    assert(getDiceValue(test,10) == STUDENT_BQN);
-   */
-   index=0;
-   while (index<19){
-      assert(getDiceValue(test,index)==9);
-   }
+
    disposeGame(test);
    printf("getDiceValue passed!\n");
 }
 
 //getMostARCs
 void testgetMostARCs(void){
+
+   path path3 = "R";
+   path path5 = "RRLRL";
+
    printf("Testing getMostARCs\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
    Game test = newGame(disciplines,dice);
    assert(getMostARCs(test) == NO_ONE);
-   path path2 = 'L';
-   throwDice(test,3);
+
+   throwdice(test,dice[0]);
    action getARC;
    getARC.actionCode = OBTAIN_ARC;
-   getARC.destination = path2;
+   getARC.destination = path3;
    makeAction(test,getARC);//Was: makeAction(test,getARC1); getARC1 wasn't declared and hasn't been initialised anywhere.
    assert(getMostARCs(test) == UNI_A);
 
-   throwDice(test,3);
-   getARC.destination = "RRLRL";
+   throwdice(test,dice[1]);
+   getARC.destination = path5;
    makeAction(test,getARC);//Was: makeAction(test,getARC2); getARC2 wasn't declared and hasn't been initialised anywhere.
    /* I'm not sure what happens if two universities have
       the same amount of ARC grants */
@@ -309,8 +305,8 @@ void testgetCampus(void){
    Game test = newGame(disciplines,dice);
 
    path path1 = "RLLLLLL";
-   path path2 = 'L';
-   path path3 = 'R';
+   path path2 = "L";
+   path path3 = "R";
    path path4 = "LRLRL";
    path path5 = "RRLRL";
    path path6 = "RLRLRLRRLR";
@@ -338,8 +334,8 @@ void testgetARC(void){
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
    Game test = newGame(disciplines,dice);
-   path path1 = 'L';
-   path path2 = 'R';
+   path path1 = "L";
+   path path2 = "R";
    path path3 = "RL";
    path path4 = "LR";
    path path5 = "LRRRL";
@@ -490,7 +486,7 @@ void makeActiontests(void){
 
    action attest1; // create an action to obtain an arc
    attest1.actionCode=OBTAIN_ARC;
-   attest1.destination='L';
+   attest1.destination="L";
    makeAction(gat,attest1); //makes action, assuming that this is for player one otherwise assert will fail, no idea to know if this is right
 
    playeronecheck=getARCs(gat,UNI_A); //after action checks all players for obtained arcs, don't really need to recheck 2 and 3 at all in this function but do so anyway as error trap
@@ -505,7 +501,7 @@ void makeActiontests(void){
    attest3.actionCode=PASS;
    makeAction(gat,attest3);
    int turn2= getWhoseTurn(gat);
-   if (turn1==UNI_C){
+   if (turn1=UNI_C){
       assert(turn2==UNI_A);
    } else {
       assert((turn1+1)==turn2);
@@ -618,7 +614,7 @@ void isLegalActiontests(void){
 
    action testc; //possible error here
    testc.actionCode=OBTAIN_ARC;
-   testc.destination='L';
+   testc.destination="L";
 
    assert(isLegalAction(gla,testa)==FALSE);
    assert(isLegalAction(gla,testb)==FALSE);
@@ -693,12 +689,12 @@ void testGetKPIpoints (void){
    throwDice (g, 2);
    action testA;
    testA.actionCode = OBTAIN_ARC;
-   testA.destination = 'R';
+   testA.destination = "R";
    makeAction (g, testA);
    assert (getKPIpoints (g, UNI_A) == 32);
    assert (getARCs (g, UNI_A) == 1);
    assert (getMostARCs (g) == UNI_A);
-   assert (getARC (g, 'R') == ARC_A);
+   assert (getArc (g, "R") == ARC_A);
 
    throwDice (g, 2);
    throwDice (g, 2);
