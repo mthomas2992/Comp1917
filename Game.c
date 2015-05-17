@@ -19,6 +19,12 @@
 #define DEFAULT_EXCHANGE 3
 #define RETRAIN_EXCHANGE 2
 
+#define DEFAULT_DISCIPLINES {2, 5, 3,\
+                5, 3, 1, 4,\
+                4, 1,4, 2,\
+                3, 2, 0, 3,\
+                5, 4, 2, 1}
+#define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 //type def struct for arc coords to return
 typedef struct _coords {
    int x;
@@ -68,8 +74,22 @@ typedef struct _game {
 
 void addStudent (Game g, int student, int player, int amount);
 coords translatepath(path arc);
+
 int main (int argc, char *argv[]) {
    printf("compiled\n");
+   printf("testing\n");
+   coords coord;
+   coord.x=0;
+   coord.y=0;
+   coord=translatepath("LR");
+   printf("x %d y %d\n",coord.x,coord.y);
+
+   int disciplines[] = DEFAULT_DISCIPLINES;
+   int dice[] = DEFAULT_DICE;
+   Game test = newGame(disciplines,dice);
+   assert(getMostARCs(test) == NO_ONE);
+   assert(getTurnNumber(test) == -1);
+   assert(getDiceValue(test,7) == STUDENT_THD);
 
    return EXIT_SUCCESS;
 }
@@ -83,7 +103,7 @@ int main (int argc, char *argv[]) {
    return EXIT_SUCCESS;
 }*/
 Game newGame (int discipline[], int dice[]){
-   Game g=malloc(sizeof(g)); //check this is malloced right
+   Game g=malloc(sizeof(game)); //check this is malloced right
    g->mostarcs=NO_ONE;
    g->mostpubs=NO_ONE;
    g->turncount=-1; //terra nullius
@@ -93,8 +113,8 @@ Game newGame (int discipline[], int dice[]){
    while(i<NUM_REGIONS){ //input board into struct, might be better in a 2D array
       g->regions[i]=discipline[i];
       g->regionid[i]=dice[i];
+      i++;
    }
-
    //initialise the game board with invalids also
    i=0;
    int z=0;
@@ -343,7 +363,7 @@ void disposeGame (Game g){
 
 coords translatepath(path arc){
    //needs a response for if the path is empty
-   int prevycoords=-1;
+   int prevycoords=0;
    coords coord;
    int prevxcoords=2;
    int xcoords=2;
@@ -359,7 +379,7 @@ coords translatepath(path arc){
    while(arc[index]!=0){
       //determine approach 
       //There is never a possibility of changing both x and y, therefore it isn't accounted for (yeah it should error trap but its our own function)
-      if (prevycoords<ycoords){
+      if (prevycoords<ycoords||((ycoords==0)&&(index==0))){
          approach=DOWN;
       } else if (prevycoords>ycoords){
          approach=UP;
@@ -402,10 +422,10 @@ coords translatepath(path arc){
          righty=ycoords-1;
       } else if (((approach==RIGHT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2==0))){
          //not possible DOUBLE CHECK
-         leftx=INVALID;
-         lefty=INVALID;
-         rightx=INVALID;
-         righty=INVALID;
+         leftx=xcoords;
+         lefty=ycoords-1;
+         rightx=xcoords;
+         righty=ycoords+1;
       } else if (((approach==LEFT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==LEFT)&&(xcoords%2==1)&&(ycoords%2==0))){
          leftx=xcoords;
          lefty=ycoords-1;
@@ -643,7 +663,10 @@ int getTurnNumber (Game g) {
 // what dice value produces students in the specified region?
 // 2..12
 int getDiceValue (Game g, int regionID) {
-   return g->regionid[regionID];
+   printf("here2\n");
+   int y=regionID;
+   int x= g->regions[y];
+   return x;
 }
 
 // return the number of IP Patents the specified player currently has
