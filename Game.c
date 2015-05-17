@@ -354,6 +354,21 @@ Game newGame (int discipline[], int dice[]){
    g->player3.students.MTV=0;
    g->player3.students.MMONEY=0;
 
+   //assign exisintg points, arcs do not exist in these locs but arcs can be built from them, therefore they must be stated as if they have arcs
+   g->arcarray[2][0]=UNI_A;
+   g->arcarray[3][10]=UNI_A;
+   g->arcarray[0][3]=UNI_B;
+   g->arcarray[5][7]=UNI_B;
+   g->arcarray[0][8]=UNI_C;
+   g->arcarray[5][2]=UNI_C;
+
+   g->campusarray[2][0]=UNI_A;
+   g->campusarray[3][10]=UNI_A;
+   g->campusarray[0][3]=UNI_B;
+   g->campusarray[5][7]=UNI_B;
+   g->campusarray[0][8]=UNI_C;
+   g->campusarray[5][2]=UNI_C;
+   
    return g;
 }
 
