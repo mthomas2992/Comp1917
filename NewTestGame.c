@@ -597,6 +597,7 @@ void getStudentstest(void){
       playerz++;
       disciplinecount=0;
    }
+
    //find way to generate data to test this on
    disposeGame(gst);
 } //limited in tests CHECKED
