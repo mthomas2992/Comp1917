@@ -74,7 +74,7 @@ typedef struct _game {
 
 void addStudent (Game g, int student, int player, int amount);
 coords translatepath(path arc);
-
+//COMMENTED OUT FOR SUBMISSION< FOR TESTING UNCOMMENT
 /*int main (int argc, char *argv[]) {
    printf("compiled\n");
    printf("testing\n");
