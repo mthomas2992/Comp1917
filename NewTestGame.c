@@ -69,6 +69,9 @@
                 5, 4, 2, 1}
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
+#define MOD_DICE {9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}
+
+
 //void bryanstests(void);
 //void Joerickstests(void);
 
@@ -145,16 +148,20 @@ void testdisposeGame(void){
 void testgetDiceValue(void){
    printf("Testing getDiceValue\n");
    int disciplines[] = DEFAULT_DISCIPLINES;
-   int dice[] = DEFAULT_DICE;
+   int dice[] = MOD_DICE;
    Game test = newGame(disciplines,dice);
-
+   /*
    assert(getDiceValue(test,7) == STUDENT_THD);
    assert(getDiceValue(test,12) == STUDENT_MMONEY);
    assert(getDiceValue(test,11) == STUDENT_MTV);
    assert(getDiceValue(test,5) == STUDENT_BPS);
    assert(getDiceValue(test,9) == STUDENT_MJ);
    assert(getDiceValue(test,10) == STUDENT_BQN);
-
+   */
+   index=0;
+   while (index<19){
+      assert(getDiceValue(test,index)==9);
+   }
    disposeGame(test);
    printf("getDiceValue passed!\n");
 }
