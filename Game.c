@@ -75,7 +75,7 @@ typedef struct _game {
 void addStudent (Game g, int student, int player, int amount);
 coords translatepath(path arc);
 
-int main (int argc, char *argv[]) {
+/*int main (int argc, char *argv[]) {
    printf("compiled\n");
    printf("testing\n");
    coords coord;
@@ -663,10 +663,8 @@ int getTurnNumber (Game g) {
 // what dice value produces students in the specified region?
 // 2..12
 int getDiceValue (Game g, int regionID) {
-   printf("here2\n");
-   int y=regionID;
-   int x= g->regions[y];
-   return x;
+   //printf("here2\n");
+   return g->regionid[regionID];
 }
 
 // return the number of IP Patents the specified player currently has
