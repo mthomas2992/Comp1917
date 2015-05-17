@@ -224,22 +224,16 @@ void testgetTurnNumber(void){
    Game test = newGame(disciplines,dice);
    assert(getTurnNumber(test) == -1);
 
-   action obtain_publication; //Not too sure why we need to obtain_publication here.  Did someone try to do Mr.Pass in here?
-
    throwDice(test,dice[0]);
-   makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 0);
 
    throwDice(test,dice[1]);
-   makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 1);
 
    throwDice(test,dice[2]);
-   makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 2);
 
    throwDice(test,dice[3]);
-   makeAction(test,obtain_publication);
    assert(getTurnNumber(test) == 3);
 
    disposeGame(test);
