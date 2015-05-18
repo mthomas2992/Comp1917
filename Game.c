@@ -67,9 +67,9 @@ typedef struct _game {
    int regions[NUM_REGIONS]; //this stores the discipline
    int regionid[NUM_REGIONS]; //this stores the dice value of the region
    //going to need 2 2d int arrays to store both the arc and campus array
-   int arcarray [5][10];
-   int campusarray [5][10];
-   regions regionarray[5][10];
+   int arcarray [6][11]; //size 
+   int campusarray [6][11];
+   regions regionarray[6][11];
 } game;
 
 void addStudent (Game g, int student, int player, int amount);
@@ -81,7 +81,7 @@ coords translatepath(path arc);
    coords coord;
    coord.x=0;
    coord.y=0;
-   coord=translatepath("LR");
+   coord=translatepath("RRLRL");
    printf("x %d y %d\n",coord.x,coord.y);
 
    int disciplines[] = DEFAULT_DISCIPLINES;
@@ -89,10 +89,31 @@ coords translatepath(path arc);
    Game test = newGame(disciplines,dice);
    assert(getMostARCs(test) == NO_ONE);
    assert(getTurnNumber(test) == -1);
-   assert(getDiceValue(test,7) == STUDENT_THD);
+
+   path path1 = "RLLLLL";
+   path path2 = "L";
+   path path3 = "R";
+   path path4 = "LRLRL";
+   path path5 = "RRLRL";
+   path path6 = "RLRLRLRRLR";
+   path path7 = "RLRLRLRLLRR";
+   path path8 = "LRRLRLRLLLRR";
+   path path9 = "RLRLRL";
+   path path10 = "RLRLRLLLRR";
+
+   assert(getCampus(test,path1) == CAMPUS_A);
+   assert(getCampus(test,path2) == VACANT_VERTEX);
+   assert(getCampus(test,path3) == VACANT_VERTEX);
+   assert(getCampus(test,path4) == CAMPUS_C);
+   assert(getCampus(test,path5) == CAMPUS_B);
+   assert(getCampus(test,path6) == CAMPUS_C);
+   assert(getCampus(test,path7) == CAMPUS_A);
+   assert(getCampus(test,path8) == CAMPUS_B);
+   assert(getCampus(test,path9) == VACANT_VERTEX);
+   assert(getCampus(test,path10) == VACANT_VERTEX);
 
    return EXIT_SUCCESS;
-}
+} */
 //int makeActionipubs (int action);
 
 /*int main (int argc, char *argv[]) {
@@ -419,12 +440,12 @@ coords translatepath(path arc){
          lefty=ycoords-1;
          rightx=xcoords;
          righty=ycoords+1;
-      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2!=0))){
+      } else if ((approach==RIGHT)&&(xcoords%2==1)&&(ycoords%2!=0)){
          //avoiding combining the invalid statements as they are so damn long
-         leftx=INVALID; //if this happens it should be picked up by the islegalfunction
-         lefty=INVALID;
-         rightx=INVALID;
-         righty=INVALID;
+         leftx=xcoords; //if this happens it should be picked up by the islegalfunction
+         lefty=ycoords-1;
+         rightx=xcoords;
+         righty=ycoords+1;
       } else if (((approach==DOWN)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2!=0))||((approach==DOWN)&&(xcoords%2==1)&&(ycoords%2==0))){ //EVENS ODDS
          leftx=xcoords;
          lefty=ycoords+1;
@@ -446,7 +467,12 @@ coords translatepath(path arc){
          lefty=ycoords-1;
          rightx=xcoords;
          righty=ycoords+1;
-      } 
+      } else if (((approach==LEFT)&&((xcoords==0)||(xcoords%2==0))&&(ycoords%2==0))||((approach==LEFT)&&(xcoords%2==1)&&(ycoords%2!=0))){
+         leftx=xcoords;
+         lefty=ycoords+1;
+         rightx=xcoords;
+         righty=ycoords-1;
+      }
 
       //assuming new coords have been obtained
       if (arc[index]=='L'){
@@ -678,7 +704,7 @@ int getTurnNumber (Game g) {
 // what dice value produces students in the specified region?
 // 2..12
 int getDiceValue (Game g, int regionID) {
-   //printf("here2\n");
+   //printf("int %d\n",g->regionid[regionID]);
    return g->regionid[regionID];
 }
 

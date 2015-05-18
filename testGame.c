@@ -295,11 +295,11 @@ void testgetCampus(void){
    Game test;
    test = newGame(DEFAULT_DISCIPLINES,DEFAULT_DICE);
    
-   path path1 = "RLLLLLL";
+   path path1 = "RLLLLL";
    path path2 = "L";
    path path3 = "R";
    path path4 = "LRLRL";
-   path path5 = "RRLRL"'
+   path path5 = "RRLRL";
    path path6 = "RLRLRLRRLR";
    path path7 = "RLRLRLRLLRR";
    path path8 = "LRRLRLRLLLRR";
