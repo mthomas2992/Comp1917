@@ -1,13 +1,14 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 #include "Game.h"
 
+
 // Joerick's #defines
-#define MIN_DICE_VALUE 2
-#define MAX_DICE_VALUE 12
+//#define MIN_DICE_VALUE 2
+//#define MAX_DICE_VALUE 12
 
 #define DEFAULT_DISCIPLINES {2, 5, 3,\
                 5, 3, 1, 4,\
@@ -16,7 +17,7 @@
                 5, 4, 2, 1}
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
-void testgetTurnNumber(void);
+void testgetTurnNumber (void);
 
 int main (int argc, char *argv[]) {
 	testgetTurnNumber();
