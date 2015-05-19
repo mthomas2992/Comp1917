@@ -489,7 +489,7 @@ void makeActiontests(void){
 
    assert(totalarcs==0); //check no one has started with more arcs, double checked in newGametests
    throwDice(gat,1); //advance the game once
-   
+   /*
    //action attest1; // create an action to obtain an arc
    //attest1.actionCode=OBTAIN_ARC;
    //attest1.destination= path2;
