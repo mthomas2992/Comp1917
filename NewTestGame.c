@@ -489,7 +489,7 @@ void makeActiontests(void){
 
    assert(totalarcs==0); //check no one has started with more arcs, double checked in newGametests
    throwDice(gat,1); //advance the game once
-   /*
+   
    //action attest1; // create an action to obtain an arc
    //attest1.actionCode=OBTAIN_ARC;
    //attest1.destination= path2;
@@ -511,11 +511,11 @@ void makeActiontests(void){
       assert(turn2==UNI_A);
    } else {
       assert((turn1+1)==turn2);
-   } */
+   } 
 
 
    //test campus build actions CURRENTLY COMMENTED OUT AS CANNOT BUILD CAMPUS WITHOUT ARC ROAD
-   /*Game gat2 = newGame(disciplinesat, diceat); //start new game just to be sure
+   Game gat2 = newGame(disciplinesat, diceat); //start new game just to be sure
    int player1checkC=0;
    int player2checkC=0;
    int player3checkC=0;
@@ -535,7 +535,7 @@ void makeActiontests(void){
    player2checkC=getCampuses(gat2,UNI_B);
    player3checkC=getCampuses(gat2,UNI_C);
    totalcampusafter=player1checkC+player2checkC+player3checkC;
-   assert((totalcampus+1)==totalcampusafter);  */
+   assert((totalcampus+1)==totalcampusafter);  
 } //currently not player specific tests, fairly broad but checked in other functions CHECKED
 
 void getDisciplinetests(void){
@@ -601,15 +601,15 @@ void getStudentstest(void){
 
 void isLegalActiontests(void){
 
-   //path path2 = "L";
+   path path2 = "L";
 
-   //path path11 = "LLLLLLLLLLLLLLLLRRRRLRLRLL";
+   path path11 = "LLLLLLLLLLLLLLLLRRRRLRLRLL";
 
-   //path path12 = "BLRRL";
+   path path12 = "BLRRL";
 
-   //path path13 = "LRRL";
+   path path13 = "LRRL";
 
-   //path path14 = "BLR";
+   path path14 = "BLR";
 
    int disciplinesla[] = DEFAULT_DISCIPLINES;
    int dicela[] = DEFAULT_DICE;
@@ -617,21 +617,21 @@ void isLegalActiontests(void){
    throwDice(gla,1);
 
    //test arc legals
-   //action testa;
-   //testa.actionCode=OBTAIN_ARC;
-   //testa.destination=path12;
+   action testa;
+   testa.actionCode=OBTAIN_ARC;
+   testa.destination=path12;
 
-   //action testb;
-   //testb.actionCode=OBTAIN_ARC;
-   //testb.destination=path11;
+   action testb;
+   testb.actionCode=OBTAIN_ARC;
+   testb.destination=path11;
 
-   //action testc; //possible error here
-   //testc.actionCode=OBTAIN_ARC;
-   //testc.destination=path2;
+   action testc; //possible error here
+   testc.actionCode=OBTAIN_ARC;
+   testc.destination=path2;
 
-   //assert(isLegalAction(gla,testa)==FALSE);
-   //assert(isLegalAction(gla,testb)==FALSE);
-   //assert(isLegalAction(gla,testc)==TRUE);
+   assert(isLegalAction(gla,testa)==FALSE);
+   assert(isLegalAction(gla,testb)==FALSE);
+   assert(isLegalAction(gla,testc)==TRUE);
 
    //test retrain legals
    action testd;
@@ -689,12 +689,12 @@ void getExchangeRatetests(void){
 
 //Inputs: Game g, int player
 void testGetKPIpoints (void){
-   /*
+   
    path path3 = "R";
    path path15;
    path15[0]='R';
-   path15[1]='L'; */
-   /*
+   path15[1]='L'; 
+   
    // return the number of ARC grants the specified player currently has
    int disciplines[] = DEFAULT_DISCIPLINES;
    int dice[] = DEFAULT_DICE;
@@ -735,7 +735,7 @@ void testGetKPIpoints (void){
    assert (getGO8s (g, UNI_A) == 0);
 
    //To build G08 you need MMONEYS and 2 MJS
-   /*throwDice (g, 2);//UNI_B turn
+   throwDice (g, 2);//UNI_B turn
    throwDice (g, 2);//UNI_C turn
    throwDice ();
    
@@ -758,7 +758,7 @@ void testGetKPIpoints (void){
    assert (getGO8s (g, UNI_A) == 1);
 
    disposeGame (g);
-   */
+
 }
 
 //Inputs: Game g, int player
