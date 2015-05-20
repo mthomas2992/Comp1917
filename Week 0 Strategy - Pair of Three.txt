@@ -1,0 +1,4 @@
+STARTING STRATEGY - Week 0
+SPAM ARCS.
+
+Every two arcs we build, build a campus on the last arc built.  Convert everything else into whatever student we need to build that arc or campus.
