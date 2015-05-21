@@ -2,17 +2,17 @@
  *  Mr Pass.  Brain the size of a planet!
  *
  *  Proundly Created by Richard Buckland
- *  Share Freely Creative Commons SA-BY-NC 3.0. 
+ *  Share Freely Creative Commons SA-BY-NC 3.0.
  *
  */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
- 
+
 #include "Game.h"
 #include "mechanicalTurk.h"
- 
+
 action decideAction (Game g) {
 	action nextAction;
 	if (isSpinoffLegal(g) == TRUE){
@@ -22,7 +22,7 @@ action decideAction (Game g) {
 	}
 	return nextAction;
 }
- 
+
 void isSpinoffLegal(Game g){
 	action Spinoff;
 	spinoff.actionCode = START_SPINOFF;
@@ -40,11 +40,11 @@ void isSpinoffLegal(Game g){
 // when creating destinations
 // Note: please check over, I have bad geometry related skills
 #define CAMPUS_A_TOP ""
-#define CAMPUS_A_BOT "RLRLRLRLRLRLLLL"
-#define CAMPUS_B_LEFT "RRLRRLLLL"
-#define CAMPUS_B_RIGHT "LRLRLRRLLRRR"
-#define CAMPUS_C_LEFT "RRLRLLRLRRLLLL"
-#define CAMPUS_C_RIGHT "LRLLRRR"
+#define CAMPUS_A_BOT "RLRLRLRLRLL"
+#define CAMPUS_B_LEFT "RRLRL"
+#define CAMPUS_B_RIGHT "LRLRLRRLRLRL"
+#define CAMPUS_C_LEFT "RRLRLLRLRL"
+#define CAMPUS_C_RIGHT "LRLRL"
 #define TRUE 1
 #define FALSE 0
 
@@ -81,12 +81,12 @@ action decideAction_A (Game g){
 	strcat(destination,CAMPUS_A_TOP);
 	int pathLength;
 	player = getInventory(g, UNI_A);
-	
+
 	if (player.BPS == 1 && player.BQN == 1){
 		playerA.actionCode = OBTAIN_ARC;
 		destination = getLastARC(g,UNI_A);
 		pathLength = strlen(destination);
-		
+
 		if (destination[pathLength - 1] == "R"){
 			strcat(destination,"L");
 		} else if (destination[pathLength - 1] == "L"){
@@ -131,14 +131,14 @@ path getLastARC(Game g, int player){
 		if (checkCampusARC(g,CAMPUS_A_TOP) == TRUE){
 			strcpy(LastARC,CAMPUS_A_TOP);
 		} else {
-			strcpy(LastARC,CAMPUS_A_BOT);			
+			strcpy(LastARC,CAMPUS_A_BOT);
 		}
-		
+
 	} else if (player == UNI_B){
 		if (checkCampusARC(g,CAMPUS_B_LEFT) == TRUE){
 			strcpy(LastARC,CAMPUS_B_LEFT);
 		} else {
-			strcpy(LastARC,CAMPUS_B_RIGHT);			
+			strcpy(LastARC,CAMPUS_B_RIGHT);
 		}
 
 	} else if (player == UNI_C){
@@ -162,7 +162,7 @@ path getLastARC(Game g, int player){
 }
 
 // Returns Boolean value to see whether ARCS have been made on a certain
-// Campus. 
+// Campus.
 ///////////////////////////////////////////////////////
 // Important: Only used for initial campus positions.//
 ///////////////////////////////////////////////////////
@@ -174,7 +174,7 @@ int checkCampusARC(Game g, path location){
 	path Lcheck;
 	strcpy(Lcheck, location);
 	strcat(Lcheck, "L")
-	
+
 	if (getARC(g, Rcheck) != 0){
 		status = TRUE;
 	} else if (getARC(g, Lcheck) != 0){
@@ -189,7 +189,7 @@ int checkARC_R(Game g, path location, int player){
 	path Rcheck;
 	strcpy(Rcheck, location);
 	strcat(Rcheck, "R");
-	
+
 	if (getARC(g, Rcheck) == player){
 		status = TRUE;
 	}
@@ -202,7 +202,7 @@ int checkARC_L(Game g, path location, int player){
 	path Lcheck;
 	strcpy(Lcheck, location);
 	strcat(Lcheck, "L");
-	
+
 	if (getARC(g, Lcheck) == player){
 		status = TRUE;
 	}
