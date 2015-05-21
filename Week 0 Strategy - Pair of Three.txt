@@ -2,3 +2,87 @@ STARTING STRATEGY - Week 0
 SPAM ARCS.
 
 Every two arcs we build, build a campus on the last arc built.  Convert everything else into whatever student we need to build that arc or campus.
+
+
+PSEUDOCODE
+
+//for converting units
+
+BEGIN Convert
+
+	IF (no. of MJ students >= 3) THEN
+	
+		result  = (no. of BPS - no. of BQN)
+
+		IF (result > 0) THEN
+
+			Convert 3 MJ students into BQN
+
+	        ELSE IF (result < 0) THEN
+
+	
+			Convert 3 MJ students into BPS
+
+		ELSE IF (result = 0) THEN
+
+			Purchase an arc
+
+		ENDIF
+
+	ELSE IF (no. of MTV students >= 3) THEN
+
+		
+		result  = (no. of BPS - no. of BQN)
+
+		IF (result > 0) THEN
+
+			Convert 3 MTV students into BQN
+
+	        ELSE IF (result < 0) THEN
+
+
+			Convert 3 MTV students into BPS
+
+		ELSE IF (result = 0) THEN
+
+			Purchase an arc
+
+		ENDIF
+
+
+	ELSE IF (no. of MMONEY students >= 3) THEN
+
+	
+		result  = (no. of BPS - no. of BQN)
+
+		IF (result > 0) THEN
+
+			Convert 3 MMONEY students into BQN
+
+	        ELSE IF (result < 0) THEN
+
+	
+			Convert 3 MMONEY students into BPS
+
+		ELSE IF (result = 0) THEN
+
+			Purchase an arc
+
+		ENDIF
+
+
+	ENDIF
+
+END Convert   
+
+
+BEGIN nextAction
+
+	count = 0
+
+	IF (count = 2) THEN
+
+		nextAction
+
+
+	ENDIF
