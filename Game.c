@@ -67,7 +67,7 @@ typedef struct _game {
    int regions[NUM_REGIONS]; //this stores the discipline
    int regionid[NUM_REGIONS]; //this stores the dice value of the region
    //going to need 2 2d int arrays to store both the arc and campus array
-   int arcarray [6][11]; //size 
+   int arcarray [6][11]; //size
    int campusarray [6][11];
    regions regionarray[6][11];
 } game;
@@ -333,7 +333,7 @@ Game newGame (int discipline[], int dice[]){
    g->campusarray[0][10]=INVALID;
    g->campusarray[1][10]=INVALID;
 
-   //player one 
+   //player one
    g->player1.KPI=20;
    g->player1.arcs=0;
    g->player1.GO8s=0;
@@ -389,7 +389,7 @@ Game newGame (int discipline[], int dice[]){
    g->campusarray[5][7]=UNI_B;
    g->campusarray[0][8]=UNI_C;
    g->campusarray[5][2]=UNI_C;
-   
+
    return g;
 }
 
@@ -413,7 +413,7 @@ coords translatepath(path arc){
    int approach=DOWN;
    int index=0;
    while(arc[index]!=0){
-      //determine approach 
+      //determine approach
       //There is never a possibility of changing both x and y, therefore it isn't accounted for (yeah it should error trap but its our own function)
       if (prevycoords<ycoords||((ycoords==0)&&(index==0))){
          approach=DOWN;
@@ -760,7 +760,7 @@ void makeAction(Game g, action a){
             coords coord2=translatepath(a.destination);
             g->campusarray[coord2.x][coord2.y]=getWhoseTurn(g)+3;
             g->player1.GO8s++;
-            g->player1.Campuses--; 
+            g->player1.Campuses--;
             g->player1.students.MJ=g->player2.students.MJ-2;
             g->player1.students.MMONEY= g->player2.students.MMONEY-3;
          } else if (a.actionCode == OBTAIN_ARC){
@@ -876,7 +876,7 @@ void makeAction(Game g, action a){
             }
          }
       }
-   } else if (getWhoseTurn(g)==UNI_B){
+   } else if (getWhoseTurn(g)==UNI_C){
       if (isLegalAction(g,a) == TRUE){ //need to add code that modifies structs contents to keep track of player inv
          if (a.actionCode == PASS){
             //throwDice(); //check this do we actually call it or is it called by the interface
