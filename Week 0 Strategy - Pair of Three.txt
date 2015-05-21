@@ -6,9 +6,32 @@ Every two arcs we build, build a campus on the last arc built.  Convert everythi
 
 PSEUDOCODE
 
-//for converting units
+
+BEGIN nextAction
+
+	count = 0
+
+	IF (count = 2) THEN
+
+		nextAction = build campus
+
+                count = 0
+
+
+	ELSE
+
+		nextAction = build arc
+
+                count++;
+
+	ENDIF
+
+
+END nextAction
 
 BEGIN Convert
+
+
 
 	IF (no. of MJ students >= 3) THEN
 	
@@ -75,14 +98,3 @@ BEGIN Convert
 
 END Convert   
 
-
-BEGIN nextAction
-
-	count = 0
-
-	IF (count = 2) THEN
-
-		nextAction
-
-
-	ENDIF
