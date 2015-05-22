@@ -57,6 +57,73 @@ action decideAction (Game g){
 // Action stream for Uni A
 action decideAction_A (Game g){
 	action playerAction;
+	
+	int whichPlayer;
+	whichPlayer = getWhoseTurn(g);
+	
+	inventory playerInv;
+	playerInv = getInventory(g, whichPlayer);
+	
+	path destination;
+	if (whichPlayer == UNI_A){
+		strcpy(destination,CAMPUS_A_BOT);
+	} else if (whichPlayer == UNI_B){
+		strcpy(destination,CAMPUS_B_RIGHT);
+	} else if (whichPlayer == UNI_C){
+		strcpy(destination,CAMPUS_C_RIGHT);
+	}
+	int pathLength;
+	pathLength = strlen(destination);
+	
+	if (getARCs(g,whichPlayer) <= EARLY_GAME){
+		if (playerInv.BPS == 1 && playerInv.BQN == 1){
+			playerAction.actionCode = OBTAIN_ARC;
+			destination = getLastARC(g,whichPlayer);
+			
+			
+			int foundNewARC = FALSE;
+			while (foundNewARC == FALSE){
+				if (destination == ""){
+					strcat(destination,"R");
+					foundNewARC = TRUE;
+				} else if (destination[pathLength - 1] == 'L' && isARCLegal(g,destination,'R')){
+					strcat(destination,"R");
+					foundNewARC = TRUE;
+				} else if (destination[pathLength - 1] == 'R' && isARCLegal(g,destination,'L')){
+					strcat(destination,"L");
+					foundNewARC = TRUE;
+				} else {
+					destination =  removeLastDirection(destination);
+				}
+			}
+			playerAction.destination = destination;
+		} else if (playerInv.BPS == 0){
+			playerAction = retraintoBPSorBQN(g,playerInv,whichPlayer,STUDENT_BPS);
+		} else if (playerInv.BQN == 0){
+			playerAction = retraintoBPSorBQN(g,playerInv,whichPlayer,STUDENT_BQN);		
+		} else {
+			playerAction.actionCode = PASS;
+		}
+	} else {
+		if (playerInv.MJ == 1 && playerInv.MTV == 1 && playerInv.MMONEY == 1){
+			playerAction.actionCode = START_SPINOFF;
+		} else if (playerInv.MJ == 0){
+			playerAction = retraintoM(g, playerInv,whichPlayer,STUDENT_MJ);
+		} else if (playerInv.MTV == 0){
+			playerAction = retraintoM(g, playerInv,whichPlayer,STUDENT_MTV);
+		} else if (playerInv.MMONEY == 0){
+			playerAction = retraintoM(g, playerInv,whichPlayer,STUDENT_MMONEY);
+		} else {
+			playerAction.actionCode = PASS;
+		}
+	}
+	return playerAction;
+}
+
+/*
+// Action stream for Uni A
+action decideAction_A (Game g){
+	action playerAction;
 	inventory playerInv;
 	playerInv = getInventory(g, UNI_A);
 	path destination;
@@ -119,6 +186,7 @@ action decideAction_C (Game g){
 	inventory player;
 	player = getInventory(g, UNI_C);
 }
+*/
 
 // Removes last direction in a path
 path removeLastDirection(path location){
