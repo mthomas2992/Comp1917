@@ -1,44 +1,22 @@
-/*
- *  Mr Pass.  Brain the size of a planet!
- *
- *  Proundly Created by Richard Buckland
- *  Share Freely Creative Commons SA-BY-NC 3.0.
- *
- */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-
-#include "Game.h"
-#include "mechanicalTurk.h"
-
-action decideAction (Game g) {
-	action nextAction;
-	if (isSpinoffLegal(g) == TRUE){
-		nextAction.actionCode = START_SPINOFF;
-	} else {
-		nextAction.actionCode = PASS;
-	}
-	return nextAction;
-}
-
-void isSpinoffLegal(Game g){
-	action Spinoff;
-	spinoff.actionCode = START_SPINOFF;
-	return isLegalAction(g, Spinoff);
-}
-
-// Joerick
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+
 #include "Game.h"
 #include "mechanicalTurk.h"
 
 // Starting Campus positions, possibly just add onto these strings
 // when creating destinations
 // Note: please check over, I have bad geometry related skills
+/*
+#define CAMPUS_A_TOP ""
+#define CAMPUS_A_BOT "RLRLRLRLRLRLLLL"
+#define CAMPUS_B_LEFT "RRLRRLLLL"
+#define CAMPUS_B_RIGHT "LRLRLRRLLRRR"
+#define CAMPUS_C_LEFT "RRLRLLRLRRLLLL"
+#define CAMPUS_C_RIGHT "LRLLRRR"
+*/
 #define CAMPUS_A_TOP ""
 #define CAMPUS_A_BOT "RLRLRLRLRLL"
 #define CAMPUS_B_LEFT "RRLRL"
@@ -48,12 +26,16 @@ void isSpinoffLegal(Game g){
 #define TRUE 1
 #define FALSE 0
 
+
+// Please add number of ARCS we want to achieve for EARLY_GAME
+#define EARLY_GAME
+
 typedef struct _inventory {
 	int BPS;
 	int BQN;
 	int MJ;
 	int MTV;
-	int MMONEY
+	int MMONEY;
 } inventory;
 
 action decideAction_A (Game g);
@@ -75,26 +57,55 @@ action decideAction (Game g){
 
 // Action stream for Uni A
 action decideAction_A (Game g){
-	action playerA;
-	inventory player;
+	action playerAction;
+	inventory playerInv;
+	playerInv = getInventory(g, UNI_A);
 	path destination;
-	strcat(destination,CAMPUS_A_TOP);
+	strcpy(destination,CAMPUS_A_TOP);
 	int pathLength;
-	player = getInventory(g, UNI_A);
-
-	if (player.BPS == 1 && player.BQN == 1){
-		playerA.actionCode = OBTAIN_ARC;
-		destination = getLastARC(g,UNI_A);
-		pathLength = strlen(destination);
-
-		if (destination[pathLength - 1] == "R"){
-			strcat(destination,"L");
-		} else if (destination[pathLength - 1] == "L"){
-			strcat(destination,"R");
+	int ;
+	
+	if (getARCs(g,UNI_A) <= EARLY_GAME){
+		if (playerInv.BPS == 1 && playerInv.BQN == 1){
+			playerAction.actionCode = OBTAIN_ARC;
+			destination = getLastARC(g,UNI_A);
+			pathLength = strlen(destination);
+			
+			int foundNewARC = FALSE;
+			while (foundNewARC == FALSE){
+				if (destination == ""){
+					strcat(destination,"R");
+					foundNewARC = TRUE;
+				} else if (destination[pathLength - 1] == 'L' && isARCLegal(g,destination,'R')){
+					strcat(destination,"R");
+					foundNewARC = TRUE;
+				} else if (destination[pathLength - 1] == 'R' && isARCLegal(g,destination,'L')){
+					strcat(destination,"L");
+					foundNewARC = TRUE;
+				} else {
+					destination =  removeLastDirection(destination);
+				}
+			}
+			playerAction.destination = destination;
+		} else if (playerInv.BPS == 0){
+			playerAction = retraintoBPSorBQN(g,playerInv,UNI_A,STUDENT_BPS);
+		} else if (playerInv.BQN == 0){
+			playerAction = retraintoBPSorBQN(g,playerInv,UNI_A,STUDENT_BQN);		
+		} else {
+			playerAction.actionCode = PASS;
 		}
-
-		playerA.destination = CAMPUS_A_TOP
+	} else {
+		if (playerInv.MJ == 1 && playerInv.MTV == 1 && playerInv.MMONEY == 1){
+			playerAction.actionCode = START_SPINOFF;
+		} else if (playerInv.MJ == 0){
+			
+		} else if (playerInv.MTV == 0){
+			
+		} else if (playerInv.MMONEY == 0){
+			
+		}
 	}
+	return playerAction;
 }
 
 // Action stream for Uni B
@@ -109,7 +120,83 @@ action decideAction_C (Game g){
 	player = getInventory(g, UNI_C);
 }
 
-// Returns player Inventory
+// Removes last direction in a path
+path removeLastDirection(path location){
+	path temp;
+	int n;
+	n = strlen(location) - 1;
+	strncpy(temp,location,n);
+	return temp;
+}
+
+// Determines the action struct to be used for a retrain into BPS/BQN
+action retraintoBPSorBQN(Game g, inventory inv, int player, int studentTo){
+	action retrainAction;
+	retrainAction.actionCode = RETRAIN_STUDENTS;
+	if (inv.MJ >= 2 && getExchangeRate(g,retrainAction,STUDENT_MJ,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MJ;
+		retrainAction.disciplineTo = studentTo;
+	} else if (inv.MTV >= 2 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MTV;
+		retrainAction.disciplineTo = studentTo;
+	} else if (inv.MMONEY >= 2 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MMONEY;
+		retrainAction.disciplineTo = studentTo;
+
+	} else if (inv.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MJ;
+		retrainAction.disciplineTo = studentTo;
+	} else if (inv.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MTV;
+		retrainAction.disciplineTo = studentTo;
+	} else if (inv.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MMONEY;
+		retrainAction.disciplineTo = studentTo;
+	}
+	return retrainAction;
+}
+
+//////////////////////
+//UNDER CONSTRUCTION//
+//////////////////////
+// Determines the action struct to be used for a retrain into BPS/BQN
+action retraintoM(Game g, inventory inv, int player, int studentTo){
+	action retrainAction;
+	retrainAction.actionCode = RETRAIN_STUDENTS;
+	if (inv.BPS >= 2 && getExchangeRate(g,retrainAction,STUDENT_BPS,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_BPS;
+		retrainAction.disciplineTo = studentTo;
+	} else if (inv.BQN >= 2 && getExchangeRate(g,UNI_A,STUDENT_BQN,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MTV;
+		retrainAction.disciplineTo = studentTo;
+	} else if (player.MMONEY >= 2 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MMONEY;
+		retrainAction.disciplineTo = studentTo;
+
+	} else if (player.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MJ;
+		retrainAction.disciplineTo = studentTo;
+	} else if (player.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MTV;
+		retrainAction.disciplineTo = studentTo;
+	} else if (player.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MMONEY;
+		retrainAction.disciplineTo = studentTo;
+	}
+	return retrainAction;
+}
+
+// Checks whether it is legal to create an ARC in a certain direction
+int isARCLegal(Game g, path location, path direction){
+	action isLegal;
+	isLegal.actionCode = OBTAIN_ARC;
+	path destination = location;
+	strcat(destination,direction);
+	isLegal.destination = destination;
+	return isLegalAction(g,isLegal);
+}
+
+// Returns player Inventory + Exchange rates.
 inventory getInventory(Game g, int player){
 	inventory currentPlayer;
 	currentPlayer.BPS = getStudents(g, player,STUDENT_BPS);
@@ -117,6 +204,7 @@ inventory getInventory(Game g, int player){
 	currentPlayer.MJ = getStudents(g, player,STUDENT_MJ);
 	currentPlayer.MTV = getStudents(g, player,STUDENT_MTV);
 	currentPlayer.MMONEY = getStudents(g, player,STUDENT_MMONEY);
+	
 	return currentPlayer;
 }
 
@@ -124,6 +212,9 @@ inventory getInventory(Game g, int player){
 // the ARC tail??? is found
 ///////////////////////////////////////////////////////////
 //Important: Assumes that ARCs only stem from one campus.//
+//Also, assumes that there is only a line of ARCs, in    //
+//the case where the ARCs branch off, the right branch   //
+//is favoured                                            //
 ///////////////////////////////////////////////////////////
 path getLastARC(Game g, int player){
 	path LastARC;
@@ -131,14 +222,14 @@ path getLastARC(Game g, int player){
 		if (checkCampusARC(g,CAMPUS_A_TOP) == TRUE){
 			strcpy(LastARC,CAMPUS_A_TOP);
 		} else {
-			strcpy(LastARC,CAMPUS_A_BOT);
+			strcpy(LastARC,CAMPUS_A_BOT);			
 		}
-
+		
 	} else if (player == UNI_B){
 		if (checkCampusARC(g,CAMPUS_B_LEFT) == TRUE){
 			strcpy(LastARC,CAMPUS_B_LEFT);
 		} else {
-			strcpy(LastARC,CAMPUS_B_RIGHT);
+			strcpy(LastARC,CAMPUS_B_RIGHT);			
 		}
 
 	} else if (player == UNI_C){
@@ -148,6 +239,7 @@ path getLastARC(Game g, int player){
 			strcpy(LastARC,CAMPUS_C_RIGHT);
 		}
 	}
+	
 	int noMoreARCs = FALSE;
 	while (noMoreARCs == FALSE){
 		if (checkARC_R(g,LastARC,player) == TRUE){
@@ -174,7 +266,7 @@ int checkCampusARC(Game g, path location){
 	path Lcheck;
 	strcpy(Lcheck, location);
 	strcat(Lcheck, "L")
-
+	
 	if (getARC(g, Rcheck) != 0){
 		status = TRUE;
 	} else if (getARC(g, Lcheck) != 0){
@@ -189,7 +281,7 @@ int checkARC_R(Game g, path location, int player){
 	path Rcheck;
 	strcpy(Rcheck, location);
 	strcat(Rcheck, "R");
-
+	
 	if (getARC(g, Rcheck) == player){
 		status = TRUE;
 	}
@@ -202,7 +294,7 @@ int checkARC_L(Game g, path location, int player){
 	path Lcheck;
 	strcpy(Lcheck, location);
 	strcat(Lcheck, "L");
-
+	
 	if (getARC(g, Lcheck) == player){
 		status = TRUE;
 	}
