@@ -26,9 +26,8 @@
 #define TRUE 1
 #define FALSE 0
 
-
 // Please add number of ARCS we want to achieve for EARLY_GAME
-#define EARLY_GAME
+#define EARLY_GAME 10
 
 typedef struct _inventory {
 	int BPS;
@@ -63,7 +62,6 @@ action decideAction_A (Game g){
 	path destination;
 	strcpy(destination,CAMPUS_A_TOP);
 	int pathLength;
-	int ;
 	
 	if (getARCs(g,UNI_A) <= EARLY_GAME){
 		if (playerInv.BPS == 1 && playerInv.BQN == 1){
@@ -98,11 +96,13 @@ action decideAction_A (Game g){
 		if (playerInv.MJ == 1 && playerInv.MTV == 1 && playerInv.MMONEY == 1){
 			playerAction.actionCode = START_SPINOFF;
 		} else if (playerInv.MJ == 0){
-			
+			playerAction = retraintoM(g, playerInv,UNI_A,STUDENT_MJ);
 		} else if (playerInv.MTV == 0){
-			
+			playerAction = retraintoM(g, playerInv,UNI_A,STUDENT_MTV);
 		} else if (playerInv.MMONEY == 0){
-			
+			playerAction = retraintoM(g, playerInv,UNI_A,STUDENT_MMONEY);
+		} else {
+			playerAction.actionCode = PASS;
 		}
 	}
 	return playerAction;
@@ -133,55 +133,52 @@ path removeLastDirection(path location){
 action retraintoBPSorBQN(Game g, inventory inv, int player, int studentTo){
 	action retrainAction;
 	retrainAction.actionCode = RETRAIN_STUDENTS;
+	retrainAction.disciplineTo = studentTo;
 	if (inv.MJ >= 2 && getExchangeRate(g,retrainAction,STUDENT_MJ,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MJ;
-		retrainAction.disciplineTo = studentTo;
 	} else if (inv.MTV >= 2 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-		retrainAction.disciplineTo = studentTo;
 	} else if (inv.MMONEY >= 2 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
-		retrainAction.disciplineTo = studentTo;
-
 	} else if (inv.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MJ;
-		retrainAction.disciplineTo = studentTo;
 	} else if (inv.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-		retrainAction.disciplineTo = studentTo;
 	} else if (inv.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
-		retrainAction.disciplineTo = studentTo;
-	}
+	} else if (inv.BQN >= 2 && studentTo != STUDENT_BQN){
+		retrainAction.disciplineFrom = STUDENT_BQN;
+	} else if (inv.BPS >= 2 && studentTo != STUDENT_BPS){
+		retrainAction.disciplineFrom = STUDENT_BPS;
+	} 
 	return retrainAction;
 }
 
-//////////////////////
-//UNDER CONSTRUCTION//
-//////////////////////
-// Determines the action struct to be used for a retrain into BPS/BQN
+// Determines the action struct to be used for a retrain into M
 action retraintoM(Game g, inventory inv, int player, int studentTo){
 	action retrainAction;
 	retrainAction.actionCode = RETRAIN_STUDENTS;
+	retrainAction.disciplineTo = studentTo;
 	if (inv.BPS >= 2 && getExchangeRate(g,retrainAction,STUDENT_BPS,studentTo) == 2){
-		retrainAction.disciplineFrom = STUDENT_BPS;
-		retrainAction.disciplineTo = studentTo;
+		retrainAction.disciplineFrom = STUDENT_BPS;		
 	} else if (inv.BQN >= 2 && getExchangeRate(g,UNI_A,STUDENT_BQN,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_MTV;		
+	} else if (player.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 2 && studentTo != STUDENT_MJ){
+		retrainAction.disciplineFrom = STUDENT_MJ;		
+	} else if (inv.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 2 && studentTo != STUDENT_MTV){
+		retrainAction.disciplineFrom = STUDENT_MTV;		
+	} else if (inv.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2 && studentTo != STUDENT_MMONEY){
+		retrainAction.disciplineFrom = STUDENT_MMONEY;		
+	} else if (inv.BPS >= 3 && getExchangeRate(g,retrainAction,STUDENT_BPS,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_BPS;		
+	} else if (inv.BQN >= 3 && getExchangeRate(g,UNI_A,STUDENT_BQN,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_MTV;		
+	} else if (player.MJ >= 4 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3 && studentTo != STUDENT_MJ){
+		retrainAction.disciplineFrom = STUDENT_MJ;		
+	} else if (inv.MTV >= 4 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3 && studentTo != STUDENT_MTV){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-		retrainAction.disciplineTo = studentTo;
-	} else if (player.MMONEY >= 2 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2){
+	} else if (inv.MMONEY >= 4 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3 && studentTo != STUDENT_MMONEY){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
-		retrainAction.disciplineTo = studentTo;
-
-	} else if (player.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3){
-		retrainAction.disciplineFrom = STUDENT_MJ;
-		retrainAction.disciplineTo = studentTo;
-	} else if (player.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3){
-		retrainAction.disciplineFrom = STUDENT_MTV;
-		retrainAction.disciplineTo = studentTo;
-	} else if (player.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3){
-		retrainAction.disciplineFrom = STUDENT_MMONEY;
-		retrainAction.disciplineTo = studentTo;
 	}
 	return retrainAction;
 }
