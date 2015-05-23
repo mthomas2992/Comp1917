@@ -23,8 +23,6 @@
 #define CAMPUS_B_RIGHT "LRLRLRRLRLRL"
 #define CAMPUS_C_LEFT "RRLRLLRLRL"
 #define CAMPUS_C_RIGHT "LRLRL"
-#define TRUE 1
-#define FALSE 0
 
 // Please add number of ARCS we want to achieve for EARLY_GAME
 #define EARLY_GAME_ARCS 5
