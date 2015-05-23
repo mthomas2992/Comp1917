@@ -27,7 +27,8 @@
 #define FALSE 0
 
 // Please add number of ARCS we want to achieve for EARLY_GAME
-#define EARLY_GAME 10
+#define EARLY_GAME_ARCS 5
+#define EARLY_GAME_TURNS 300
 
 typedef struct _inventory {
 	int BPS;
@@ -38,10 +39,20 @@ typedef struct _inventory {
 } inventory;
 
 action decideAction_A (Game g);
-action decideAction_B (Game g);
-action decideAction_C (Game g);
+//action decideAction_B (Game g);
+//action decideAction_C (Game g);
 inventory getInventory(Game g, int player);
+path removeLastDirection(path location);
+action retraintoBPSorBQN(Game g, inventory inv, int player, int studentTo);
+action retraintoM(Game g, inventory inv, int player, int studentTo);
+isARCLegal(Game g, path location, path direction);
+inventory getInventory(Game g, int player);
+path getLastARC(Game g, int player);
+int checkCampusARC(Game g, path location);
+int checkARC_R(Game g, path location, int player);
+int checkARC_L(Game g, path location, int player);
 
+/*
 action decideAction (Game g){
 	action nextAction;
 	int whichPlayer = getWhoseTurn(g);
@@ -52,6 +63,13 @@ action decideAction (Game g){
 	} else if (whichPlayer == UNI_C){
 		nextAction = decideAction_C(g);
 	}
+}
+*/
+
+action decideAction (Game g){
+	action nextAction;
+	nextAction = decideAction_A(g);
+	return nextAction;
 }
 
 // Action stream for Uni A
@@ -75,7 +93,7 @@ action decideAction_A (Game g){
 	int pathLength;
 	pathLength = strlen(destination);
 	
-	if (getARCs(g,whichPlayer) <= EARLY_GAME){
+	if (getARCs(g,whichPlayer) <= EARLY_GAME_ARCS && getTurnNumber(g) <= EARLY_GAME_TURNS){
 		if (playerInv.BPS == 1 && playerInv.BQN == 1){
 			playerAction.actionCode = OBTAIN_ARC;
 			destination = getLastARC(g,whichPlayer);
@@ -86,14 +104,25 @@ action decideAction_A (Game g){
 				if (destination == ""){
 					strcat(destination,"R");
 					foundNewARC = TRUE;
-				} else if (destination[pathLength - 1] == 'L' && isARCLegal(g,destination,'R')){
+				} else if (destination[pathLength - 1] == 'L' && isARCLegal(g,destination,'R') == TRUE){
 					strcat(destination,"R");
 					foundNewARC = TRUE;
-				} else if (destination[pathLength - 1] == 'R' && isARCLegal(g,destination,'L')){
+				} else if (destination[pathLength - 1] == 'R' && isARCLegal(g,destination,'L') == TRUE){
 					strcat(destination,"L");
 					foundNewARC = TRUE;
 				} else {
 					destination =  removeLastDirection(destination);
+					while (foundNewARC == FALSE){
+						if (isARCLegal(g,destination,'R') == TRUE){
+							strcat(destination,"R");
+							foundNewARC = TRUE;
+						} else if (isARCLegal(g,destination,'L') == TRUE){
+							strcat(destination,"L");
+							foundNewARC = TRUE;
+						} else {
+							destination =  removeLastDirection(destination);
+						}
+					}
 				}
 			}
 			playerAction.destination = destination;
@@ -192,7 +221,7 @@ action decideAction_C (Game g){
 path removeLastDirection(path location){
 	path temp;
 	int n;
-	n = strlen(location) - 1;
+	n = (strlen(location) - 1);
 	strncpy(temp,location,n);
 	return temp;
 }
@@ -223,6 +252,8 @@ action retraintoBPSorBQN(Game g, inventory inv, int player, int studentTo){
 }
 
 // Determines the action struct to be used for a retrain into M
+// For BQN/BPS, only checks if the exact amount for exchange
+// For M, checks for exchange + 1
 action retraintoM(Game g, inventory inv, int player, int studentTo){
 	action retrainAction;
 	retrainAction.actionCode = RETRAIN_STUDENTS;
@@ -261,7 +292,7 @@ int isARCLegal(Game g, path location, path direction){
 	return isLegalAction(g,isLegal);
 }
 
-// Returns player Inventory + Exchange rates.
+// Returns player Inventory
 inventory getInventory(Game g, int player){
 	inventory currentPlayer;
 	currentPlayer.BPS = getStudents(g, player,STUDENT_BPS);
@@ -328,6 +359,7 @@ int checkCampusARC(Game g, path location){
 	path Rcheck;
 	strcpy(Rcheck, location);
 	strcat(Rcheck, "R");
+	
 	path Lcheck;
 	strcpy(Lcheck, location);
 	strcat(Lcheck, "L")
