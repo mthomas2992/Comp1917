@@ -96,10 +96,9 @@ action decideAction_A (Game g){
 			playerAction.actionCode = OBTAIN_ARC;
 			destination = getLastARC(g,whichPlayer);
 			
-			
 			int foundNewARC = FALSE;
 			while (foundNewARC == FALSE){
-				if (destination == ""){
+				if (destination == CAMPUS_A_TOP){
 					strcat(destination,"R");
 					foundNewARC = TRUE;
 				} else if (destination[pathLength - 1] == 'L' && isARCLegal(g,destination,'R') == TRUE){
@@ -229,23 +228,29 @@ action retraintoBPSorBQN(Game g, inventory inv, int player, int studentTo){
 	action retrainAction;
 	retrainAction.actionCode = RETRAIN_STUDENTS;
 	retrainAction.disciplineTo = studentTo;
-	if (inv.MJ >= 2 && getExchangeRate(g,retrainAction,STUDENT_MJ,studentTo) == 2){
+	if (inv.MJ >= 2 && getExchangeRate(g,player,STUDENT_MJ,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MJ;
-	} else if (inv.MTV >= 2 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 2){
+	} else if (inv.MTV >= 2 && getExchangeRate(g,player,STUDENT_MTV,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-	} else if (inv.MMONEY >= 2 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2){
+	} else if (inv.MMONEY >= 2 && getExchangeRate(g,player,STUDENT_MMONEY,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
-	} else if (inv.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3){
+	} else if (inv.MJ >= 3 && getExchangeRate(g,player,STUDENT_MJ,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MJ;
-	} else if (inv.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3){
+	} else if (inv.MTV >= 3 && getExchangeRate(g,player,STUDENT_MTV,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-	} else if (inv.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3){
+	} else if (inv.MMONEY >= 3 && getExchangeRate(g,player,STUDENT_MMONEY,studentTo) == 3){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
-	} else if (inv.BQN >= 2 && studentTo != STUDENT_BQN){
+	} else if (inv.BQN >= 3 && studentTo != STUDENT_BQN && getExchangeRate(g,player,STUDENT_BQN,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_BQN;
-	} else if (inv.BPS >= 2 && studentTo != STUDENT_BPS){
+	} else if (inv.BPS >= 3 && studentTo != STUDENT_BPS && getExchangeRate(g,player,STUDENT_BPS,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_BPS;
-	} 
+	} else if (inv.BQN >= 4 && studentTo != STUDENT_BQN && getExchangeRate(g,player,STUDENT_BQN,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_BQN;
+	} else if (inv.BPS >= 4 && studentTo != STUDENT_BPS && getExchangeRate(g,player,STUDENT_BPS,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_BPS;
+	} else {
+		retrainAction.actionCode = PASS;
+	}
 	return retrainAction;
 }
 
@@ -256,26 +261,28 @@ action retraintoM(Game g, inventory inv, int player, int studentTo){
 	action retrainAction;
 	retrainAction.actionCode = RETRAIN_STUDENTS;
 	retrainAction.disciplineTo = studentTo;
-	if (inv.BPS >= 2 && getExchangeRate(g,retrainAction,STUDENT_BPS,studentTo) == 2){
+	if (inv.BPS >= 2 && getExchangeRate(g,player,STUDENT_BPS,studentTo) == 2){
 		retrainAction.disciplineFrom = STUDENT_BPS;		
-	} else if (inv.BQN >= 2 && getExchangeRate(g,UNI_A,STUDENT_BQN,studentTo) == 2){
+	} else if (inv.BQN >= 2 && getExchangeRate(g,player,STUDENT_BQN,studentTo) == 2){
+		retrainAction.disciplineFrom = STUDENT_BQN;		
+	} else if (inv.BPS >= 3 && getExchangeRate(g,player,STUDENT_BPS,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_BPS;		
+	} else if (inv.BQN >= 3 && getExchangeRate(g,player,STUDENT_BQN,studentTo) == 3){
+		retrainAction.disciplineFrom = STUDENT_BQN;		
+	} else if (player.MJ >= 3 && getExchangeRate(g,player,STUDENT_MJ,studentTo) == 2 && studentTo != STUDENT_MJ){
+		retrainAction.disciplineFrom = STUDENT_MJ;
+	} else if (inv.MTV >= 3 && getExchangeRate(g,player,STUDENT_MTV,studentTo) == 2 && studentTo != STUDENT_MTV){
 		retrainAction.disciplineFrom = STUDENT_MTV;		
-	} else if (player.MJ >= 3 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 2 && studentTo != STUDENT_MJ){
-		retrainAction.disciplineFrom = STUDENT_MJ;		
-	} else if (inv.MTV >= 3 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 2 && studentTo != STUDENT_MTV){
-		retrainAction.disciplineFrom = STUDENT_MTV;		
-	} else if (inv.MMONEY >= 3 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 2 && studentTo != STUDENT_MMONEY){
+	} else if (inv.MMONEY >= 3 && getExchangeRate(g,player,STUDENT_MMONEY,studentTo) == 2 && studentTo != STUDENT_MMONEY){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;		
-	} else if (inv.BPS >= 3 && getExchangeRate(g,retrainAction,STUDENT_BPS,studentTo) == 3){
-		retrainAction.disciplineFrom = STUDENT_BPS;		
-	} else if (inv.BQN >= 3 && getExchangeRate(g,UNI_A,STUDENT_BQN,studentTo) == 3){
-		retrainAction.disciplineFrom = STUDENT_MTV;		
-	} else if (player.MJ >= 4 && getExchangeRate(g,UNI_A,STUDENT_MJ,studentTo) == 3 && studentTo != STUDENT_MJ){
+	} else if (inv.MJ >= 4 && getExchangeRate(g,player,STUDENT_MJ,studentTo) == 3 && studentTo != STUDENT_MJ){
 		retrainAction.disciplineFrom = STUDENT_MJ;		
-	} else if (inv.MTV >= 4 && getExchangeRate(g,UNI_A,STUDENT_MTV,studentTo) == 3 && studentTo != STUDENT_MTV){
+	} else if (inv.MTV >= 4 && getExchangeRate(g,player,STUDENT_MTV,studentTo) == 3 && studentTo != STUDENT_MTV){
 		retrainAction.disciplineFrom = STUDENT_MTV;
-	} else if (inv.MMONEY >= 4 && getExchangeRate(g,UNI_A,STUDENT_MMONEY,studentTo) == 3 && studentTo != STUDENT_MMONEY){
+	} else if (inv.MMONEY >= 4 && getExchangeRate(g,player,STUDENT_MMONEY,studentTo) == 3 && studentTo != STUDENT_MMONEY){
 		retrainAction.disciplineFrom = STUDENT_MMONEY;
+	} else {
+		retrainAction.actionCode = PASS;
 	}
 	return retrainAction;
 }
@@ -287,6 +294,7 @@ int isARCLegal(Game g, path location, path direction){
 	path destination = location;
 	strcat(destination,direction);
 	isLegal.destination = destination;
+	
 	return isLegalAction(g,isLegal);
 }
 
@@ -360,7 +368,7 @@ int checkCampusARC(Game g, path location){
 	
 	path Lcheck;
 	strcpy(Lcheck, location);
-	strcat(Lcheck, "L")
+	strcat(Lcheck, "L");
 	
 	if (getARC(g, Rcheck) != 0){
 		status = TRUE;
