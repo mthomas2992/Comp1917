@@ -6,15 +6,22 @@
 #include "Game.h"
 
 #define INVALID 20
-#define ARC_THRESH 10
+#define ARC_THRESH 9000 //currently the ai will build arcs till no possible space left
+//only when building arcs is no longer possible will ultron start building campuses
+//this can be stopped using this threshold value, perhaps have diff game statuses??
 
 //score modifiers for arc scouting
-#define THD_SCORE -1
-#define BPS_SCORE 1
-#define BQN_SCORE 1
-#define MJ_SCORE 1
-#define MTV_SCORE 1
+#define THD_SCORE 0
+#define BPS_SCORE 3
+#define BQN_SCORE 3
+#define MJ_SCORE 2
+#define MTV_SCORE 2
 #define MMONEY_SCORE 1
+
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
 
 typedef struct _score {
    path edge;
@@ -69,51 +76,76 @@ typedef struct _gamestore {
 
 void Assess(Gamestore p, Game g);
 action decideAction (Game g);
-action ArcLogic(Gamestore p,Game g);
+action ArcLogic(Gamestore p,Game g,int actionCode);
 void assignregion(Gamestore g);
+coords translatepath(path arc);
+int lowest(Game g, Gamestore p);
+int highest(Game g,Gamestore p);
 
 /*int main (int argc, char *argv[]) {
-	//action a;
-	//a=decideAction(g);
-   Gamestore p=malloc(sizeof(gamestore));
-   strcpy(p->arcarray[1][1],"LR");
-   printf("string %s", p->arcarray[1][1]);
-	return EXIT_SUCCESS;
+
 }*/
 
 action decideAction (Game g){
-	//determine local campuses
-	//build towards selected number priority
-	//continue building towards preference
-	//store gathered arcs in an array?
-	//could use similar scan to game.c and then
-
+	//currently in v2 of decision tree
 	Gamestore p=malloc(sizeof(gamestore));
 	Assess(p,g); // Stores the current game status in the game struct
    action actions;
-   //call different functions based on current status
-   if (p->Ultron->arcs<=ARC_THRESH){ //calls arc building logic in the situation more arcs are deemed needed CAN CHANGE THIS LATER BASED ON OTHER INPUT!!
-      actions=ArcLogic(p,g); //arc logic determines best possible arc purchase and ensures sufficient students availible
-   } //else if() add more possible actions when needed
-	//input paths into logic function, determine best,translate, purchase then repeat until out of resources or arc value gets to certain point
-	//Translate students for campus building, build campus in priority marked 
-	//upgrade campus
+   action arc;
+   arc.actionCode=INVALID; //set to invalid so if its not possible the action itself is inv
+   action campus;
+   campus.actionCode=INVALID;
+   
+   //determine if arc,campus building is possible and return values of best purchase
+   if ((p->Ultron.arcs<=ARC_THRESH)&&(getStudents(g,p->whoseTurn,STUDENT_BPS)>=1)&&(getStudents(g,p->whoseTurn,STUDENT_BQN)>=1)){ //calls arc building logic in the situation more arcs are deemed needed CAN CHANGE THIS LATER BASED ON OTHER INPUT!!
+      arc=ArcLogic(p,g,OBTAIN_ARC);       
+   }
+   if ((getStudents(g,p->whoseTurn,STUDENT_MJ)>=1)&&(getStudents(g,p->whoseTurn,STUDENT_MTV)>=1)&&(getStudents(g,p->whoseTurn,STUDENT_MMONEY)>=1)&&(getStudents(g,p->whoseTurn,STUDENT_BPS)>=1)&&(getStudents(g,p->whoseTurn,STUDENT_BQN)>=1)){
+      campus=ArcLogic(p,g,BUILD_CAMPUS); 
+   }
+
+   //decision tree start
+   if ((arc.actionCode==INVALID)&&(campus.actionCode==INVALID)){
+      int higheststu=highest(g,p); //currently exchange logic is in this statement
+      int loweststu=lowest(g,p);
+      if (getStudents(g,p->whoseTurn,higheststu)>getExchangeRate(g,p->whoseTurn,higheststu,loweststu)){
+         actions.actionCode=RETRAIN_STUDENTS;
+         actions.disciplineFrom=higheststu;
+         actions.disciplineTo=loweststu;
+      } else {
+         actions.actionCode=PASS;
+      }
+   } else if ((arc.actionCode==OBTAIN_ARC)&&(campus.actionCode==INVALID)){
+      actions.actionCode=OBTAIN_ARC;
+      strcpy(actions.destination,arc.destination);
+   } else if ((arc.actionCode==INVALID)&&(campus.actionCode==BUILD_CAMPUS)){
+      actions.actionCode=BUILD_CAMPUS;
+      strcpy(actions.destination,campus.destination);
+   } else if ((arc.actionCode==OBTAIN_ARC)&&(campus.actionCode==BUILD_CAMPUS)){ //if both are possible, change this statement to prioritise one over the other
+      actions.actionCode=OBTAIN_ARC; //can add logic here to better decide based on game stat
+      strcpy(actions.destination,arc.destination); //in this current state arcs will be built at all times
+   }
 	free(p);
    return actions;
 }
 
 void Assess(Gamestore p, Game g){
    p->whoseTurn=getWhoseTurn(g);
-	assignregion(p); //assigns region array, assigned but needs number returns
-   //assignarc(p);
+	assignregion(p); //assigns region array
 	p->turncount=getTurnNumber(g);
-   p->Ultron->arcs=getARCs(g,p->whoseTurn); // assigns amount of arcs currently held
+   p->Ultron.arcs=getARCs(g,p->whoseTurn); // assigns amount of arcs currently held
+   p->Ultron.students.THD=getStudents(g,p->whoseTurn,STUDENT_THD);
+   p->Ultron.students.BPS=getStudents(g,p->whoseTurn,STUDENT_BPS);
+   p->Ultron.students.BQN=getStudents(g,p->whoseTurn,STUDENT_BQN);
+   p->Ultron.students.MJ=getStudents(g,p->whoseTurn,STUDENT_MJ);
+   p->Ultron.students.MTV=getStudents(g,p->whoseTurn,STUDENT_MTV);
+   p->Ultron.students.MMONEY=getStudents(g,p->whoseTurn,STUDENT_MMONEY);
 	//hardcode vertex contents into arc/campus array
 	//add things as needed
 }
 //function which scans all possible ARC locations, checks legality, scores location then returns best possible arc to build on
 //can be enhanced futher on to look into future building of arcs rather then the immediate returns
-action ArcLogic(Gamestore p,Game g){
+action ArcLogic(Gamestore p,Game g,int actionCode){
    int flag=FALSE;
    int iterate=0;
    int index;
@@ -130,32 +162,42 @@ action ArcLogic(Gamestore p,Game g){
    score Arcscore;
    Arcscore.score=0;
    action a;
-   a.actionCode=OBTAIN_ARC;
-   while (flag=FALSE){
-      strcpy(edge,"RRLR"); //set initial hex column
+   action at;
+   if (actionCode==OBTAIN_ARC){
+      a.actionCode=OBTAIN_ARC;
+      at.actionCode=OBTAIN_ARC;
+   } else if (actionCode==BUILD_CAMPUS){
+      a.actionCode=BUILD_CAMPUS;
+      at.actionCode=BUILD_CAMPUS;
+   }
+   strcpy(edge,"RRLR"); //set initial hex column
+   while (flag==FALSE){
+      iterate=0;
       while (iterate<6){ //iterate through one hex, currently there is an overlap on the intial and final tested arc, however this works for the if statements, can be removed if ness
          strcpy(a.destination,edge);
          coords1=translatepath(edge);
          if (isLegalAction(g,a)==TRUE){ //check if legal then create score, then check which is higher
-            region=regionarray[coords1.x][coords1.y];
+            region=p->regionarray[coords1.x][coords1.y];
             regioniteration[0]=region.a; //put into an array for easier iteration
             regioniteration[1]=region.b;
             regioniteration[2]=region.c;
             index=0;
             tempscore=0;
             while (index<=2){ //add score for each region
-               if (getDiscipline(g,regioniteration[index])==STUDENT_THD){
-                  tempscore=tempscore+THD_SCORE;
-               } else if (getDiscipline(g,regioniteration[index])==STUDENT_BPS){
-                  tempscore=tempscore+BPS_SCORE;
-               } else if (getDiscipline(g,regioniteration[index])==STUDENT_BQN){
-                  tempscore=tempscore+BQN_SCORE;
-               } else if (getDiscipline(g,regioniteration[index])==STUDENT_MJ){
-                  tempscore=tempscore+MJ_SCORE;
-               } else if (getDiscipline(g,regioniteration[index])==STUDENT_MTV){
-                  tempscore=tempscore+MTV_SCORE;
-               } else if (getDiscipline(g,regioniteration[index])==STUDENT_MMONEY){
-                  tempscore=tempscore+MMONEY_SCORE;
+               if (regioniteration[index]!=INVALID){
+                  if (getDiscipline(g,regioniteration[index])==STUDENT_THD){
+                     tempscore=tempscore+THD_SCORE;
+                  } else if (getDiscipline(g,regioniteration[index])==STUDENT_BPS){
+                     tempscore=tempscore+BPS_SCORE;
+                  } else if (getDiscipline(g,regioniteration[index])==STUDENT_BQN){
+                     tempscore=tempscore+BQN_SCORE;
+                  } else if (getDiscipline(g,regioniteration[index])==STUDENT_MJ){
+                     tempscore=tempscore+MJ_SCORE;
+                  } else if (getDiscipline(g,regioniteration[index])==STUDENT_MTV){
+                     tempscore=tempscore+MTV_SCORE;
+                  } else if (getDiscipline(g,regioniteration[index])==STUDENT_MMONEY){
+                     tempscore=tempscore+MMONEY_SCORE;
+                  }
                }
                index++;
             }
@@ -165,7 +207,7 @@ action ArcLogic(Gamestore p,Game g){
             }
          }
          strcat(edge,"L"); //adds an L to the end of the arc
-         iterate++
+         iterate++;
       }
       coordscheck=translatepath(edge); //could probably even shorten this if needed by unifying coords system
       if ((coordscheck.x==0)&&(coordscheck.y==6)){ //column two adjust
@@ -182,7 +224,13 @@ action ArcLogic(Gamestore p,Game g){
          strcat(edge,"BRRR");//advance to next hex, instead of just adding 2 Ls a back and 3 rights is used to preserve direction so that to iterate around the hex only lefts need to be used
       }
    }
-   strcpy(a.destination,Arcscore.edge);
+   //add in if statement to protect in case of arc overflow
+   strcpy(at.destination,Arcscore.edge);
+   if (isLegalAction(g,at)==TRUE){
+      strcpy(a.destination,Arcscore.edge);
+   } else {
+      a.actionCode=INVALID;
+   }    
    return a;
 }
 void assignregion(Gamestore g){
@@ -452,6 +500,37 @@ coords translatepath(path arc){
    coord.y=ycoords;
 
    return coord;
+}
+int lowest(Game g,Gamestore p){
+   int lowest=INVALID;
+   if ((p->Ultron.students.MMONEY<p->Ultron.students.MJ)&&(p->Ultron.students.MMONEY<p->Ultron.students.MTV)&&(p->Ultron.students.MMONEY<p->Ultron.students.BPS)&&(p->Ultron.students.MMONEY<p->Ultron.students.BQN)){
+      lowest=STUDENT_MMONEY;
+   } else if ((p->Ultron.students.MTV<=p->Ultron.students.MMONEY)&&(p->Ultron.students.MTV<p->Ultron.students.MJ)&&(p->Ultron.students.MTV<p->Ultron.students.BPS)&&(p->Ultron.students.MTV<p->Ultron.students.BQN)){
+      lowest=STUDENT_MTV;
+   } else if ((p->Ultron.students.MJ<=p->Ultron.students.MMONEY)&&(p->Ultron.students.MJ<=p->Ultron.students.MTV)&&(p->Ultron.students.MJ<p->Ultron.students.BPS)&&(p->Ultron.students.MJ<p->Ultron.students.BQN)){
+      lowest=STUDENT_MJ;
+   } else if ((p->Ultron.students.BPS<=p->Ultron.students.MMONEY)&&(p->Ultron.students.BPS<=p->Ultron.students.MTV)&&(p->Ultron.students.BPS<=p->Ultron.students.MJ)&&(p->Ultron.students.BPS<=p->Ultron.students.BQN)){
+      lowest=STUDENT_BPS;
+   } else if ((p->Ultron.students.BQN<p->Ultron.students.BPS)&&(p->Ultron.students.BQN<=p->Ultron.students.MJ)&&(p->Ultron.students.BQN<=p->Ultron.students.MTV)&&(p->Ultron.students.BQN<=p->Ultron.students.MMONEY)){
+      lowest=STUDENT_BQN;
+   }
+   return lowest;
+}
+
+int highest(Game g,Gamestore p){
+   int highest=INVALID;
+   if ((p->Ultron.students.MMONEY>=p->Ultron.students.MJ)&&(p->Ultron.students.MMONEY>p->Ultron.students.MTV)&&(p->Ultron.students.MMONEY>p->Ultron.students.BPS)&&(p->Ultron.students.MMONEY>p->Ultron.students.BQN)){
+      highest=STUDENT_MMONEY;
+   } else if ((p->Ultron.students.MTV>=p->Ultron.students.MMONEY)&&(p->Ultron.students.MTV>=p->Ultron.students.MJ)&&(p->Ultron.students.MTV>p->Ultron.students.BPS)&&(p->Ultron.students.MTV>p->Ultron.students.BQN)){
+      highest=STUDENT_MTV;
+   } else if ((p->Ultron.students.MJ>p->Ultron.students.MMONEY)&&(p->Ultron.students.MJ>p->Ultron.students.MTV)&&(p->Ultron.students.MJ>p->Ultron.students.BPS)&&(p->Ultron.students.MJ>p->Ultron.students.BQN)){
+      highest=STUDENT_MJ;
+   } else if ((p->Ultron.students.BPS>=p->Ultron.students.MMONEY)&&(p->Ultron.students.BPS>=p->Ultron.students.MTV)&&(p->Ultron.students.BPS>=p->Ultron.students.MJ)&&(p->Ultron.students.BPS>=p->Ultron.students.BQN)){
+      highest=STUDENT_BPS;
+   } else if ((p->Ultron.students.BQN>p->Ultron.students.BPS)&&(p->Ultron.students.BQN>=p->Ultron.students.MJ)&&(p->Ultron.students.BQN>=p->Ultron.students.MTV)&&(p->Ultron.students.BQN>=p->Ultron.students.MMONEY)){
+      highest=STUDENT_BQN;
+   }
+   return highest;
 }
 
 /* 1. Mr Pass - starts spinoff if has resources, otherwise passes.  Why first? This is required to be the first Turk everyone submits.
