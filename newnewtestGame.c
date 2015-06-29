@@ -23,6 +23,7 @@ void testGetKPIpoints (void);
 
 int main (int argc, char *argv[]) {
 	testgetTurnNumber();
+   testGetIPs();
 	return EXIT_SUCCESS;
 }
 
@@ -68,8 +69,10 @@ void testGetIPs (void){
 }
 
 //Inputs: Game g, int player
+/*
 void testGetKPIpoints (void){
-   
+   path path;
+   path[0]='R';
    path path15= "RL";
    
    // return the number of ARC grants the specified player currently has
@@ -85,7 +88,7 @@ void testGetKPIpoints (void){
    throwDice (g, 2);
    action testA;
    testA.actionCode = OBTAIN_ARC;
-   testA.destination = "R";
+   testA.destination = path;
    makeAction (g, testA);
    assert (getKPIpoints (g, UNI_A) == 32);
    assert (getARCs (g, UNI_A) == 1);
@@ -100,7 +103,7 @@ void testGetKPIpoints (void){
 
    action testB;
    testB.actionCode = BUILD_CAMPUS;
-   testB.destination = path15;
+   testB.destination = (path)path15;
    makeAction (g, testB);
    assert (getKPIpoints (g, UNI_A) == 42);
    assert (getARCs (g, UNI_A) == 2);
@@ -131,4 +134,4 @@ void testGetKPIpoints (void){
 
    disposeGame (g);
 
-}
+}*/
